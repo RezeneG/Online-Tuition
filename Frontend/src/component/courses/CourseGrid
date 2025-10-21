@@ -1,0 +1,17 @@
+import CourseCard from "./CourseCard";
+
+export default function CourseGrid() {
+  const courses = [
+    { title: "React Fundamentals", description: "Learn React from scratch." },
+    { title: "UI/UX Design", description: "Design engaging digital experiences." },
+    { title: "Data Analytics", description: "Explore the world of data." },
+  ];
+
+  return (
+    <section className="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {courses.map((course, i) => (
+        <CourseCard key={i} {...course} />
+      ))}
+    </section>
+  );
+}
