@@ -1,4 +1,4 @@
-# Online-Tailicon - E-Learning Platform
+# Online-Tuition - E-Learning Platform
 
 A full-stack online learning platform built with React.js frontend and Node.js backend, featuring course management, user authentication, and Stripe payments.
 
