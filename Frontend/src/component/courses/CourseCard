@@ -1,1 +1,31 @@
+import React from "react";
+import { Image } from "lucide-react";
+
+const CourseCard = ({ course, onBuy }) => {
+  return (
+    <div className="bg-white p-4 rounded-2xl shadow hover:shadow-lg transition transform hover:-translate-y-1">
+      <div className="h-40 bg-gray-200 rounded-lg mb-3 flex items-center justify-center">
+        {course.image ? (
+          <img src={course.image} alt={course.title} className="h-full w-full object-cover rounded-lg" />
+        ) : (
+          <Image className="w-8 h-8 text-gray-400" />
+        )}
+      </div>
+
+      <h3 className="font-semibold text-lg mb-1">{course.title}</h3>
+      <p className="text-sm text-gray-600 mb-3">
+        {course.category} • {course.level} • ${course.price}
+      </p>
+
+      <button
+        onClick={() => onBuy(course._id)}
+        className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-700 transition w-full"
+      >
+        Buy Course
+      </button>
+    </div>
+  );
+};
+
+export default CourseCard;
 
