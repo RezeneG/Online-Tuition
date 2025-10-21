@@ -1,0 +1,26 @@
+import React, { createContext, useState, useEffect } from "react";
+import { config } from "../config";
+
+export const CourseContext = createContext();
+
+export const CourseProvider = ({ children }) => {
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [filters, setFilters] = useState({
+    category: "All",
+    level: [],
+    maxPrice: 100,
+    search: "",
+  });
+
+  useEffect(() => {
+    setLoading(true);
+    fetch(`${config.apiBaseUrl}/courses`)
+      .then((res) => res.json())
+      .then((data) => setCourses(data))
+      .catch((err) => console.error("Error loading courses:", err))
+      .finally(() => setLoading(false));
+  }, []);
+
+  // ... rest of the code
+};
