@@ -1,0 +1,53 @@
+import React from "react";
+import { Edit, Trash2, Loader2 } from "lucide-react";
+
+const CourseList = ({ courses, loading, onEdit, onDelete }) => {
+  if (loading) {
+    return (
+      <div className="flex justify-center py-10">
+        <Loader2 className="animate-spin w-6 h-6 text-blue-600" />
+      </div>
+    );
+  }
+
+  if (courses.length === 0) {
+    return <p className="text-gray-500 text-center py-10">No courses found.</p>;
+  }
+
+  return (
+    <div className="overflow-x-auto bg-white rounded-2xl shadow p-6">
+      <h2 className="text-xl font-semibold mb-4">Existing Courses</h2>
+      <table className="min-w-full text-sm">
+        <thead>
+          <tr className="bg-gray-100 text-left">
+            <th className="py-2 px-4">Title</th>
+            <th className="py-2 px-4">Category</th>
+            <th className="py-2 px-4">Level</th>
+            <th className="py-2 px-4">Price</th>
+            <th className="py-2 px-4">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {courses.map((c) => (
+            <tr key={c._id} className="border-b hover:bg-gray-50">
+              <td className="py-2 px-4">{c.title}</td>
+              <td className="py-2 px-4">{c.category}</td>
+              <td className="py-2 px-4">{c.level}</td>
+              <td className="py-2 px-4">${c.price}</td>
+              <td className="py-2 px-4 flex space-x-2">
+                <button onClick={() => onEdit(c)} className="text-blue-600 hover:text-blue-800">
+                  <Edit className="w-4 h-4" />
+                </button>
+                <button onClick={() => onDelete(c._id)} className="text-red-600 hover:text-red-800">
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+export default CourseList;
