@@ -1,0 +1,133 @@
+import React, { useState, useEffect } from "react";
+import { Save, X } from "lucide-react";
+
+const CourseForm = ({ onSubmit, editingCourse, onCancel }) => {
+  const [form, setForm] = useState({
+    title: "",
+    category: "",
+    level: "Beginner",
+    price: "",
+    description: "",
+    image: "",
+  });
+
+  useEffect(() => {
+    if (editingCourse) {
+      setForm({
+        title: editingCourse.title,
+        category: editingCourse.category,
+        level: editingCourse.level,
+        price: editingCourse.price,
+        description: editingCourse.description,
+        image: editingCourse.image,
+      });
+    } else {
+      setForm({
+        title: "",
+        category: "",
+        level: "Beginner",
+        price: "",
+        description: "",
+        image: "",
+      });
+    }
+  }, [editingCourse]);
+
+  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSubmit(form);
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow p-6 mb-10 max-w-3xl">
+      <h2 className="text-xl font-semibold mb-4">
+        {editingCourse ? "Edit Course" : "Add New Course"}
+      </h2>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <input
+          type="text"
+          name="title"
+          placeholder="Course Title"
+          value={form.title}
+          onChange={handleChange}
+          required
+          className="border p-2 rounded"
+        />
+        <input
+          type="text"
+          name="category"
+          placeholder="Category"
+          value={form.category}
+          onChange={handleChange}
+          required
+          className="border p-2 rounded"
+        />
+
+        <select
+          name="level"
+          value={form.level}
+          onChange={handleChange}
+          className="border p-2 rounded"
+        >
+          <option>Beginner</option>
+          <option>Intermediate</option>
+          <option>Advanced</option>
+        </select>
+
+        <input
+          type="number"
+          name="price"
+          placeholder="Price"
+          value={form.price}
+          onChange={handleChange}
+          required
+          className="border p-2 rounded"
+        />
+      </div>
+
+      <textarea
+        name="description"
+        placeholder="Course Description"
+        value={form.description}
+        onChange={handleChange}
+        className="border p-2 rounded w-full mt-4"
+        rows={3}
+      />
+
+      <input
+        type="text"
+        name="image"
+        placeholder="Image URL (optional)"
+        value={form.image}
+        onChange={handleChange}
+        className="border p-2 rounded w-full mt-4"
+      />
+
+      <div className="mt-4 flex space-x-4">
+        <button
+          type="submit"
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-blue-700"
+        >
+          <Save className="w-4 h-4" />
+          <span>{editingCourse ? "Save Changes" : "Add Course"}</span>
+        </button>
+
+        {editingCourse && (
+          <button
+            type="button"
+            onClick={onCancel}
+            className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-gray-400"
+          >
+            <X className="w-4 h-4" />
+            <span>Cancel</span>
+          </button>
+        )}
+      </div>
+    </form>
+  );
+};
+
+export default CourseForm;
