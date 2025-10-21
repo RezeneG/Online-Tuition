@@ -1,0 +1,37 @@
+# Environment files
+.env
+.env.production
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+*.log
+logs/
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Uploads and temporary files
+uploads/
+temp/
+tmp/
+
+# Coverage reports
+coverage/
+.nyc_output/
+
+# API Keys and secrets (be extra careful!)
+*_key
+*_secret
+*_token
+*_password
