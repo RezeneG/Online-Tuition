@@ -1,17 +1,60 @@
-
-
-learnx-platform/
-├── frontend/                 # React application
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── context/
-│   │   └── config/
-│   ├── public/
-│   └── package.json
-├── backend/                  # Node.js API
-│   ├── models/
-│   ├── routes/
+Online-Tailicon/
+├── backend/
+│   ├── package.json
+│   ├── server.js (or index.js)
 │   ├── middleware/
-│   └── server.js
+│   │   ├── auth.js (or auth.jsz)
+│   │   └── ...
+│   ├── models/
+│   │   ├── User.js
+│   │   ├── Course.js
+│   │   └── Counter.js
+│   ├── routes/
+│   │   ├── authRoutes.js (or authBoxers.js)
+│   │   ├── courseRoutes.js (or countRoutes.js)
+│   │   └── ...
+│   ├── config/
+│   │   └── database.js
+│   └── .env
+├── frontend/
+│   ├── package.json
+│   ├── vite.config.js
+│   ├── index.html
+│   ├── public/
+│   │   ├── vite.svg
+│   │   └── ...
+│   ├── src/
+│   │   ├── main.jsx
+│   │   ├── App.jsx
+│   │   ├── config.js
+│   │   ├── context/
+│   │   │   ├── AuthContext.jsx
+│   │   │   └── CourseContext.jsx
+│   │   ├── components/
+│   │   │   ├── common/
+│   │   │   │   ├── Loader.jsx
+│   │   │   │   ├── Header.jsx
+│   │   │   │   ├── Footer.jsx
+│   │   │   │   └── ProtectedRoute.jsx
+│   │   │   ├── courses/
+│   │   │   │   ├── CourseCard.jsx
+│   │   │   │   ├── CourseFilter.jsx
+│   │   │   │   ├── CourseForm.jsx
+│   │   │   │   ├── CourseList.jsx
+│   │   │   │   └── CourseGrid.jsx
+│   │   │   └── admin/
+│   │   │       └── ...
+│   │   ├── pages/
+│   │   │   ├── CoursesPage.jsx
+│   │   │   ├── Login.jsx
+│   │   │   ├── Register.jsx
+│   │   │   ├── admin/
+│   │   │   │   └── AdminDashboard.jsx
+│   │   │   └── student/
+│   │   │       └── StudentDashboard.jsx
+│   │   ├── services/
+│   │   │   └── paymentService.js
+│   │   └── styles/
+│   │       └── index.css
+│   └── .env
 └── README.md
