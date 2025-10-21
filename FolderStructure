@@ -1,40 +1,47 @@
-Online-Tuition/
+Online-Tailicon/
 ├── backend/
 │   ├── package.json
 │   ├── server.js (or index.js)
+│   ├── .env                    ← Development environment
+│   ├── .env.production         ← Production environment (optional)
+│   ├── scripts/                ← NEW: Seed scripts
+│   │   ├── seedAdmin.js
+│   │   └── seedAdminInteractive.js
 │   ├── middleware/
-│   │   ├── auth.js (or auth.jsz)
+│   │   ├── auth.js
 │   │   └── ...
 │   ├── models/
 │   │   ├── User.js
 │   │   ├── Course.js
 │   │   └── Counter.js
 │   ├── routes/
-│   │   ├── authRoutes.js (or authBoxers.js)
-│   │   ├── courseRoutes.js (or countRoutes.js)
+│   │   ├── authRoutes.js
+│   │   ├── courseRoutes.js
 │   │   └── ...
 │   ├── config/
 │   │   └── database.js
-│   └── .env
+│   └── .gitignore
 ├── frontend/
 │   ├── package.json
 │   ├── vite.config.js
 │   ├── index.html
+│   ├── .env                    ← Development environment
+│   ├── .env.production         ← Production environment (optional)
 │   ├── public/
 │   │   ├── vite.svg
 │   │   └── ...
 │   ├── src/
-│   │   ├── main.jsx
+│   │   ├── main.jsx            ← NEW: Vite entry point
 │   │   ├── App.jsx
-│   │   ├── config.js
+│   │   ├── config.js           ← NEW: Central config
 │   │   ├── context/
 │   │   │   ├── AuthContext.jsx
 │   │   │   └── CourseContext.jsx
 │   │   ├── components/
 │   │   │   ├── common/
-│   │   │   │   ├── Loader.jsx
 │   │   │   │   ├── Header.jsx
 │   │   │   │   ├── Footer.jsx
+│   │   │   │   ├── Loader.jsx
 │   │   │   │   └── ProtectedRoute.jsx
 │   │   │   ├── courses/
 │   │   │   │   ├── CourseCard.jsx
@@ -43,7 +50,6 @@ Online-Tuition/
 │   │   │   │   ├── CourseList.jsx
 │   │   │   │   └── CourseGrid.jsx
 │   │   │   └── admin/
-│   │   │       └── ...
 │   │   ├── pages/
 │   │   │   ├── CoursesPage.jsx
 │   │   │   ├── Login.jsx
@@ -52,9 +58,10 @@ Online-Tuition/
 │   │   │   │   └── AdminDashboard.jsx
 │   │   │   └── student/
 │   │   │       └── StudentDashboard.jsx
-│   │   ├── services/
+│   │   ├── services/           ← NEW: API services
 │   │   │   └── paymentService.js
 │   │   └── styles/
 │   │       └── index.css
-│   └── .env
+│   └── .gitignore
+├── .gitignore                  ← Root gitignore
 └── README.md
