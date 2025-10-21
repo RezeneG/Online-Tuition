@@ -1,0 +1,103 @@
+import React from "react";
+import { SlidersHorizontal } from "lucide-react";
+
+const CourseFilter = ({ filters, setFilters, showFilters, setShowFilters }) => {
+  // Handle category selection
+  const handleCategoryChange = (e) =>
+    setFilters({ ...filters, category: e.target.value });
+
+  // Handle level checkbox toggle
+  const handleLevelChange = (level) => {
+    const newLevels = filters.level.includes(level)
+      ? filters.level.filter((l) => l !== level)
+      : [...filters.level, level];
+    setFilters({ ...filters, level: newLevels });
+  };
+
+  // Handle price range slider
+  const handlePriceChange = (e) =>
+    setFilters({ ...filters, maxPrice: Number(e.target.value) });
+
+  return (
+    <aside className="w-full md:w-1/4 bg-white p-5 rounded-2xl shadow-sm h-fit transition-all">
+      {/* Header */}
+      <div className="flex justify-between items-center md:block">
+        <h2 className="font-semibold text-lg mb-0 md:mb-4">Filters</h2>
+
+        <button
+          onClick={() => setShowFilters(!showFilters)}
+          className="md:hidden text-blue-600 flex items-center space-x-1"
+          aria-expanded={showFilters}
+        >
+          <SlidersHorizontal className="w-4 h-4" />
+          <span>{showFilters ? "Hide" : "Show"}</span>
+        </button>
+      </div>
+
+      {/* Filter Options */}
+      <div
+        className={`space-y-4 text-sm mt-4 md:mt-0 ${
+          showFilters ? "block" : "hidden md:block"
+        }`}
+      >
+        {/* Category Filter */}
+        <div>
+          <p className="font-medium mb-2">Category</p>
+          <select
+            value={filters.category}
+            onChange={handleCategoryChange}
+            className="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-blue-200 outline-none"
+          >
+            <option value="All">All</option>
+            <option value="Technology">Technology</option>
+            <option value="Business">Business</option>
+            <option value="Design">Design</option>
+            <option value="Marketing">Marketing</option>
+            <option value="Finance">Finance</option>
+          </select>
+        </div>
+
+        {/* Level Filter */}
+        <div>
+          <p className="font-medium mb-2">Level</p>
+          <div className="space-y-1">
+            {["Beginner", "Intermediate", "Advanced"].map((level) => (
+              <label
+                key={level}
+                className="flex items-center space-x-2 cursor-pointer select-none"
+              >
+                <input
+                  type="checkbox"
+                  checked={filters.level.includes(level)}
+                  onChange={() => handleLevelChange(level)}
+                  className="accent-blue-600"
+                />
+                <span>{level}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        {/* Price Filter */}
+        <div>
+          <p className="font-medium mb-2">Max Price: ${filters.maxPrice}</p>
+          <input
+            type="range"
+            min="0"
+            max="500"
+            step="10"
+            value={filters.maxPrice}
+            onChange={handlePriceChange}
+            className="w-full accent-blue-600 cursor-pointer"
+          />
+          <div className="flex justify-between text-xs text-gray-500 mt-1">
+            <span>$0</span>
+            <span>$500</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+  );
+};
+
+export default CourseFilter;
