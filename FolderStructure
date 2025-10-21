@@ -1,0 +1,17 @@
+
+
+learnx-platform/
+├── frontend/                 # React application
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── context/
+│   │   └── config/
+│   ├── public/
+│   └── package.json
+├── backend/                  # Node.js API
+│   ├── models/
+│   ├── routes/
+│   ├── middleware/
+│   └── server.js
+└── README.md
