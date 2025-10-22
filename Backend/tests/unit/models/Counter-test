@@ -1,0 +1,36 @@
+cd backend
+
+# Create test file
+cat > test-counter.js << 'EOF'
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+import { getNextSequenceValue } from './models/Counter.js';
+
+dotenv.config();
+
+async function testCounter() {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI);
+    console.log('🔗 Connected to database');
+    
+    const nextId = await getNextSequenceValue('courseId');
+    console.log('✅ Next course ID:', nextId);
+    
+    const nextId2 = await getNextSequenceValue('courseId');
+    console.log('✅ Next course ID:', nextId2);
+    
+    process.exit(0);
+  } catch (error) {
+    console.error('❌ Error:', error);
+    process.exit(1);
+  }
+}
+
+testCounter();
+EOF
+
+# Run test
+node test-counter.js
+
+# Clean up
+rm test-counter.js
