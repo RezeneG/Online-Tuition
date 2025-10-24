@@ -4,184 +4,1038 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Courses - LearnX</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/responsive.css">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8fafc;
+            color: #334155;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        nav {
+            background: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #6366f1;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #64748b;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #6366f1;
+        }
+
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        /* Courses Main Content */
+        .courses-main {
+            padding: 60px 0;
+        }
+
+        .courses-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 40px;
+        }
+
+        /* Filters Sidebar */
+        .filters-sidebar {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .filter-group {
+            margin-bottom: 2rem;
+        }
+
+        .filter-group h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #1e293b;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+        }
+
+        .filter-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-option input[type="checkbox"],
+        .filter-option input[type="radio"] {
+            width: 18px;
+            height: 18px;
+        }
+
+        .filter-option label {
+            cursor: pointer;
+            color: #64748b;
+        }
+
+        .filter-option:hover label {
+            color: #6366f1;
+        }
+
+        .price-range {
+            width: 100%;
+            margin: 1rem 0;
+        }
+
+        .price-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-top: 0.5rem;
+        }
+
+        .reset-filters {
+            background: #6366f1;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .reset-filters:hover {
+            background: #4f46e5;
+        }
+
+        /* Search and Sort Bar */
+        .search-sort-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            gap: 20px;
+        }
+
+        .search-box {
+            flex: 1;
+            position: relative;
+            max-width: 400px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 20px 12px 45px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #6366f1;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+        }
+
+        .sort-select {
+            padding: 12px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+            font-size: 1rem;
+            color: #334155;
+            cursor: pointer;
+        }
+
+        .results-count {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        /* Courses Grid */
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .course-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .course-image {
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .course-content {
+            padding: 25px;
+        }
+
+        .course-badge {
+            background: #ffd700;
+            color: #000;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .course-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #1e293b;
+            line-height: 1.4;
+        }
+
+        .course-instructor {
+            color: #64748b;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .course-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        .course-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stars {
+            color: #f59e0b;
+        }
+
+        .course-duration {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .course-price {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #1e293b;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: #64748b;
+            font-size: 1rem;
+            margin-right: 0.5rem;
+        }
+
+        .enroll-button {
+            background: #6366f1;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .enroll-button:hover {
+            background: #4f46e5;
+        }
+
+        /* Testimonials Section */
+        .testimonials-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 0;
+        }
+
+        .testimonials-section .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .testimonials-section .section-header h2 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .testimonials-section .section-header p {
+            color: #e2e8f0;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .testimonial-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 40px 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 25px;
+            line-height: 1.7;
+            font-size: 1.1rem;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .author-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #f59e0b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.3rem;
+            color: white;
+        }
+
+        .author-info h4 {
+            margin-bottom: 5px;
+            font-size: 1.2rem;
+        }
+
+        .author-info p {
+            color: #cbd5e1;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .course-tag {
+            display: inline-block;
+            background: rgba(99, 102, 241, 0.2);
+            color: #c7d2fe;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-top: 5px;
+        }
+
+        /* Final CTA Section */
+        .final-cta {
+            padding: 80px 0;
+            text-align: center;
+            background: white;
+        }
+
+        .final-cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+
+        .final-cta p {
+            font-size: 1.2rem;
+            color: #64748b;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: #6366f1;
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            background: #4f46e5;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #6366f1;
+            padding: 15px 40px;
+            border: 2px solid #6366f1;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-secondary:hover {
+            background: #6366f1;
+            color: white;
+        }
+
+        /* Footer */
+        footer {
+            background: #1e293b;
+            color: white;
+            padding: 60px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            color: #f59e0b;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-column a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-column a:hover {
+            color: #f59e0b;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: #cbd5e1;
+            font-size: 1.3rem;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: #f59e0b;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #334155;
+            color: #94a3b8;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 3rem;
+        }
+
+        .pagination button {
+            background: white;
+            border: 2px solid #e2e8f0;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .pagination button:hover {
+            border-color: #6366f1;
+            color: #6366f1;
+        }
+
+        .pagination button.active {
+            background: #6366f1;
+            color: white;
+            border-color: #6366f1;
+        }
+
+        .pagination-numbers {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .courses-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .filters-sidebar {
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .search-sort-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-box {
+                max-width: none;
+            }
+            
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .button-group {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+    </style>
 </head>
 <body>
-    <header class="header">
-        <div class="container">
-            <div class="logo">
-                <h1>LearnX</h1>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">LearnX</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="courses.html" class="active">All Courses</a>
+                <a href="login.html">Login</a>
             </div>
-            <nav class="nav">
-                <a href="index.html" class="nav-link">Home</a>
-                <a href="courses.html" class="nav-link active">All Courses</a>
-                <a href="#login" class="nav-link">Login</a>
-            </nav>
         </div>
-    </header>
+    </nav>
 
-    <section class="hero">
+    <!-- Page Header -->
+    <section class="page-header">
         <div class="container">
-            <h1>All Available Courses</h1>
-            <p>Browse our complete course catalog</p>
+            <h1>Explore All Courses</h1>
+            <p>Discover our comprehensive catalog of tech courses designed to launch and advance your career</p>
         </div>
     </section>
 
-    <section class="courses-section">
+    <!-- Courses Main Content -->
+    <section class="courses-main">
         <div class="container">
-            <div class="courses-grid">
-                <!-- Gateway Courses -->
-                <div class="course-card">
-                    <div class="course-icon">🎯</div>
-                    <h3>Programming Fundamentals</h3>
-                    <p class="course-duration">Duration: 6 weeks | Level: Beginner</p>
-                    <p class="course-description">Absolute beginner-friendly introduction to coding concepts</p>
-                    <div class="course-price">£49</div>
-                    <button class="enroll-btn" onclick="showEnrollmentModal('Programming Fundamentals')">Enroll Now</button>
-                </div>
+            <div class="courses-layout">
+                <!-- Filters Sidebar -->
+                <aside class="filters-sidebar">
+                    <div class="filter-group">
+                        <h3>Categories</h3>
+                        <div class="filter-options">
+                            <div class="filter-option">
+                                <input type="checkbox" id="web-dev" checked>
+                                <label for="web-dev">Web Development</label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="programming">
+                                <label for="programming">Programming</label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="data-science">
+                                <label for="data-science">Data Science</label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="mobile-dev">
+                                <label for="mobile-dev">Mobile Development</label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="cybersecurity">
+                                <label for="cybersecurity">Cybersecurity</label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="digital-literacy">
+                                <label for="digital-literacy">Digital Literacy</label>
+                            </div>
+                        </div>
+                    </div>
 
-                <div class="course-card">
-                    <div class="course-icon">🌐</div>
-                    <h3>Web Basics: HTML & CSS</h3>
-                    <p class="course-duration">Duration: 8 weeks | Level: Beginner</p>
-                    <p class="course-description">Build your first website with essential frontend technologies</p>
-                    <div class="course-price">£59</div>
-                    <button class="enroll-btn" onclick="showEnrollmentModal('Web Basics: HTML & CSS')">Enroll Now</button>
-                </div>
+                    <div class="filter-group">
+                        <h3>Difficulty Level</h3>
+                        <div class="filter-options">
+                            <div class="filter-option">
+                                <input type="radio" id="beginner" name="level" checked>
+                                <label for="beginner">Beginner</label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="radio" id="intermediate" name="level">
+                                <label for="intermediate">Intermediate</label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="radio" id="advanced" name="level">
+                                <label for="advanced">Advanced</label>
+                            </div>
+                        </div>
+                    </div>
 
-                <div class="course-card">
-                    <div class="course-icon">💻</div>
-                    <h3>Digital Literacy & Tools</h3>
-                    <p class="course-duration">Duration: 4 weeks | Level: Beginner</p>
-                    <p class="course-description">Master essential software, file management, and digital collaboration</p>
-                    <div class="course-price">£39</div>
-                    <button class="enroll-btn" onclick="showEnrollmentModal('Digital Literacy & Tools')">Enroll Now</button>
-                </div>
+                    <div class="filter-group">
+                        <h3>Duration</h3>
+                        <div class="filter-options">
+                            <div class="filter-option">
+                                <input type="checkbox" id="4-weeks">
+                                <label for="4-weeks">Under 4 weeks</label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="8-weeks">
+                                <label for="8-weeks">4-8 weeks</label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="12-weeks">
+                                <label for="12-weeks">8-12 weeks</label>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="12-plus">
+                                <label for="12-plus">12+ weeks</label>
+                            </div>
+                        </div>
+                    </div>
 
-                <div class="course-card">
-                    <div class="course-icon">🧮</div>
-                    <h3>Math for Programmers</h3>
-                    <p class="course-duration">Duration: 5 weeks | Level: Beginner</p>
-                    <p class="course-description">Foundation mathematics tailored for software development</p>
-                    <div class="course-price">£49</div>
-                    <button class="enroll-btn" onclick="showEnrollmentModal('Math for Programmers')">Enroll Now</button>
-                </div>
+                    <div class="filter-group">
+                        <h3>Price Range</h3>
+                        <input type="range" class="price-range" min="0" max="500" value="200">
+                        <div class="price-labels">
+                            <span>$0</span>
+                            <span>$500</span>
+                        </div>
+                    </div>
 
-                <!-- T Level Core -->
-                <div class="course-card">
-                    <div class="course-icon">🧠</div>
-                    <h3>Computational Thinking & Algorithms</h3>
-                    <p class="course-duration">Duration: 10 weeks | Level: Intermediate</p>
-                    <p class="course-description">Master decomposition, pattern recognition, and algorithmic design</p>
-                    <div class="course-price">£89</div>
-                    <button class="enroll-btn" onclick="showEnrollmentModal('Computational Thinking & Algorithms')">Enroll Now</button>
-                </div>
+                    <button class="reset-filters">Reset All Filters</button>
+                </aside>
 
-                <div class="course-card">
-                    <div class="course-icon">🐍</div>
-                    <h3>Python Programming Mastery</h3>
-                    <p class="course-duration">Duration: 12 weeks | Level: Intermediate</p>
-                    <p class="course-description">Complete Python 3.10+ with data structures and OOP principles</p>
-                    <div class="course-price">£99</div>
-                    <button class="enroll-btn" onclick="showEnrollmentModal('Python Programming Mastery')">Enroll Now</button>
-                </div>
+                <!-- Courses Content -->
+                <div class="courses-content">
+                    <div class="search-sort-bar">
+                        <div class="search-box">
+                            <span class="search-icon">🔍</span>
+                            <input type="text" placeholder="Search courses...">
+                        </div>
+                        <div class="results-count">Showing 12 of 45 courses</div>
+                        <select class="sort-select">
+                            <option>Sort by: Most Popular</option>
+                            <option>Sort by: Highest Rated</option>
+                            <option>Sort by: Newest</option>
+                            <option>Sort by: Price Low to High</option>
+                            <option>Sort by: Price High to Low</option>
+                        </select>
+                    </div>
 
-                <div class="course-card">
-                    <div class="course-icon">🔄</div>
-                    <h3>Software Development Lifecycle</h3>
-                    <p class="course-duration">Duration: 8 weeks | Level: Intermediate</p>
-                    <p class="course-description">Agile, Waterfall, RAD methodologies and project management</p>
-                    <div class="course-price">£94</div>
-                    <button class="enroll-btn" onclick="showEnrollmentModal('Software Development Lifecycle')">Enroll Now</button>
-                </div>
+                    <div class="courses-grid">
+                        <!-- Course 1 -->
+                        <div class="course-card">
+                            <div class="course-image">HTML/CSS</div>
+                            <div class="course-content">
+                                <div class="course-badge">Bestseller</div>
+                                <h3>Web Basics: HTML & CSS</h3>
+                                <div class="course-instructor">By Sarah Johnson</div>
+                                <div class="course-meta">
+                                    <div class="course-rating">
+                                        <span class="stars">★★★★★</span>
+                                        <span>4.7 (890)</span>
+                                    </div>
+                                    <span>1.8k students</span>
+                                </div>
+                                <div class="course-duration">Duration: 8 weeks | Level: Beginner</div>
+                                <div class="course-price">
+                                    <div class="price">
+                                        <span class="original-price">$149</span>
+                                        $99
+                                    </div>
+                                    <button class="enroll-button">Enroll Now</button>
+                                </div>
+                            </div>
+                        </div>
 
-                <div class="course-card">
-                    <div class="course-icon">💾</div>
-                    <h3>Data Systems & Management</h3>
-                    <p class="course-duration">Duration: 10 weeks | Level: Intermediate</p>
-                    <p class="course-description">Data structures, databases, and information management</p>
-                    <div class="course-price">£89</div>
-                    <button class="enroll-btn" onclick="showEnrollmentModal('Data Systems & Management')">Enroll Now</button>
-                </div>
+                        <!-- Course 2 -->
+                        <div class="course-card">
+                            <div class="course-image">Python</div>
+                            <div class="course-content">
+                                <div class="course-badge">Bestseller</div>
+                                <h3>Programming Fundamentals</h3>
+                                <div class="course-instructor">By Mike Chen</div>
+                                <div class="course-meta">
+                                    <div class="course-rating">
+                                        <span class="stars">★★★★★</span>
+                                        <span>4.8 (1.2k)</span>
+                                    </div>
+                                    <span>2.4k students</span>
+                                </div>
+                                <div class="course-duration">Duration: 6 weeks | Level: Beginner</div>
+                                <div class="course-price">
+                                    <div class="price">
+                                        <span class="original-price">$199</span>
+                                        $129
+                                    </div>
+                                    <button class="enroll-button">Enroll Now</button>
+                                </div>
+                            </div>
+                        </div>
 
-                <div class="course-card">
-                    <div class="course-icon">🔒</div>
-                    <h3>Cybersecurity Fundamentals</h3>
-                    <p class="course-duration">Duration: 9 weeks | Level: Intermediate</p>
-                    <p class="course-description">Threat mitigation, encryption, and security best practices</p>
-                    <div class="course-price">£97</div>
-                    <button class="enroll-btn" onclick="showEnrollmentModal('Cybersecurity Fundamentals')">Enroll Now</button>
-                </div>
+                        <!-- Course 3 -->
+                        <div class="course-card">
+                            <div class="course-image">Data</div>
+                            <div class="course-content">
+                                <h3>Data Science Essentials</h3>
+                                <div class="course-instructor">By Dr. Emily Roberts</div>
+                                <div class="course-meta">
+                                    <div class="course-rating">
+                                        <span class="stars">★★★★☆</span>
+                                        <span>4.5 (650)</span>
+                                    </div>
+                                    <span>1.2k students</span>
+                                </div>
+                                <div class="course-duration">Duration: 10 weeks | Level: Intermediate</div>
+                                <div class="course-price">
+                                    <div class="price">$249</div>
+                                    <button class="enroll-button">Enroll Now</button>
+                                </div>
+                            </div>
+                        </div>
 
-                <div class="course-card">
-                    <div class="course-icon">⚡</div>
-                    <h3>Web Technologies Stack</h3>
-                    <p class="course-duration">Duration: 14 weeks | Level: Intermediate</p>
-                    <p class="course-description">Frontend & backend development with modern frameworks</p>
-                    <div class="course-price">£99</div>
-                    <button class="enroll-btn" onclick="showEnrollmentModal('Web Technologies Stack')">Enroll Now</button>
-                </div>
+                        <!-- Course 4 -->
+                        <div class="course-card">
+                            <div class="course-image">React</div>
+                            <div class="course-content">
+                                <h3>React.js Masterclass</h3>
+                                <div class="course-instructor">By Alex Thompson</div>
+                                <div class="course-meta">
+                                    <div class="course-rating">
+                                        <span class="stars">★★★★★</span>
+                                        <span>4.9 (420)</span>
+                                    </div>
+                                    <span>980 students</span>
+                                </div>
+                                <div class="course-duration">Duration: 12 weeks | Level: Intermediate</div>
+                                <div class="course-price">
+                                    <div class="price">$299</div>
+                                    <button class="enroll-button">Enroll Now</button>
+                                </div>
+                            </div>
+                        </div>
 
-                <!-- Specializations -->
-                <div class="course-card">
-                    <div class="course-icon">🚀</div>
-                    <h3>Full-Stack Development</h3>
-                    <p class="course-duration">Duration: 16 weeks | Level: Advanced</p>
-                    <p class="course-description">End-to-end application development with multiple languages</p>
-                    <div class="course-price">£149</div>
-                    <button class="enroll-btn" onclick="showEnrollmentModal('Full-Stack Development')">Enroll Now</button>
-                </div>
+                        <!-- Course 5 -->
+                        <div class="course-card">
+                            <div class="course-image">Tools</div>
+                            <div class="course-content">
+                                <h3>Digital Literacy & Tools</h3>
+                                <div class="course-instructor">By Lisa Wang</div>
+                                <div class="course-meta">
+                                    <div class="course-rating">
+                                        <span class="stars">★★★★☆</span>
+                                        <span>4.6 (550)</span>
+                                    </div>
+                                    <span>1.1k students</span>
+                                </div>
+                                <div class="course-duration">Duration: 4 weeks | Level: Beginner</div>
+                                <div class="course-price">
+                                    <div class="price">$79</div>
+                                    <button class="enroll-button">Enroll Now</button>
+                                </div>
+                            </div>
+                        </div>
 
-                <div class="course-card">
-                    <div class="course-icon">✅</div>
-                    <h3>Software Testing & QA</h3>
-                    <p class="course-duration">Duration: 12 weeks | Level: Advanced</p>
-                    <p class="course-description">Comprehensive testing strategies and automation tools</p>
-                    <div class="course-price">£129</div>
-                    <button class="enroll-btn" onclick="showEnrollmentModal('Software Testing & QA')">Enroll Now</button>
-                </div>
+                        <!-- Course 6 -->
+                        <div class="course-card">
+                            <div class="course-image">Mobile</div>
+                            <div class="course-content">
+                                <div class="course-badge">New</div>
+                                <h3>Mobile App Development</h3>
+                                <div class="course-instructor">By James Wilson</div>
+                                <div class="course-meta">
+                                    <div class="course-rating">
+                                        <span class="stars">★★★★☆</span>
+                                        <span>4.4 (320)</span>
+                                    </div>
+                                    <span>750 students</span>
+                                </div>
+                                <div class="course-duration">Duration: 14 weeks | Level: Advanced</div>
+                                <div class="course-price">
+                                    <div class="price">$349</div>
+                                    <button class="enroll-button">Enroll Now</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                <div class="course-card">
-                    <div class="course-icon">☁️</div>
-                    <h3>DevOps & Deployment</h3>
-                    <p class="course-duration">Duration: 14 weeks | Level: Advanced</p>
-                    <p class="course-description">CI/CD pipelines, cloud platforms, and deployment strategies</p>
-                    <div class="course-price">£139</div>
-                    <button class="enroll-btn" onclick="showEnrollmentModal('DevOps & Deployment')">Enroll Now</button>
-                </div>
-
-                <div class="course-card">
-                    <div class="course-icon">💼</div>
-                    <h3>Industry Project Preparation</h3>
-                    <p class="course-duration">Duration: 10 weeks | Level: Advanced</p>
-                    <p class="course-description">Real-world project experience and portfolio development</p>
-                    <div class="course-price">£119</div>
-                    <button class="enroll-btn" onclick="showEnrollmentModal('Industry Project Preparation')">Enroll Now</button>
+                    <!-- Pagination -->
+                    <div class="pagination">
+                        <button>Previous</button>
+                        <div class="pagination-numbers">
+                            <button class="active">1</button>
+                            <button>2</button>
+                            <button>3</button>
+                            <button>4</button>
+                        </div>
+                        <button>Next</button>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <div id="enrollmentModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h3>Enroll in <span id="courseTitle"></span></h3>
-            <p>This course is not yet available for enrollment. We're setting up the learning platform!</p>
-            <p>Leave your email to get notified when courses launch:</p>
-            <form id="waitlistForm">
-                <input type="email" placeholder="Your email address" required>
-                <button type="submit">Join Waitlist</button>
-            </form>
-        </div>
-    </div>
-
-    <footer class="footer">
+    <!-- Testimonials Section -->
+    <section class="testimonials-section">
         <div class="container">
-            <p>&copy; 2024 LearnX. All rights reserved.</p>
+            <div class="section-header">
+                <h2>Success Stories</h2>
+                <p>See how our students have transformed their careers and lives</p>
+            </div>
+            
+            <div class="testimonials-grid">
+                <!-- Testimonial 1 -->
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        "The Web Basics course was the perfect start. I went from zero coding knowledge to landing my first junior developer role in 5 months. The projects were exactly what interviewers wanted to see."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">SL</div>
+                        <div class="author-info">
+                            <h4>Sarah L.</h4>
+                            <p>Frontend Developer at TextCorp</p>
+                            <div class="course-tag">Course: Web Basics HTML & CSS</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        "The structured path and expert feedback in 'Programming Fundamentals' gave me the confidence to tackle complex problems. LearnX didn't just teach me syntax; it taught me how to think like a programmer."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">DM</div>
+                        <div class="author-info">
+                            <h4>David M.</h4>
+                            <p>Software Engineer at DataSolve</p>
+                            <div class="course-tag">Course: Programming Fundamentals</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        "As a complete beginner, I was intimidated by tech. The Digital Literacy course broke everything down perfectly. Now I'm confidently using essential tools and even started learning to code!"
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">MJ</div>
+                        <div class="author-info">
+                            <h4>Maria J.</h4>
+                            <p>Marketing Specialist</p>
+                            <div class="course-tag">Course: Digital Literacy & Tools</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA Section -->
+    <section class="final-cta">
+        <div class="container">
+            <h2>Ready to Start Your Journey?</h2>
+            <p>Don't Just Dream About a Tech Career, Launch It. Join over 2,000 students who have transformed their skills and careers with LearnX.</p>
+            <div class="button-group">
+                <a href="courses.html" class="btn-primary">Browse All Courses</a>
+                <a href="login.html" class="btn-secondary">Sign Up For Free</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>LearnX</h3>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Teach on LearnX</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Career Paths</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Policies</h3>
+                    <ul>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Cookie Settings</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Connect with Us</h3>
+                    <div class="social-links">
+                        <a href="#">📘</a>
+                        <a href="#">🐦</a>
+                        <a href="#">📷</a>
+                        <a href="#">💼</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 LearnX. All rights reserved.</p>
+            </div>
         </div>
     </footer>
-
-    <script src="js/script.js"></script>
 </body>
 </html>
