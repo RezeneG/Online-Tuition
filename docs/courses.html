@@ -76,18 +76,23 @@
             text-align: center;
         }
 
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
         .hero h1 {
             font-size: 3.5rem;
             margin-bottom: 1.5rem;
             font-weight: 700;
+            line-height: 1.2;
         }
 
         .hero p {
             font-size: 1.3rem;
-            margin-bottom: 2.5rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            line-height: 1.6;
         }
 
         .stats {
@@ -105,6 +110,7 @@
             font-size: 2.5rem;
             font-weight: bold;
             margin-bottom: 0.5rem;
+            display: block;
         }
 
         .stat-label {
@@ -725,25 +731,27 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="container">
-            <h1>Explore All Courses</h1>
-            <p>Master in-demand skills with industry-expert instructors and hands-on projects</p>
-            
-            <div class="stats">
-                <div class="stat-item">
-                    <div class="stat-number">2,000+</div>
-                    <div class="stat-label">Students Enrolled</div>
+            <div class="hero-content">
+                <h1>Launch Your Tech Career with LearnX</h1>
+                <p>Master in-demand skills with industry-expert instructors and hands-on projects</p>
+                
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-number">2,000 +</span>
+                        <div class="stat-label">Students Enrolled</div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">98%</span>
+                        <div class="stat-label">Completion Rate</div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">4.9★</span>
+                        <div class="stat-label">Student Rating</div>
+                    </div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number">98%</div>
-                    <div class="stat-label">Completion Rate</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">4.9★</div>
-                    <div class="stat-label">Student Rating</div>
-                </div>
+                
+                <button class="cta-button">Explore Courses</button>
             </div>
-            
-            <button class="cta-button">Explore Courses</button>
         </div>
     </section>
 
