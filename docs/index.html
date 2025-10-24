@@ -3,166 +3,225 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Courses - LearnX</title>
+    <title>LearnX - Digital Software Development Courses</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
+    <!-- Header -->
     <header class="header">
         <div class="container">
             <div class="logo">
                 <h1>LearnX</h1>
             </div>
             <nav class="nav">
-                <a href="index.html" class="nav-link">Home</a>
-                <a href="courses.html" class="nav-link active">All Courses</a>
+                <a href="index.html" class="nav-link active">Home</a>
+                <a href="courses.html" class="nav-link">All Courses</a>
                 <a href="#login" class="nav-link">Login</a>
             </nav>
         </div>
     </header>
 
+    <!-- Enhanced Hero Section -->
     <section class="hero">
         <div class="container">
-            <h1>All Available Courses</h1>
-            <p>Browse our complete course catalog</p>
+            <div class="hero-content">
+                <h1 class="hero-title">Launch Your Tech Career with LearnX</h1>
+                <p class="hero-subtitle">Master in-demand skills with industry-expert instructors and hands-on projects</p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">2,000+</span>
+                        <span class="stat-label">Students Enrolled</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">98%</span>
+                        <span class="stat-label">Completion Rate</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">4.9★</span>
+                        <span class="stat-label">Student Rating</span>
+                    </div>
+                </div>
+                <button class="cta-button" onclick="scrollToCourses()">Explore Courses</button>
+            </div>
+            <div class="hero-visual">
+                <div class="floating-card card-1">🚀</div>
+                <div class="floating-card card-2">💻</div>
+                <div class="floating-card card-3">🎯</div>
+            </div>
         </div>
     </section>
 
+    <!-- Gateway Courses -->
     <section class="courses-section">
         <div class="container">
+            <h2>🚀 Gateway Courses</h2>
             <div class="courses-grid">
-                <!-- Gateway Courses -->
-                <div class="course-card">
+                
+                <!-- Programming Fundamentals - Enhanced -->
+                <div class="course-card featured">
+                    <div class="course-badge">Bestseller</div>
                     <div class="course-icon">🎯</div>
                     <h3>Programming Fundamentals</h3>
+                    <div class="course-meta">
+                        <span class="rating">⭐ 4.8 (1.2k reviews)</span>
+                        <span class="students">👥 2.4k students</span>
+                    </div>
                     <p class="course-duration">Duration: 6 weeks | Level: Beginner</p>
                     <p class="course-description">Absolute beginner-friendly introduction to coding concepts</p>
-                    <div class="course-price">£49</div>
-                    <button class="enroll-btn" onclick="showEnrollmentModal('Programming Fundamentals')">Enroll Now</button>
+                    <div class="learning-outcomes">
+                        <h4>🎯 What You'll Learn:</h4>
+                        <ul>
+                            <li>✓ Basic programming logic & algorithms</li>
+                            <li>✓ Variables, data types, and operators</li>
+                            <li>✓ Problem-solving mindset development</li>
+                            <li>✓ Real-world coding projects</li>
+                        </ul>
+                    </div>
+                    <div class="instructor">
+                        <div class="instructor-avatar">SJ</div>
+                        <div class="instructor-info">
+                            <span class="instructor-name">Sarah Johnson</span>
+                            <span class="instructor-title">Senior Developer</span>
+                        </div>
+                    </div>
+                    <div class="course-price-section">
+                        <div class="price-container">
+                            <span class="current-price">£49</span>
+                            <span class="original-price">£99</span>
+                            <span class="discount">50% off</span>
+                        </div>
+                        <button class="enroll-btn" onclick="showPaymentModal('Programming Fundamentals', 49)">
+                            🛒 Enroll Now
+                        </button>
+                    </div>
                 </div>
 
+                <!-- Web Basics - Enhanced -->
                 <div class="course-card">
                     <div class="course-icon">🌐</div>
                     <h3>Web Basics: HTML & CSS</h3>
+                    <div class="course-meta">
+                        <span class="rating">⭐ 4.7 (890 reviews)</span>
+                        <span class="students">👥 1.8k students</span>
+                    </div>
                     <p class="course-duration">Duration: 8 weeks | Level: Beginner</p>
                     <p class="course-description">Build your first website with essential frontend technologies</p>
-                    <div class="course-price">£59</div>
-                    <button class="enroll-btn" onclick="showEnrollmentModal('Web Basics: HTML & CSS')">Enroll Now</button>
+                    <div class="learning-outcomes">
+                        <h4>🎯 What You'll Learn:</h4>
+                        <ul>
+                            <li>✓ HTML5 semantic structure</li>
+                            <li>✓ CSS3 and Flexbox styling</li>
+                            <li>✓ Responsive web design</li>
+                            <li>✓ Website deployment</li>
+                        </ul>
+                    </div>
+                    <div class="instructor">
+                        <div class="instructor-avatar">MD</div>
+                        <div class="instructor-info">
+                            <span class="instructor-name">Mike Davis</span>
+                            <span class="instructor-title">Frontend Specialist</span>
+                        </div>
+                    </div>
+                    <div class="course-price-section">
+                        <div class="price-container">
+                            <span class="current-price">£59</span>
+                        </div>
+                        <button class="enroll-btn" onclick="showPaymentModal('Web Basics: HTML & CSS', 59)">
+                            🛒 Enroll Now
+                        </button>
+                    </div>
                 </div>
 
+                <!-- Digital Literacy -->
                 <div class="course-card">
                     <div class="course-icon">💻</div>
                     <h3>Digital Literacy & Tools</h3>
                     <p class="course-duration">Duration: 4 weeks | Level: Beginner</p>
                     <p class="course-description">Master essential software, file management, and digital collaboration</p>
                     <div class="course-price">£39</div>
-                    <button class="enroll-btn" onclick="showEnrollmentModal('Digital Literacy & Tools')">Enroll Now</button>
+                    <button class="enroll-btn" onclick="showPaymentModal('Digital Literacy & Tools', 39)">Enroll Now</button>
                 </div>
 
+                <!-- Math for Programmers -->
                 <div class="course-card">
                     <div class="course-icon">🧮</div>
                     <h3>Math for Programmers</h3>
                     <p class="course-duration">Duration: 5 weeks | Level: Beginner</p>
                     <p class="course-description">Foundation mathematics tailored for software development</p>
                     <div class="course-price">£49</div>
-                    <button class="enroll-btn" onclick="showEnrollmentModal('Math for Programmers')">Enroll Now</button>
+                    <button class="enroll-btn" onclick="showPaymentModal('Math for Programmers', 49)">Enroll Now</button>
                 </div>
 
-                <!-- T Level Core -->
+            </div>
+        </div>
+    </section>
+
+    <!-- T Level Core Components -->
+    <section class="courses-section core-courses">
+        <div class="container">
+            <h2>🎯 T Level Core Components</h2>
+            <div class="courses-grid">
+                
+                <!-- Computational Thinking -->
                 <div class="course-card">
                     <div class="course-icon">🧠</div>
                     <h3>Computational Thinking & Algorithms</h3>
                     <p class="course-duration">Duration: 10 weeks | Level: Intermediate</p>
                     <p class="course-description">Master decomposition, pattern recognition, and algorithmic design</p>
                     <div class="course-price">£89</div>
-                    <button class="enroll-btn" onclick="showEnrollmentModal('Computational Thinking & Algorithms')">Enroll Now</button>
+                    <button class="enroll-btn" onclick="showPaymentModal('Computational Thinking & Algorithms', 89)">Enroll Now</button>
                 </div>
 
+                <!-- Python Mastery -->
                 <div class="course-card">
                     <div class="course-icon">🐍</div>
                     <h3>Python Programming Mastery</h3>
                     <p class="course-duration">Duration: 12 weeks | Level: Intermediate</p>
                     <p class="course-description">Complete Python 3.10+ with data structures and OOP principles</p>
                     <div class="course-price">£99</div>
-                    <button class="enroll-btn" onclick="showEnrollmentModal('Python Programming Mastery')">Enroll Now</button>
+                    <button class="enroll-btn" onclick="showPaymentModal('Python Programming Mastery', 99)">Enroll Now</button>
                 </div>
 
+                <!-- Software Development Lifecycle -->
                 <div class="course-card">
                     <div class="course-icon">🔄</div>
                     <h3>Software Development Lifecycle</h3>
                     <p class="course-duration">Duration: 8 weeks | Level: Intermediate</p>
                     <p class="course-description">Agile, Waterfall, RAD methodologies and project management</p>
                     <div class="course-price">£94</div>
-                    <button class="enroll-btn" onclick="showEnrollmentModal('Software Development Lifecycle')">Enroll Now</button>
+                    <button class="enroll-btn" onclick="showPaymentModal('Software Development Lifecycle', 94)">Enroll Now</button>
                 </div>
 
-                <div class="course-card">
-                    <div class="course-icon">💾</div>
-                    <h3>Data Systems & Management</h3>
-                    <p class="course-duration">Duration: 10 weeks | Level: Intermediate</p>
-                    <p class="course-description">Data structures, databases, and information management</p>
-                    <div class="course-price">£89</div>
-                    <button class="enroll-btn" onclick="showEnrollmentModal('Data Systems & Management')">Enroll Now</button>
-                </div>
-
-                <div class="course-card">
-                    <div class="course-icon">🔒</div>
-                    <h3>Cybersecurity Fundamentals</h3>
-                    <p class="course-duration">Duration: 9 weeks | Level: Intermediate</p>
-                    <p class="course-description">Threat mitigation, encryption, and security best practices</p>
-                    <div class="course-price">£97</div>
-                    <button class="enroll-btn" onclick="showEnrollmentModal('Cybersecurity Fundamentals')">Enroll Now</button>
-                </div>
-
-                <div class="course-card">
-                    <div class="course-icon">⚡</div>
-                    <h3>Web Technologies Stack</h3>
-                    <p class="course-duration">Duration: 14 weeks | Level: Intermediate</p>
-                    <p class="course-description">Frontend & backend development with modern frameworks</p>
-                    <div class="course-price">£99</div>
-                    <button class="enroll-btn" onclick="showEnrollmentModal('Web Technologies Stack')">Enroll Now</button>
-                </div>
-
-                <!-- Specializations -->
-                <div class="course-card">
-                    <div class="course-icon">🚀</div>
-                    <h3>Full-Stack Development</h3>
-                    <p class="course-duration">Duration: 16 weeks | Level: Advanced</p>
-                    <p class="course-description">End-to-end application development with multiple languages</p>
-                    <div class="course-price">£149</div>
-                    <button class="enroll-btn" onclick="showEnrollmentModal('Full-Stack Development')">Enroll Now</button>
-                </div>
-
-                <div class="course-card">
-                    <div class="course-icon">✅</div>
-                    <h3>Software Testing & QA</h3>
-                    <p class="course-duration">Duration: 12 weeks | Level: Advanced</p>
-                    <p class="course-description">Comprehensive testing strategies and automation tools</p>
-                    <div class="course-price">£129</div>
-                    <button class="enroll-btn" onclick="showEnrollmentModal('Software Testing & QA')">Enroll Now</button>
-                </div>
-
-                <div class="course-card">
-                    <div class="course-icon">☁️</div>
-                    <h3>DevOps & Deployment</h3>
-                    <p class="course-duration">Duration: 14 weeks | Level: Advanced</p>
-                    <p class="course-description">CI/CD pipelines, cloud platforms, and deployment strategies</p>
-                    <div class="course-price">£139</div>
-                    <button class="enroll-btn" onclick="showEnrollmentModal('DevOps & Deployment')">Enroll Now</button>
-                </div>
-
-                <div class="course-card">
-                    <div class="course-icon">💼</div>
-                    <h3>Industry Project Preparation</h3>
-                    <p class="course-duration">Duration: 10 weeks | Level: Advanced</p>
-                    <p class="course-description">Real-world project experience and portfolio development</p>
-                    <div class="course-price">£119</div>
-                    <button class="enroll-btn" onclick="showEnrollmentModal('Industry Project Preparation')">Enroll Now</button>
-                </div>
             </div>
         </div>
     </section>
 
+    <!-- Bundles Section -->
+    <section class="bundles-section">
+        <div class="container">
+            <h2>🎁 Bundled Learning Paths</h2>
+            <div class="bundles-grid">
+                
+                <!-- Foundation Path -->
+                <div class="bundle-card">
+                    <h3>🥉 Foundation Path</h3>
+                    <p class="bundle-price">£175 <span class="save">(Save £21)</span></p>
+                    <p class="bundle-desc">Perfect for complete beginners</p>
+                    <ul class="bundle-courses">
+                        <li>✓ Programming Fundamentals</li>
+                        <li>✓ Web Basics: HTML & CSS</li>
+                        <li>✓ Digital Literacy & Tools</li>
+                        <li>✓ Math for Programmers</li>
+                    </ul>
+                    <button class="bundle-btn" onclick="showPaymentModal('Foundation Path Bundle', 175)">Get Bundle</button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Enrollment Modal -->
     <div id="enrollmentModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
@@ -176,9 +235,69 @@
         </div>
     </div>
 
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content payment-modal">
+            <span class="close" onclick="closePaymentModal()">&times;</span>
+            <h3>Complete Your Enrollment</h3>
+            <div class="course-summary">
+                <h4 id="paymentCourseTitle">Course Name</h4>
+                <p class="payment-price">£<span id="paymentAmount">0</span></p>
+            </div>
+            
+            <form id="paymentForm" class="payment-form">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" placeholder="your@email.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Card Information</label>
+                    <div class="card-input">
+                        <input type="text" placeholder="1234 1234 1234 1234" required maxlength="19">
+                        <div class="card-details">
+                            <input type="text" placeholder="MM/YY" required maxlength="5">
+                            <input type="text" placeholder="CVC" required maxlength="3">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Name on Card</label>
+                    <input type="text" placeholder="John Doe" required>
+                </div>
+                
+                <div class="payment-security">
+                    <p>🔒 Your payment is secure and encrypted</p>
+                </div>
+                
+                <button type="submit" class="payment-btn">
+                    <span class="btn-text">Pay £<span id="finalAmount">0</span></span>
+                    <span class="btn-loading" style="display: none;">Processing...</span>
+                </button>
+                
+                <div class="payment-methods">
+                    <p>We accept:</p>
+                    <div class="payment-icons">
+                        <span>💳 Visa</span>
+                        <span>💳 Mastercard</span>
+                        <span>💳 Amex</span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <p>&copy; 2024 LearnX. All rights reserved.</p>
+            <nav class="footer-nav">
+                <a href="index.html">Home</a> | 
+                <a href="courses.html">All Courses</a> | 
+                <a href="#privacy">Privacy Policy</a> | 
+                <a href="#terms">Terms of Service</a>
+            </nav>
         </div>
     </footer>
 
