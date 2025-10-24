@@ -397,99 +397,27 @@
             background: #4f46e5;
         }
 
-        /* Why Learn With Us Section */
-        .why-learn-section {
-            padding: 80px 0;
+        /* Testimonials Section */
+        .testimonials-section {
             background: white;
+            padding: 80px 0;
         }
 
-        .section-header {
+        .testimonials-header {
             text-align: center;
             margin-bottom: 60px;
         }
 
-        .section-header h2 {
+        .testimonials-header h2 {
             font-size: 2.5rem;
             color: #1e293b;
-            margin-bottom: 16px;
+            margin-bottom: 1rem;
             font-weight: 700;
         }
 
-        .section-header p {
+        .testimonials-header p {
             font-size: 1.2rem;
             color: #64748b;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 40px;
-        }
-
-        .feature-card {
-            background: #f8fafc;
-            border-radius: 12px;
-            padding: 40px 30px;
-            text-align: center;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid #e2e8f0;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-        }
-
-        .feature-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 24px;
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 2rem;
-        }
-
-        .feature-card h3 {
-            font-size: 1.5rem;
-            color: #1e293b;
-            margin-bottom: 16px;
-            font-weight: 600;
-        }
-
-        .feature-card p {
-            color: #64748b;
-            font-size: 1rem;
-            line-height: 1.7;
-        }
-
-        /* Testimonials Section */
-        .testimonials-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 80px 0;
-        }
-
-        .testimonials-section .section-header {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .testimonials-section .section-header h2 {
-            color: white;
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .testimonials-section .section-header p {
-            color: #e2e8f0;
-            font-size: 1.2rem;
             max-width: 600px;
             margin: 0 auto;
         }
@@ -497,15 +425,21 @@
         .testimonials-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
+            gap: 40px;
+            margin-bottom: 60px;
         }
 
         .testimonial-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
+            background: #f8fafc;
             border-radius: 12px;
             padding: 40px 30px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid #e2e8f0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
         }
 
         .testimonial-text {
@@ -513,6 +447,9 @@
             margin-bottom: 25px;
             line-height: 1.7;
             font-size: 1.1rem;
+            color: #475569;
+            border-left: 4px solid #6366f1;
+            padding-left: 20px;
         }
 
         .testimonial-author {
@@ -525,7 +462,7 @@
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            background: #f59e0b;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -537,33 +474,37 @@
         .author-info h4 {
             margin-bottom: 5px;
             font-size: 1.2rem;
+            color: #1e293b;
         }
 
         .author-info p {
-            color: #cbd5e1;
+            color: #64748b;
             font-size: 0.95rem;
             line-height: 1.5;
         }
 
         .course-tag {
             display: inline-block;
-            background: rgba(99, 102, 241, 0.2);
-            color: #c7d2fe;
+            background: #e0e7ff;
+            color: #6366f1;
             padding: 4px 12px;
             border-radius: 20px;
             font-size: 0.85rem;
             margin-top: 5px;
+            font-weight: 500;
         }
 
         /* Final CTA Section */
         .final-cta {
-            padding: 80px 0;
+            padding: 60px 0;
             text-align: center;
-            background: white;
+            background: #f8fafc;
+            border-radius: 12px;
+            margin-top: 40px;
         }
 
         .final-cta h2 {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             margin-bottom: 1rem;
             color: #1e293b;
         }
@@ -734,11 +675,11 @@
                 flex-wrap: wrap;
             }
             
-            .section-title, .section-header h2 {
+            .section-title, .testimonials-header h2 {
                 font-size: 2rem;
             }
             
-            .courses-grid, .features-grid, .testimonials-grid {
+            .courses-grid, .testimonials-grid {
                 grid-template-columns: 1fr;
             }
             
@@ -1066,51 +1007,11 @@
         </div>
     </section>
 
-    <!-- Why Learn With Us Section -->
-    <section class="why-learn-section">
-        <div class="container">
-            <div class="section-header">
-                <h2>Why Learn With LearnX?</h2>
-                <p>We combine industry expertise with proven learning methods to help you achieve your career goals faster</p>
-            </div>
-            
-            <div class="features-grid">
-                <!-- Feature 1 -->
-                <div class="feature-card">
-                    <div class="feature-icon">👨‍🏫</div>
-                    <h3>Learn from Industry Experts</h3>
-                    <p>Our instructors are seasoned professionals who bring real-world insights and current best practices directly to you.</p>
-                </div>
-                
-                <!-- Feature 2 -->
-                <div class="feature-card">
-                    <div class="feature-icon">💻</div>
-                    <h3>Project-Based Learning</h3>
-                    <p>Apply your skills by building a portfolio of real-world projects that demonstrate your expertise to employers.</p>
-                </div>
-                
-                <!-- Feature 3 -->
-                <div class="feature-card">
-                    <div class="feature-icon">⏱️</div>
-                    <h3>Self-Paced, Flexible Learning</h3>
-                    <p>Balance your education with your life. Learn on your own schedule with easy-to-follow modules and deadlines.</p>
-                </div>
-                
-                <!-- Feature 4 -->
-                <div class="feature-card">
-                    <div class="feature-icon">👥</div>
-                    <h3>Peer Support & Community</h3>
-                    <p>Get unstuck and stay motivated with dedicated student forums, community groups, and peer code reviews.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Testimonials Section -->
     <section class="testimonials-section">
         <div class="container">
-            <div class="section-header">
-                <h2>Success Stories</h2>
+            <div class="testimonials-header">
+                <h2>Transformations Powered by LearnX</h2>
                 <p>See how our students have transformed their careers and lives</p>
             </div>
             
@@ -1118,14 +1019,14 @@
                 <!-- Testimonial 1 -->
                 <div class="testimonial-card">
                     <div class="testimonial-text">
-                        "The Web Basics course was the perfect start. I went from zero coding knowledge to landing my first junior developer role in 5 months. The projects were exactly what interviewers wanted to see."
+                        "The Web Basics course was the perfect start. I went from zero coding knowledge to landing my first junior developer role in 6 months. The projects were exactly what interviewers wanted to see."
                     </div>
                     <div class="testimonial-author">
                         <div class="author-avatar">SL</div>
                         <div class="author-info">
                             <h4>Sarah L.</h4>
-                            <p>Frontend Developer at TextCorp</p>
-                            <div class="course-tag">Course: Web Basics HTML & CSS</div>
+                            <p>Frontend Developer at TechCarp</p>
+                            <div class="course-tag">Course: Web Basics: HTML & CSS</div>
                         </div>
                     </div>
                 </div>
@@ -1133,7 +1034,7 @@
                 <!-- Testimonial 2 -->
                 <div class="testimonial-card">
                     <div class="testimonial-text">
-                        "The structured path and expert feedback in 'Programming Fundamentals' gave me the confidence to tackle complex problems. LearnX didn't just teach me syntax; it taught me how to think like a programmer."
+                        "The structured path and expert feedback in Programming Fundamentals' gave me the confidence to tackle complex problems. LearnX didn't just teach me syntax; it taught me how to think like a programmer."
                     </div>
                     <div class="testimonial-author">
                         <div class="author-avatar">DM</div>
@@ -1160,17 +1061,15 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- Final CTA Section -->
-    <section class="final-cta">
-        <div class="container">
-            <h2>Ready to Start Your Journey?</h2>
-            <p>Don't Just Dream About a Tech Career, Launch It. Join over 2,000 students who have transformed their skills and careers with LearnX.</p>
-            <div class="button-group">
-                <a href="courses.html" class="btn-primary">Browse All Courses</a>
-                <a href="login.html" class="btn-secondary">Sign Up For Free</a>
+            <!-- Final CTA -->
+            <div class="final-cta">
+                <h2>Ready to Start Your Journey?</h2>
+                <p>Don't Just Dream About a Tech Career, Launch It. Join over 2,000 students who have transformed their skills and careers with LearnX.</p>
+                <div class="button-group">
+                    <a href="courses.html" class="btn-primary">Browse All Courses</a>
+                    <a href="login.html" class="btn-secondary">Sign Up For Free</a>
+                </div>
             </div>
         </div>
     </section>
