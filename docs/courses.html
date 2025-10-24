@@ -30,6 +30,9 @@
             background: white;
             padding: 1rem 0;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
         .nav-container {
@@ -65,30 +68,76 @@
             color: #6366f1;
         }
 
-        /* Page Header */
-        .page-header {
+        /* Hero Section */
+        .hero {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 60px 0;
+            padding: 100px 0;
             text-align: center;
         }
 
-        .page-header h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
             font-weight: 700;
         }
 
-        .page-header p {
-            font-size: 1.2rem;
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
             max-width: 600px;
-            margin: 0 auto;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1rem;
             opacity: 0.9;
+        }
+
+        .cta-button {
+            background: #f59e0b;
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .cta-button:hover {
+            background: #d97706;
         }
 
         /* Courses Main Content */
         .courses-main {
-            padding: 60px 0;
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #1e293b;
         }
 
         .courses-layout {
@@ -105,7 +154,7 @@
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             height: fit-content;
             position: sticky;
-            top: 20px;
+            top: 100px;
         }
 
         .filter-group {
@@ -346,6 +395,78 @@
 
         .enroll-button:hover {
             background: #4f46e5;
+        }
+
+        /* Why Learn With Us Section */
+        .why-learn-section {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: #1e293b;
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+
+        .section-header p {
+            font-size: 1.2rem;
+            color: #64748b;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+        }
+
+        .feature-card {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            color: #1e293b;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            color: #64748b;
+            font-size: 1rem;
+            line-height: 1.7;
         }
 
         /* Testimonials Section */
@@ -604,11 +725,20 @@
         }
 
         @media (max-width: 768px) {
-            .page-header h1 {
+            .hero h1 {
                 font-size: 2.5rem;
             }
             
-            .courses-grid {
+            .stats {
+                gap: 2rem;
+                flex-wrap: wrap;
+            }
+            
+            .section-title, .section-header h2 {
+                font-size: 2rem;
+            }
+            
+            .courses-grid, .features-grid, .testimonials-grid {
                 grid-template-columns: 1fr;
             }
             
@@ -619,10 +749,6 @@
             
             .search-box {
                 max-width: none;
-            }
-            
-            .testimonials-grid {
-                grid-template-columns: 1fr;
             }
             
             .button-group {
@@ -655,17 +781,36 @@
         </div>
     </nav>
 
-    <!-- Page Header -->
-    <section class="page-header">
+    <!-- Hero Section -->
+    <section class="hero">
         <div class="container">
             <h1>Explore All Courses</h1>
-            <p>Discover our comprehensive catalog of tech courses designed to launch and advance your career</p>
+            <p>Master in-demand skills with industry-expert instructors and hands-on projects</p>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number">2,000+</div>
+                    <div class="stat-label">Students Enrolled</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Completion Rate</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">4.9★</div>
+                    <div class="stat-label">Student Rating</div>
+                </div>
+            </div>
+            
+            <button class="cta-button">Explore Courses</button>
         </div>
     </section>
 
     <!-- Courses Main Content -->
     <section class="courses-main">
         <div class="container">
+            <h2 class="section-title">Browse Our Course Catalog</h2>
+            
             <div class="courses-layout">
                 <!-- Filters Sidebar -->
                 <aside class="filters-sidebar">
@@ -916,6 +1061,46 @@
                         </div>
                         <button>Next</button>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Learn With Us Section -->
+    <section class="why-learn-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Why Learn With LearnX?</h2>
+                <p>We combine industry expertise with proven learning methods to help you achieve your career goals faster</p>
+            </div>
+            
+            <div class="features-grid">
+                <!-- Feature 1 -->
+                <div class="feature-card">
+                    <div class="feature-icon">👨‍🏫</div>
+                    <h3>Learn from Industry Experts</h3>
+                    <p>Our instructors are seasoned professionals who bring real-world insights and current best practices directly to you.</p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="feature-card">
+                    <div class="feature-icon">💻</div>
+                    <h3>Project-Based Learning</h3>
+                    <p>Apply your skills by building a portfolio of real-world projects that demonstrate your expertise to employers.</p>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="feature-card">
+                    <div class="feature-icon">⏱️</div>
+                    <h3>Self-Paced, Flexible Learning</h3>
+                    <p>Balance your education with your life. Learn on your own schedule with easy-to-follow modules and deadlines.</p>
+                </div>
+                
+                <!-- Feature 4 -->
+                <div class="feature-card">
+                    <div class="feature-icon">👥</div>
+                    <h3>Peer Support & Community</h3>
+                    <p>Get unstuck and stay motivated with dedicated student forums, community groups, and peer code reviews.</p>
                 </div>
             </div>
         </div>
