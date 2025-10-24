@@ -3,304 +3,404 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LearnX - Digital Software Development Courses</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/responsive.css">
+    <title>LearnX - Launch Your Tech Career</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8fafc;
+            color: #334155;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        nav {
+            background: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #6366f1;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #64748b;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #6366f1;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            background: #f59e0b;
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .cta-button:hover {
+            background: #d97706;
+        }
+
+        /* Gateway Courses Section */
+        .courses-section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #1e293b;
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .course-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+        }
+
+        .bestseller-badge {
+            background: #ffd700;
+            color: #000;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .course-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+
+        .course-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            color: #64748b;
+        }
+
+        .course-duration {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+            color: #64748b;
+        }
+
+        /* Why Learn With Us Section */
+        .why-learn-section {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: #1e293b;
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+
+        .section-header p {
+            font-size: 1.2rem;
+            color: #64748b;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+        }
+
+        .feature-card {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            color: #1e293b;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            color: #64748b;
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .stats {
+                gap: 2rem;
+                flex-wrap: wrap;
+            }
+            
+            .section-title, .section-header h2 {
+                font-size: 2rem;
+            }
+            
+            .courses-grid, .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="container">
-            <div class="logo">
-                <h1>LearnX</h1>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">LearnX</div>
+            <div class="nav-links">
+                <a href="#">Home</a>
+                <a href="#">All Courses</a>
+                <a href="#">Login</a>
             </div>
-            <nav class="nav">
-                <a href="index.html" class="nav-link active">Home</a>
-                <a href="courses.html" class="nav-link">All Courses</a>
-                <a href="#login" class="nav-link">Login</a>
-            </nav>
         </div>
-    </header>
+    </nav>
 
-    <!-- Enhanced Hero Section -->
+    <!-- Hero Section -->
     <section class="hero">
         <div class="container">
-            <div class="hero-content">
-                <h1 class="hero-title">Launch Your Tech Career with LearnX</h1>
-                <p class="hero-subtitle">Master in-demand skills with industry-expert instructors and hands-on projects</p>
-                <div class="hero-stats">
-                    <div class="stat">
-                        <span class="stat-number">2,000+</span>
-                        <span class="stat-label">Students Enrolled</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-number">98%</span>
-                        <span class="stat-label">Completion Rate</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-number">4.9★</span>
-                        <span class="stat-label">Student Rating</span>
-                    </div>
+            <h1>Launch Your Tech Career with LearnX</h1>
+            <p>Master in-demand skills with industry-expert instructors and hands-on projects</p>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number">2,000+</div>
+                    <div class="stat-label">Students Enrolled</div>
                 </div>
-                <button class="cta-button" onclick="scrollToCourses()">Explore Courses</button>
-            </div>
-            <div class="hero-visual">
-                <div class="floating-card card-1">🚀</div>
-                <div class="floating-card card-2">💻</div>
-                <div class="floating-card card-3">🎯</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Gateway Courses -->
-    <section class="courses-section">
-        <div class="container">
-            <h2>🚀 Gateway Courses</h2>
-            <div class="courses-grid">
-                
-                <!-- Programming Fundamentals - Enhanced -->
-                <div class="course-card featured">
-                    <div class="course-badge">Bestseller</div>
-                    <div class="course-icon">🎯</div>
-                    <h3>Programming Fundamentals</h3>
-                    <div class="course-meta">
-                        <span class="rating">⭐ 4.8 (1.2k reviews)</span>
-                        <span class="students">👥 2.4k students</span>
-                    </div>
-                    <p class="course-duration">Duration: 6 weeks | Level: Beginner</p>
-                    <p class="course-description">Absolute beginner-friendly introduction to coding concepts</p>
-                    <div class="learning-outcomes">
-                        <h4>🎯 What You'll Learn:</h4>
-                        <ul>
-                            <li>✓ Basic programming logic & algorithms</li>
-                            <li>✓ Variables, data types, and operators</li>
-                            <li>✓ Problem-solving mindset development</li>
-                            <li>✓ Real-world coding projects</li>
-                        </ul>
-                    </div>
-                    <div class="instructor">
-                        <div class="instructor-avatar">SJ</div>
-                        <div class="instructor-info">
-                            <span class="instructor-name">Sarah Johnson</span>
-                            <span class="instructor-title">Senior Developer</span>
-                        </div>
-                    </div>
-                    <div class="course-price-section">
-                        <div class="price-container">
-                            <span class="current-price">£49</span>
-                            <span class="original-price">£99</span>
-                            <span class="discount">50% off</span>
-                        </div>
-                        <button class="enroll-btn" onclick="showPaymentModal('Programming Fundamentals', 49)">
-                            🛒 Enroll Now
-                        </button>
-                    </div>
+                <div class="stat-item">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Completion Rate</div>
                 </div>
-
-                <!-- Web Basics - Enhanced -->
-                <div class="course-card">
-                    <div class="course-icon">🌐</div>
-                    <h3>Web Basics: HTML & CSS</h3>
-                    <div class="course-meta">
-                        <span class="rating">⭐ 4.7 (890 reviews)</span>
-                        <span class="students">👥 1.8k students</span>
-                    </div>
-                    <p class="course-duration">Duration: 8 weeks | Level: Beginner</p>
-                    <p class="course-description">Build your first website with essential frontend technologies</p>
-                    <div class="learning-outcomes">
-                        <h4>🎯 What You'll Learn:</h4>
-                        <ul>
-                            <li>✓ HTML5 semantic structure</li>
-                            <li>✓ CSS3 and Flexbox styling</li>
-                            <li>✓ Responsive web design</li>
-                            <li>✓ Website deployment</li>
-                        </ul>
-                    </div>
-                    <div class="instructor">
-                        <div class="instructor-avatar">MD</div>
-                        <div class="instructor-info">
-                            <span class="instructor-name">Mike Davis</span>
-                            <span class="instructor-title">Frontend Specialist</span>
-                        </div>
-                    </div>
-                    <div class="course-price-section">
-                        <div class="price-container">
-                            <span class="current-price">£59</span>
-                        </div>
-                        <button class="enroll-btn" onclick="showPaymentModal('Web Basics: HTML & CSS', 59)">
-                            🛒 Enroll Now
-                        </button>
-                    </div>
+                <div class="stat-item">
+                    <div class="stat-number">4.9★</div>
+                    <div class="stat-label">Student Rating</div>
                 </div>
-
-                <!-- Digital Literacy -->
-                <div class="course-card">
-                    <div class="course-icon">💻</div>
-                    <h3>Digital Literacy & Tools</h3>
-                    <p class="course-duration">Duration: 4 weeks | Level: Beginner</p>
-                    <p class="course-description">Master essential software, file management, and digital collaboration</p>
-                    <div class="course-price">£39</div>
-                    <button class="enroll-btn" onclick="showPaymentModal('Digital Literacy & Tools', 39)">Enroll Now</button>
-                </div>
-
-                <!-- Math for Programmers -->
-                <div class="course-card">
-                    <div class="course-icon">🧮</div>
-                    <h3>Math for Programmers</h3>
-                    <p class="course-duration">Duration: 5 weeks | Level: Beginner</p>
-                    <p class="course-description">Foundation mathematics tailored for software development</p>
-                    <div class="course-price">£49</div>
-                    <button class="enroll-btn" onclick="showPaymentModal('Math for Programmers', 49)">Enroll Now</button>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- T Level Core Components -->
-    <section class="courses-section core-courses">
-        <div class="container">
-            <h2>🎯 T Level Core Components</h2>
-            <div class="courses-grid">
-                
-                <!-- Computational Thinking -->
-                <div class="course-card">
-                    <div class="course-icon">🧠</div>
-                    <h3>Computational Thinking & Algorithms</h3>
-                    <p class="course-duration">Duration: 10 weeks | Level: Intermediate</p>
-                    <p class="course-description">Master decomposition, pattern recognition, and algorithmic design</p>
-                    <div class="course-price">£89</div>
-                    <button class="enroll-btn" onclick="showPaymentModal('Computational Thinking & Algorithms', 89)">Enroll Now</button>
-                </div>
-
-                <!-- Python Mastery -->
-                <div class="course-card">
-                    <div class="course-icon">🐍</div>
-                    <h3>Python Programming Mastery</h3>
-                    <p class="course-duration">Duration: 12 weeks | Level: Intermediate</p>
-                    <p class="course-description">Complete Python 3.10+ with data structures and OOP principles</p>
-                    <div class="course-price">£99</div>
-                    <button class="enroll-btn" onclick="showPaymentModal('Python Programming Mastery', 99)">Enroll Now</button>
-                </div>
-
-                <!-- Software Development Lifecycle -->
-                <div class="course-card">
-                    <div class="course-icon">🔄</div>
-                    <h3>Software Development Lifecycle</h3>
-                    <p class="course-duration">Duration: 8 weeks | Level: Intermediate</p>
-                    <p class="course-description">Agile, Waterfall, RAD methodologies and project management</p>
-                    <div class="course-price">£94</div>
-                    <button class="enroll-btn" onclick="showPaymentModal('Software Development Lifecycle', 94)">Enroll Now</button>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- Bundles Section -->
-    <section class="bundles-section">
-        <div class="container">
-            <h2>🎁 Bundled Learning Paths</h2>
-            <div class="bundles-grid">
-                
-                <!-- Foundation Path -->
-                <div class="bundle-card">
-                    <h3>🥉 Foundation Path</h3>
-                    <p class="bundle-price">£175 <span class="save">(Save £21)</span></p>
-                    <p class="bundle-desc">Perfect for complete beginners</p>
-                    <ul class="bundle-courses">
-                        <li>✓ Programming Fundamentals</li>
-                        <li>✓ Web Basics: HTML & CSS</li>
-                        <li>✓ Digital Literacy & Tools</li>
-                        <li>✓ Math for Programmers</li>
-                    </ul>
-                    <button class="bundle-btn" onclick="showPaymentModal('Foundation Path Bundle', 175)">Get Bundle</button>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- Enrollment Modal -->
-    <div id="enrollmentModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h3>Enroll in <span id="courseTitle"></span></h3>
-            <p>This course is not yet available for enrollment. We're setting up the learning platform!</p>
-            <p>Leave your email to get notified when courses launch:</p>
-            <form id="waitlistForm">
-                <input type="email" placeholder="Your email address" required>
-                <button type="submit">Join Waitlist</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Payment Modal -->
-    <div id="paymentModal" class="modal">
-        <div class="modal-content payment-modal">
-            <span class="close" onclick="closePaymentModal()">&times;</span>
-            <h3>Complete Your Enrollment</h3>
-            <div class="course-summary">
-                <h4 id="paymentCourseTitle">Course Name</h4>
-                <p class="payment-price">£<span id="paymentAmount">0</span></p>
             </div>
             
-            <form id="paymentForm" class="payment-form">
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <input type="email" placeholder="your@email.com" required>
-                </div>
-                
-                <div class="form-group">
-                    <label>Card Information</label>
-                    <div class="card-input">
-                        <input type="text" placeholder="1234 1234 1234 1234" required maxlength="19">
-                        <div class="card-details">
-                            <input type="text" placeholder="MM/YY" required maxlength="5">
-                            <input type="text" placeholder="CVC" required maxlength="3">
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label>Name on Card</label>
-                    <input type="text" placeholder="John Doe" required>
-                </div>
-                
-                <div class="payment-security">
-                    <p>🔒 Your payment is secure and encrypted</p>
-                </div>
-                
-                <button type="submit" class="payment-btn">
-                    <span class="btn-text">Pay £<span id="finalAmount">0</span></span>
-                    <span class="btn-loading" style="display: none;">Processing...</span>
-                </button>
-                
-                <div class="payment-methods">
-                    <p>We accept:</p>
-                    <div class="payment-icons">
-                        <span>💳 Visa</span>
-                        <span>💳 Mastercard</span>
-                        <span>💳 Amex</span>
-                    </div>
-                </div>
-            </form>
+            <button class="cta-button">Explore Courses</button>
         </div>
-    </div>
+    </section>
 
-    <!-- Footer -->
-    <footer class="footer">
+    <!-- Gateway Courses Section -->
+    <section class="courses-section">
         <div class="container">
-            <p>&copy; 2024 LearnX. All rights reserved.</p>
-            <nav class="footer-nav">
-                <a href="index.html">Home</a> | 
-                <a href="courses.html">All Courses</a> | 
-                <a href="#privacy">Privacy Policy</a> | 
-                <a href="#terms">Terms of Service</a>
-            </nav>
+            <h2 class="section-title">Gateway Courses</h2>
+            
+            <div class="courses-grid">
+                <!-- Course 1 -->
+                <div class="course-card">
+                    <div class="bestseller-badge">Bestseller</div>
+                    <h3>Programming Fundamentals</h3>
+                    <div class="course-meta">
+                        <span>4.8 (1.2k reviews)</span>
+                        <span>2.4k students</span>
+                    </div>
+                    <div class="course-duration">
+                        Duration: 6 weeks | Level: Beginner
+                    </div>
+                </div>
+                
+                <!-- Course 2 -->
+                <div class="course-card">
+                    <h3>Web Basics: HTML & CSS</h3>
+                    <div class="course-meta">
+                        <span>4.7 (890 reviews)</span>
+                        <span>1.8k students</span>
+                    </div>
+                    <div class="course-duration">
+                        Duration: 8 weeks | Level: Beginner
+                    </div>
+                </div>
+                
+                <!-- Course 3 -->
+                <div class="course-card">
+                    <h3>Digital Literacy & Tools</h3>
+                    <div class="course-meta">
+                        <span>4.6 (550 reviews)</span>
+                        <span>1.1k students</span>
+                    </div>
+                    <div class="course-duration">
+                        Duration: 4 weeks | Level: Beginner
+                    </div>
+                    <p style="margin-top: 1rem; color: #64748b;">Master essential software and file management skills.</p>
+                </div>
+            </div>
         </div>
-    </footer>
+    </section>
 
-    <script src="js/script.js"></script>
+    <!-- Why Learn With Us Section -->
+    <section class="why-learn-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>A Learning Experience Designed for Your Success</h2>
+                <p>We combine industry expertise with proven learning methods to help you achieve your career goals faster</p>
+            </div>
+            
+            <div class="features-grid">
+                <!-- Feature 1 -->
+                <div class="feature-card">
+                    <div class="feature-icon">👨‍🏫</div>
+                    <h3>Learn from Industry Experts</h3>
+                    <p>Our instructors are seasoned professionals who bring real-world insights and current best practices directly to you.</p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="feature-card">
+                    <div class="feature-icon">💻</div>
+                    <h3>Project-Based Learning</h3>
+                    <p>Apply your skills by building a portfolio of real-world projects that demonstrate your expertise to employers.</p>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="feature-card">
+                    <div class="feature-icon">⏱️</div>
+                    <h3>Self-Paced, Flexible Learning</h3>
+                    <p>Balance your education with your life. Learn on your own schedule with easy-to-follow modules and deadlines.</p>
+                </div>
+                
+                <!-- Feature 4 -->
+                <div class="feature-card">
+                    <div class="feature-icon">👥</div>
+                    <h3>Peer Support & Community</h3>
+                    <p>Get unstuck and stay motivated with dedicated student forums, community groups, and peer code reviews.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 </body>
 </html>
