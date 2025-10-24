@@ -106,3 +106,27 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(card);
     });
 });
+
+// Format card number input
+document.addEventListener('DOMContentLoaded', function() {
+    const cardNumberInput = document.querySelector('input[placeholder="1234 1234 1234 1234"]');
+    if (cardNumberInput) {
+        cardNumberInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+            e.target.value = formattedValue.substring(0, 19);
+        });
+    }
+
+    // Format expiry date
+    const expiryInput = document.querySelector('input[placeholder="MM/YY"]');
+    if (expiryInput) {
+        expiryInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            e.target.value = value.substring(0, 5);
+        });
+    }
+});
