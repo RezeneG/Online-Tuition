@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Courses - LearnX</title>
     <style>
-        /* Reset and Base Styles */
         * {
             margin: 0;
             padding: 0;
@@ -30,9 +29,6 @@
             background: white;
             padding: 1rem 0;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
         }
 
         .nav-container {
@@ -76,23 +72,18 @@
             text-align: center;
         }
 
-        .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
         .hero h1 {
             font-size: 3.5rem;
             margin-bottom: 1.5rem;
             font-weight: 700;
-            line-height: 1.2;
         }
 
         .hero p {
             font-size: 1.3rem;
-            margin-bottom: 3rem;
-            opacity: 0.9;
-            line-height: 1.6;
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .stats {
@@ -110,7 +101,6 @@
             font-size: 2.5rem;
             font-weight: bold;
             margin-bottom: 0.5rem;
-            display: block;
         }
 
         .stat-label {
@@ -134,8 +124,8 @@
             background: #d97706;
         }
 
-        /* Courses Main Content */
-        .courses-main {
+        /* Courses Section */
+        .courses-section {
             padding: 80px 0;
         }
 
@@ -152,15 +142,13 @@
             gap: 40px;
         }
 
-        /* Filters Sidebar */
+        /* Filters */
         .filters-sidebar {
             background: white;
             padding: 30px;
             border-radius: 12px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             height: fit-content;
-            position: sticky;
-            top: 100px;
         }
 
         .filter-group {
@@ -171,8 +159,6 @@
             font-size: 1.2rem;
             margin-bottom: 1rem;
             color: #1e293b;
-            border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 0.5rem;
         }
 
         .filter-options {
@@ -187,34 +173,6 @@
             gap: 0.5rem;
         }
 
-        .filter-option input[type="checkbox"],
-        .filter-option input[type="radio"] {
-            width: 18px;
-            height: 18px;
-        }
-
-        .filter-option label {
-            cursor: pointer;
-            color: #64748b;
-        }
-
-        .filter-option:hover label {
-            color: #6366f1;
-        }
-
-        .price-range {
-            width: 100%;
-            margin: 1rem 0;
-        }
-
-        .price-labels {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.9rem;
-            color: #64748b;
-            margin-top: 0.5rem;
-        }
-
         .reset-filters {
             background: #6366f1;
             color: white;
@@ -224,63 +182,6 @@
             cursor: pointer;
             width: 100%;
             font-weight: 600;
-            transition: background 0.3s;
-        }
-
-        .reset-filters:hover {
-            background: #4f46e5;
-        }
-
-        /* Search and Sort Bar */
-        .search-sort-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            gap: 20px;
-        }
-
-        .search-box {
-            flex: 1;
-            position: relative;
-            max-width: 400px;
-        }
-
-        .search-box input {
-            width: 100%;
-            padding: 12px 20px 12px 45px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s;
-        }
-
-        .search-box input:focus {
-            outline: none;
-            border-color: #6366f1;
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #64748b;
-        }
-
-        .sort-select {
-            padding: 12px 20px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            background: white;
-            font-size: 1rem;
-            color: #334155;
-            cursor: pointer;
-        }
-
-        .results-count {
-            color: #64748b;
-            font-size: 0.9rem;
         }
 
         /* Courses Grid */
@@ -293,99 +194,14 @@
         .course-card {
             background: white;
             border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid #e2e8f0;
-        }
-
-        .course-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-        }
-
-        .course-image {
-            height: 200px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-
-        .course-content {
             padding: 25px;
-        }
-
-        .course-badge {
-            background: #ffd700;
-            color: #000;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            display: inline-block;
-            margin-bottom: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
         .course-card h3 {
             font-size: 1.3rem;
             margin-bottom: 1rem;
             color: #1e293b;
-            line-height: 1.4;
-        }
-
-        .course-instructor {
-            color: #64748b;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-        }
-
-        .course-meta {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-            color: #64748b;
-        }
-
-        .course-rating {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .stars {
-            color: #f59e0b;
-        }
-
-        .course-duration {
-            margin-bottom: 1rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid #e2e8f0;
-            color: #64748b;
-            font-size: 0.9rem;
-        }
-
-        .course-price {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .price {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #1e293b;
-        }
-
-        .original-price {
-            text-decoration: line-through;
-            color: #64748b;
-            font-size: 1rem;
-            margin-right: 0.5rem;
         }
 
         .enroll-button {
@@ -396,15 +212,10 @@
             border-radius: 6px;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .enroll-button:hover {
-            background: #4f46e5;
         }
 
         /* Testimonials Section */
-        .testimonials-section {
+        .testimonials {
             background: white;
             padding: 80px 0;
         }
@@ -418,7 +229,6 @@
             font-size: 2.5rem;
             color: #1e293b;
             margin-bottom: 1rem;
-            font-weight: 700;
         }
 
         .testimonials-header p {
@@ -431,8 +241,7 @@
         .testimonials-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 40px;
-            margin-bottom: 60px;
+            gap: 30px;
         }
 
         .testimonial-card {
@@ -440,12 +249,6 @@
             border-radius: 12px;
             padding: 40px 30px;
             border: 1px solid #e2e8f0;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .testimonial-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
         }
 
         .testimonial-text {
@@ -454,8 +257,6 @@
             line-height: 1.7;
             font-size: 1.1rem;
             color: #475569;
-            border-left: 4px solid #6366f1;
-            padding-left: 20px;
         }
 
         .testimonial-author {
@@ -468,101 +269,21 @@
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #6366f1;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 1.3rem;
             color: white;
         }
 
         .author-info h4 {
             margin-bottom: 5px;
             font-size: 1.2rem;
-            color: #1e293b;
         }
 
         .author-info p {
             color: #64748b;
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
-
-        .course-tag {
-            display: inline-block;
-            background: #e0e7ff;
-            color: #6366f1;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            margin-top: 5px;
-            font-weight: 500;
-        }
-
-        /* Final CTA Section */
-        .final-cta {
-            padding: 60px 0;
-            text-align: center;
-            background: #f8fafc;
-            border-radius: 12px;
-            margin-top: 40px;
-        }
-
-        .final-cta h2 {
-            font-size: 2.2rem;
-            margin-bottom: 1rem;
-            color: #1e293b;
-        }
-
-        .final-cta p {
-            font-size: 1.2rem;
-            color: #64748b;
-            max-width: 600px;
-            margin: 0 auto 2rem;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-        }
-
-        .btn-primary {
-            background: #6366f1;
-            color: white;
-            padding: 15px 40px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.3s;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-primary:hover {
-            background: #4f46e5;
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: #6366f1;
-            padding: 15px 40px;
-            border: 2px solid #6366f1;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-secondary:hover {
-            background: #6366f1;
-            color: white;
         }
 
         /* Footer */
@@ -582,7 +303,6 @@
         .footer-column h3 {
             color: #f59e0b;
             margin-bottom: 1.5rem;
-            font-size: 1.2rem;
         }
 
         .footer-column ul {
@@ -596,27 +316,6 @@
         .footer-column a {
             color: #cbd5e1;
             text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .footer-column a:hover {
-            color: #f59e0b;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 15px;
-            margin-top: 1rem;
-        }
-
-        .social-links a {
-            color: #cbd5e1;
-            font-size: 1.3rem;
-            transition: color 0.3s;
-        }
-
-        .social-links a:hover {
-            color: #f59e0b;
         }
 
         .footer-bottom {
@@ -626,91 +325,17 @@
             color: #94a3b8;
         }
 
-        /* Pagination */
-        .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 1rem;
-            margin-top: 3rem;
-        }
-
-        .pagination button {
-            background: white;
-            border: 2px solid #e2e8f0;
-            padding: 10px 15px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .pagination button:hover {
-            border-color: #6366f1;
-            color: #6366f1;
-        }
-
-        .pagination button.active {
-            background: #6366f1;
-            color: white;
-            border-color: #6366f1;
-        }
-
-        .pagination-numbers {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 1024px) {
+        @media (max-width: 768px) {
             .courses-layout {
                 grid-template-columns: 1fr;
             }
             
-            .filters-sidebar {
-                position: static;
-            }
-        }
-
-        @media (max-width: 768px) {
             .hero h1 {
                 font-size: 2.5rem;
             }
             
             .stats {
                 gap: 2rem;
-                flex-wrap: wrap;
-            }
-            
-            .section-title, .testimonials-header h2 {
-                font-size: 2rem;
-            }
-            
-            .courses-grid, .testimonials-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .search-sort-bar {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .search-box {
-                max-width: none;
-            }
-            
-            .button-group {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .nav-container {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            .footer-content {
-                grid-template-columns: 1fr;
-                text-align: center;
             }
         }
     </style>
@@ -731,37 +356,35 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="container">
-            <div class="hero-content">
-                <h1>Launch Your Tech Career with LearnX</h1>
-                <p>Master in-demand skills with industry-expert instructors and hands-on projects</p>
-                
-                <div class="stats">
-                    <div class="stat-item">
-                        <span class="stat-number">2,000 +</span>
-                        <div class="stat-label">Students Enrolled</div>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number">98%</span>
-                        <div class="stat-label">Completion Rate</div>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number">4.9★</span>
-                        <div class="stat-label">Student Rating</div>
-                    </div>
+            <h1>Launch Your Tech Career with LearnX</h1>
+            <p>Master in-demand skills with industry-expert instructors and hands-on projects</p>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number">2,000 +</div>
+                    <div class="stat-label">Students Enrolled</div>
                 </div>
-                
-                <button class="cta-button">Explore Courses</button>
+                <div class="stat-item">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Completion Rate</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">4.9★</div>
+                    <div class="stat-label">Student Rating</div>
+                </div>
             </div>
+            
+            <button class="cta-button">Explore Courses</button>
         </div>
     </section>
 
-    <!-- Courses Main Content -->
-    <section class="courses-main">
+    <!-- Courses Section -->
+    <section class="courses-section">
         <div class="container">
-            <h2 class="section-title">Browse Our Course Catalog</h2>
+            <h2 class="section-title">Browse All Courses</h2>
             
             <div class="courses-layout">
-                <!-- Filters Sidebar -->
+                <!-- Filters -->
                 <aside class="filters-sidebar">
                     <div class="filter-group">
                         <h3>Categories</h3>
@@ -778,23 +401,11 @@
                                 <input type="checkbox" id="data-science">
                                 <label for="data-science">Data Science</label>
                             </div>
-                            <div class="filter-option">
-                                <input type="checkbox" id="mobile-dev">
-                                <label for="mobile-dev">Mobile Development</label>
-                            </div>
-                            <div class="filter-option">
-                                <input type="checkbox" id="cybersecurity">
-                                <label for="cybersecurity">Cybersecurity</label>
-                            </div>
-                            <div class="filter-option">
-                                <input type="checkbox" id="digital-literacy">
-                                <label for="digital-literacy">Digital Literacy</label>
-                            </div>
                         </div>
                     </div>
 
                     <div class="filter-group">
-                        <h3>Difficulty Level</h3>
+                        <h3>Level</h3>
                         <div class="filter-options">
                             <div class="filter-option">
                                 <input type="radio" id="beginner" name="level" checked>
@@ -811,204 +422,25 @@
                         </div>
                     </div>
 
-                    <div class="filter-group">
-                        <h3>Duration</h3>
-                        <div class="filter-options">
-                            <div class="filter-option">
-                                <input type="checkbox" id="4-weeks">
-                                <label for="4-weeks">Under 4 weeks</label>
-                            </div>
-                            <div class="filter-option">
-                                <input type="checkbox" id="8-weeks">
-                                <label for="8-weeks">4-8 weeks</label>
-                            </div>
-                            <div class="filter-option">
-                                <input type="checkbox" id="12-weeks">
-                                <label for="12-weeks">8-12 weeks</label>
-                            </div>
-                            <div class="filter-option">
-                                <input type="checkbox" id="12-plus">
-                                <label for="12-plus">12+ weeks</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="filter-group">
-                        <h3>Price Range</h3>
-                        <input type="range" class="price-range" min="0" max="500" value="200">
-                        <div class="price-labels">
-                            <span>$0</span>
-                            <span>$500</span>
-                        </div>
-                    </div>
-
-                    <button class="reset-filters">Reset All Filters</button>
+                    <button class="reset-filters">Reset Filters</button>
                 </aside>
 
-                <!-- Courses Content -->
-                <div class="courses-content">
-                    <div class="search-sort-bar">
-                        <div class="search-box">
-                            <span class="search-icon">🔍</span>
-                            <input type="text" placeholder="Search courses...">
-                        </div>
-                        <div class="results-count">Showing 12 of 45 courses</div>
-                        <select class="sort-select">
-                            <option>Sort by: Most Popular</option>
-                            <option>Sort by: Highest Rated</option>
-                            <option>Sort by: Newest</option>
-                            <option>Sort by: Price Low to High</option>
-                            <option>Sort by: Price High to Low</option>
-                        </select>
+                <!-- Courses Grid -->
+                <div class="courses-grid">
+                    <div class="course-card">
+                        <h3>Web Basics: HTML & CSS</h3>
+                        <p>Learn the fundamentals of web development</p>
+                        <button class="enroll-button">Enroll Now</button>
                     </div>
-
-                    <div class="courses-grid">
-                        <!-- Course 1 -->
-                        <div class="course-card">
-                            <div class="course-image">HTML/CSS</div>
-                            <div class="course-content">
-                                <div class="course-badge">Bestseller</div>
-                                <h3>Web Basics: HTML & CSS</h3>
-                                <div class="course-instructor">By Sarah Johnson</div>
-                                <div class="course-meta">
-                                    <div class="course-rating">
-                                        <span class="stars">★★★★★</span>
-                                        <span>4.7 (890)</span>
-                                    </div>
-                                    <span>1.8k students</span>
-                                </div>
-                                <div class="course-duration">Duration: 8 weeks | Level: Beginner</div>
-                                <div class="course-price">
-                                    <div class="price">
-                                        <span class="original-price">$149</span>
-                                        $99
-                                    </div>
-                                    <button class="enroll-button">Enroll Now</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Course 2 -->
-                        <div class="course-card">
-                            <div class="course-image">Python</div>
-                            <div class="course-content">
-                                <div class="course-badge">Bestseller</div>
-                                <h3>Programming Fundamentals</h3>
-                                <div class="course-instructor">By Mike Chen</div>
-                                <div class="course-meta">
-                                    <div class="course-rating">
-                                        <span class="stars">★★★★★</span>
-                                        <span>4.8 (1.2k)</span>
-                                    </div>
-                                    <span>2.4k students</span>
-                                </div>
-                                <div class="course-duration">Duration: 6 weeks | Level: Beginner</div>
-                                <div class="course-price">
-                                    <div class="price">
-                                        <span class="original-price">$199</span>
-                                        $129
-                                    </div>
-                                    <button class="enroll-button">Enroll Now</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Course 3 -->
-                        <div class="course-card">
-                            <div class="course-image">Data</div>
-                            <div class="course-content">
-                                <h3>Data Science Essentials</h3>
-                                <div class="course-instructor">By Dr. Emily Roberts</div>
-                                <div class="course-meta">
-                                    <div class="course-rating">
-                                        <span class="stars">★★★★☆</span>
-                                        <span>4.5 (650)</span>
-                                    </div>
-                                    <span>1.2k students</span>
-                                </div>
-                                <div class="course-duration">Duration: 10 weeks | Level: Intermediate</div>
-                                <div class="course-price">
-                                    <div class="price">$249</div>
-                                    <button class="enroll-button">Enroll Now</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Course 4 -->
-                        <div class="course-card">
-                            <div class="course-image">React</div>
-                            <div class="course-content">
-                                <h3>React.js Masterclass</h3>
-                                <div class="course-instructor">By Alex Thompson</div>
-                                <div class="course-meta">
-                                    <div class="course-rating">
-                                        <span class="stars">★★★★★</span>
-                                        <span>4.9 (420)</span>
-                                    </div>
-                                    <span>980 students</span>
-                                </div>
-                                <div class="course-duration">Duration: 12 weeks | Level: Intermediate</div>
-                                <div class="course-price">
-                                    <div class="price">$299</div>
-                                    <button class="enroll-button">Enroll Now</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Course 5 -->
-                        <div class="course-card">
-                            <div class="course-image">Tools</div>
-                            <div class="course-content">
-                                <h3>Digital Literacy & Tools</h3>
-                                <div class="course-instructor">By Lisa Wang</div>
-                                <div class="course-meta">
-                                    <div class="course-rating">
-                                        <span class="stars">★★★★☆</span>
-                                        <span>4.6 (550)</span>
-                                    </div>
-                                    <span>1.1k students</span>
-                                </div>
-                                <div class="course-duration">Duration: 4 weeks | Level: Beginner</div>
-                                <div class="course-price">
-                                    <div class="price">$79</div>
-                                    <button class="enroll-button">Enroll Now</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Course 6 -->
-                        <div class="course-card">
-                            <div class="course-image">Mobile</div>
-                            <div class="course-content">
-                                <div class="course-badge">New</div>
-                                <h3>Mobile App Development</h3>
-                                <div class="course-instructor">By James Wilson</div>
-                                <div class="course-meta">
-                                    <div class="course-rating">
-                                        <span class="stars">★★★★☆</span>
-                                        <span>4.4 (320)</span>
-                                    </div>
-                                    <span>750 students</span>
-                                </div>
-                                <div class="course-duration">Duration: 14 weeks | Level: Advanced</div>
-                                <div class="course-price">
-                                    <div class="price">$349</div>
-                                    <button class="enroll-button">Enroll Now</button>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="course-card">
+                        <h3>Programming Fundamentals</h3>
+                        <p>Master core programming concepts</p>
+                        <button class="enroll-button">Enroll Now</button>
                     </div>
-
-                    <!-- Pagination -->
-                    <div class="pagination">
-                        <button>Previous</button>
-                        <div class="pagination-numbers">
-                            <button class="active">1</button>
-                            <button>2</button>
-                            <button>3</button>
-                            <button>4</button>
-                        </div>
-                        <button>Next</button>
+                    <div class="course-card">
+                        <h3>Data Science Essentials</h3>
+                        <p>Introduction to data analysis and visualization</p>
+                        <button class="enroll-button">Enroll Now</button>
                     </div>
                 </div>
             </div>
@@ -1016,7 +448,7 @@
     </section>
 
     <!-- Testimonials Section -->
-    <section class="testimonials-section">
+    <section class="testimonials">
         <div class="container">
             <div class="testimonials-header">
                 <h2>Transformations Powered by LearnX</h2>
@@ -1034,7 +466,7 @@
                         <div class="author-info">
                             <h4>Sarah L.</h4>
                             <p>Frontend Developer at TechCarp</p>
-                            <div class="course-tag">Course: Web Basics: HTML & CSS</div>
+                            <p><em>Course: Web Basics: HTML & CSS</em></p>
                         </div>
                     </div>
                 </div>
@@ -1049,7 +481,7 @@
                         <div class="author-info">
                             <h4>David M.</h4>
                             <p>Software Engineer at DataSolve</p>
-                            <div class="course-tag">Course: Programming Fundamentals</div>
+                            <p><em>Course: Programming Fundamentals</em></p>
                         </div>
                     </div>
                 </div>
@@ -1064,19 +496,9 @@
                         <div class="author-info">
                             <h4>Maria J.</h4>
                             <p>Marketing Specialist</p>
-                            <div class="course-tag">Course: Digital Literacy & Tools</div>
+                            <p><em>Course: Digital Literacy & Tools</em></p>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <!-- Final CTA -->
-            <div class="final-cta">
-                <h2>Ready to Start Your Journey?</h2>
-                <p>Don't Just Dream About a Tech Career, Launch It. Join over 2,000 students who have transformed their skills and careers with LearnX.</p>
-                <div class="button-group">
-                    <a href="courses.html" class="btn-primary">Browse All Courses</a>
-                    <a href="login.html" class="btn-secondary">Sign Up For Free</a>
                 </div>
             </div>
         </div>
@@ -1111,16 +533,6 @@
                         <li><a href="#">Privacy Policy</a></li>
                         <li><a href="#">Cookie Settings</a></li>
                     </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Connect with Us</h3>
-                    <div class="social-links">
-                        <a href="#">📘</a>
-                        <a href="#">🐦</a>
-                        <a href="#">📷</a>
-                        <a href="#">💼</a>
-                    </div>
                 </div>
             </div>
             
