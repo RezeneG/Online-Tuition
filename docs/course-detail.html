@@ -1,0 +1,1021 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programming Fundamentals - LearnX</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8fafc;
+            color: #334155;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        nav {
+            background: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #6366f1;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #64748b;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #6366f1;
+        }
+
+        /* Course Hero Section */
+        .course-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 0;
+        }
+
+        .course-hero-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .course-badge {
+            background: #f59e0b;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .course-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .course-description {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .course-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .meta-item {
+            text-align: center;
+        }
+
+        .meta-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .meta-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 0.3rem;
+        }
+
+        .meta-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        /* Enrollment Card */
+        .enrollment-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 100px;
+        }
+
+        .course-price {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: #64748b;
+            font-size: 1.5rem;
+            margin-right: 0.5rem;
+        }
+
+        .enroll-button {
+            width: 100%;
+            background: #f59e0b;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 1rem;
+            transition: background 0.3s;
+        }
+
+        .enroll-button:hover {
+            background: #d97706;
+        }
+
+        .wishlist-button {
+            width: 100%;
+            background: transparent;
+            color: #6366f1;
+            border: 2px solid #6366f1;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .wishlist-button:hover {
+            background: #6366f1;
+            color: white;
+        }
+
+        .includes-list {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .includes-list h4 {
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+
+        .includes-list ul {
+            list-style: none;
+        }
+
+        .includes-list li {
+            padding: 0.5rem 0;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .includes-list li::before {
+            content: "✓";
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        /* Course Content */
+        .course-content-section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            margin-bottom: 3rem;
+            color: #1e293b;
+            text-align: center;
+        }
+
+        .content-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .tab-button {
+            background: none;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #64748b;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab-button.active {
+            color: #6366f1;
+            border-bottom-color: #6366f1;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Curriculum */
+        .module {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .module-header {
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+            cursor: pointer;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+        }
+
+        .module-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .module-duration {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .lessons-list {
+            padding: 0;
+        }
+
+        .lesson {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .lesson:last-child {
+            border-bottom: none;
+        }
+
+        .lesson-icon {
+            color: #64748b;
+            font-size: 1.2rem;
+        }
+
+        .lesson-title {
+            flex: 1;
+            color: #374151;
+        }
+
+        .lesson-duration {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        /* Instructor Section */
+        .instructor-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            display: flex;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .instructor-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .instructor-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+
+        .instructor-title {
+            color: #6366f1;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .instructor-bio {
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .instructor-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1e293b;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        /* Requirements */
+        .requirements-list {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .requirements-list ul {
+            list-style: none;
+        }
+
+        .requirements-list li {
+            padding: 0.5rem 0;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .requirements-list li::before {
+            content: "•";
+            color: #6366f1;
+            font-weight: bold;
+        }
+
+        /* Testimonials */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .testimonial-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            color: #475569;
+            line-height: 1.6;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #64748b;
+        }
+
+        .author-info h4 {
+            margin-bottom: 0.3rem;
+            color: #1e293b;
+        }
+
+        .author-info p {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .faq-item {
+            background: #f8fafc;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e293b;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-answer {
+            padding: 0 1.5rem 1.5rem;
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            background: #1e293b;
+            color: white;
+            padding: 60px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            color: #f59e0b;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-column a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-column a:hover {
+            color: #f59e0b;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: #cbd5e1;
+            font-size: 1.3rem;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: #f59e0b;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #334155;
+            color: #94a3b8;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .course-hero-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .course-meta-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .course-hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .instructor-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .content-tabs {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">LearnX</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="courses.html">All Courses</a>
+                <a href="#" onclick="showLoginModal()">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Course Hero Section -->
+    <section class="course-hero">
+        <div class="container">
+            <div class="course-hero-content">
+                <div class="course-info">
+                    <div class="course-badge">Bestseller</div>
+                    <h1>Programming Fundamentals</h1>
+                    <p class="course-description">Master the core concepts of programming and build a solid foundation for your coding journey. Perfect for absolute beginners.</p>
+                    
+                    <div class="course-meta-grid">
+                        <div class="meta-item">
+                            <div class="meta-icon">⭐</div>
+                            <div class="meta-label">Rating</div>
+                            <div class="meta-value">4.8/5.0</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-icon">👥</div>
+                            <div class="meta-label">Students</div>
+                            <div class="meta-value">2,400+</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-icon">⏱️</div>
+                            <div class="meta-label">Duration</div>
+                            <div class="meta-value">6 Weeks</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-icon">📚</div>
+                            <div class="meta-label">Lessons</div>
+                            <div class="meta-value">42</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-icon">🏆</div>
+                            <div class="meta-label">Projects</div>
+                            <div class="meta-value">5</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-icon">🎯</div>
+                            <div class="meta-label">Level</div>
+                            <div class="meta-value">Beginner</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="enrollment-card">
+                    <div class="course-price">
+                        <span class="original-price">£199</span>
+                        £129
+                    </div>
+                    <button class="enroll-button" onclick="enrollCourse()">Enroll in this Course</button>
+                    <button class="wishlist-button">❤️ Add to Wishlist</button>
+                    
+                    <div class="includes-list">
+                        <h4>This course includes:</h4>
+                        <ul>
+                            <li>42 hours of video content</li>
+                            <li>5 hands-on projects</li>
+                            <li>Downloadable resources</li>
+                            <li>Certificate of completion</li>
+                            <li>Lifetime access</li>
+                            <li>Mobile and TV access</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Course Content Section -->
+    <section class="course-content-section">
+        <div class="container">
+            <h2 class="section-title">Course Content</h2>
+            
+            <div class="content-tabs">
+                <button class="tab-button active" onclick="switchTab('curriculum')">Curriculum</button>
+                <button class="tab-button" onclick="switchTab('instructor')">Instructor</button>
+                <button class="tab-button" onclick="switchTab('requirements')">Requirements</button>
+                <button class="tab-button" onclick="switchTab('testimonials')">Reviews</button>
+            </div>
+            
+            <!-- Curriculum Tab -->
+            <div id="curriculum" class="tab-content active">
+                <div class="module">
+                    <div class="module-header" onclick="toggleModule(this)">
+                        <div>
+                            <div class="module-title">Module 1: Introduction to Programming</div>
+                            <div class="module-duration">6 lessons • 2 hours</div>
+                        </div>
+                        <span>▼</span>
+                    </div>
+                    <div class="lessons-list">
+                        <div class="lesson">
+                            <span class="lesson-icon">▶️</span>
+                            <span class="lesson-title">Welcome to the Course</span>
+                            <span class="lesson-duration">15 min</span>
+                        </div>
+                        <div class="lesson">
+                            <span class="lesson-icon">▶️</span>
+                            <span class="lesson-title">What is Programming?</span>
+                            <span class="lesson-duration">20 min</span>
+                        </div>
+                        <div class="lesson">
+                            <span class="lesson-icon">▶️</span>
+                            <span class="lesson-title">Setting Up Your Development Environment</span>
+                            <span class="lesson-duration">25 min</span>
+                        </div>
+                        <div class="lesson">
+                            <span class="lesson-icon">📝</span>
+                            <span class="lesson-title">Quiz: Programming Basics</span>
+                            <span class="lesson-duration">10 min</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="module">
+                    <div class="module-header" onclick="toggleModule(this)">
+                        <div>
+                            <div class="module-title">Module 2: Variables and Data Types</div>
+                            <div class="module-duration">8 lessons • 3 hours</div>
+                        </div>
+                        <span>▼</span>
+                    </div>
+                    <div class="lessons-list">
+                        <div class="lesson">
+                            <span class="lesson-icon">▶️</span>
+                            <span class="lesson-title">Understanding Variables</span>
+                            <span class="lesson-duration">25 min</span>
+                        </div>
+                        <div class="lesson">
+                            <span class="lesson-icon">▶️</span>
+                            <span class="lesson-title">Data Types Explained</span>
+                            <span class="lesson-duration">30 min</span>
+                        </div>
+                        <div class="lesson">
+                            <span class="lesson-icon">💻</span>
+                            <span class="lesson-title">Project: Simple Calculator</span>
+                            <span class="lesson-duration">45 min</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="module">
+                    <div class="module-header" onclick="toggleModule(this)">
+                        <div>
+                            <div class="module-title">Module 3: Control Structures</div>
+                            <div class="module-duration">10 lessons • 4 hours</div>
+                        </div>
+                        <span>▼</span>
+                    </div>
+                    <div class="lessons-list">
+                        <div class="lesson">
+                            <span class="lesson-icon">▶️</span>
+                            <span class="lesson-title">If-Else Statements</span>
+                            <span class="lesson-duration">30 min</span>
+                        </div>
+                        <div class="lesson">
+                            <span class="lesson-icon">▶️</span>
+                            <span class="lesson-title">Loops and Iterations</span>
+                            <span class="lesson-duration">35 min</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Instructor Tab -->
+            <div id="instructor" class="tab-content">
+                <div class="instructor-card">
+                    <div class="instructor-avatar">MC</div>
+                    <div class="instructor-info">
+                        <h3>Mike Chen</h3>
+                        <div class="instructor-title">Senior Software Engineer & Instructor</div>
+                        <p class="instructor-bio">
+                            Mike has over 8 years of experience in software development and has taught thousands of students worldwide. 
+                            He specializes in making complex programming concepts accessible to beginners. Previously worked at Google 
+                            and now focuses on creating high-quality educational content.
+                        </p>
+                        <div class="instructor-stats">
+                            <div class="stat">
+                                <div class="stat-number">4.8/5.0</div>
+                                <div class="stat-label">Instructor Rating</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-number">12,540</div>
+                                <div class="stat-label">Students</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-number">8</div>
+                                <div class="stat-label">Courses</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Requirements Tab -->
+            <div id="requirements" class="tab-content">
+                <div class="requirements-list">
+                    <h3>Requirements</h3>
+                    <ul>
+                        <li>No prior programming experience required</li>
+                        <li>Basic computer skills (file management, web browsing)</li>
+                        <li>A computer with internet connection</li>
+                        <li>Willingness to learn and practice regularly</li>
+                        <li>Dedication to complete projects and exercises</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Testimonials Tab -->
+            <div id="testimonials" class="tab-content">
+                <div class="testimonials-grid">
+                    <div class="testimonial-card">
+                        <div class="testimonial-text">
+                            "This course completely changed my perspective on programming. Mike explains complex concepts in such a simple way. I went from zero to building my first app in just 6 weeks!"
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">SL</div>
+                            <div class="author-info">
+                                <h4>Sarah Johnson</h4>
+                                <p>Former Marketing Manager</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial-card">
+                        <div class="testimonial-text">
+                            "The projects were challenging but incredibly rewarding. The step-by-step guidance made it easy to follow along, and the certificate helped me land my first tech job."
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">DJ</div>
+                            <div class="author-info">
+                                <h4>David Martinez</h4>
+                                <p>Junior Developer</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial-card">
+                        <div class="testimonial-text">
+                            "As a complete beginner, I was intimidated by coding. This course broke everything down perfectly. The community support and instructor feedback were invaluable."
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">EP</div>
+                            <div class="author-info">
+                                <h4>Emily Parker</h4>
+                                <p>Graphic Designer</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    Is this course suitable for absolute beginners?
+                    <span>▼</span>
+                </div>
+                <div class="faq-answer">
+                    Yes! This course is specifically designed for absolute beginners with no prior programming experience. We start from the very basics and gradually build up to more complex concepts.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    How long will I have access to the course?
+                    <span>▼</span>
+                </div>
+                <div class="faq-answer">
+                    You'll have lifetime access to the course materials, including any future updates. Learn at your own pace and revisit the content whenever you need.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    What programming language will I learn?
+                    <span>▼</span>
+                </div>
+                <div class="faq-answer">
+                    This course focuses on fundamental programming concepts using Python, which is widely considered the best language for beginners due to its simple syntax and readability.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    Will I receive a certificate?
+                    <span>▼</span>
+                </div>
+                <div class="faq-answer">
+                    Yes, you'll receive a certificate of completion after finishing all course modules and projects. This certificate can be shared on LinkedIn and added to your resume.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>LearnX</h3>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Teach on LearnX</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Career Paths</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Policies</h3>
+                    <ul>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Cookie Settings</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Connect with Us</h3>
+                    <div class="social-links">
+                        <a href="#">📘</a>
+                        <a href="#">🐦</a>
+                        <a href="#">📷</a>
+                        <a href="#">💼</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 LearnX. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Tab switching functionality
+        function switchTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked button
+            event.currentTarget.classList.add('active');
+        }
+
+        // Module expansion functionality
+        function toggleModule(header) {
+            const lessonsList = header.nextElementSibling;
+            const icon = header.querySelector('span:last-child');
+            
+            if (lessonsList.style.display === 'block') {
+                lessonsList.style.display = 'none';
+                icon.textContent = '▼';
+            } else {
+                lessonsList.style.display = 'block';
+                icon.textContent = '▲';
+            }
+        }
+
+        // FAQ expansion functionality
+        function toggleFAQ(question) {
+            const answer = question.nextElementSibling;
+            const icon = question.querySelector('span');
+            
+            if (answer.style.display === 'block') {
+                answer.style.display = 'none';
+                icon.textContent = '▼';
+            } else {
+                answer.style.display = 'block';
+                icon.textContent = '▲';
+            }
+        }
+
+        // Enrollment function
+        function enrollCourse() {
+            // Store course info for checkout
+            localStorage.setItem('selectedCourse', 'Programming Fundamentals');
+            localStorage.setItem('coursePrice', '129');
+            localStorage.setItem('courseCode', 'Python');
+            
+            // Redirect to checkout
+            window.location.href = 'checkout.html';
+        }
+
+        // Login modal function
+        function showLoginModal() {
+            alert('Login functionality coming soon! For now, you can enroll in courses using the checkout demo.');
+        }
+
+        // Initialize modules and FAQs to be closed
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.lessons-list').forEach(list => {
+                list.style.display = 'none';
+            });
+            
+            document.querySelectorAll('.faq-answer').forEach(answer => {
+                answer.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
