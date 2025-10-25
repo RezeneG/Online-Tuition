@@ -1,6 +1,5 @@
-@'
-{{
-  "name": "online-tailicon-backend",
+{
+  "name": "online-tuitionn-backend",
   "version": "1.0.0",
   "type": "module",
   "description": "Backend for LearnX platform",
@@ -22,26 +21,3 @@
     "nodemon": "^3.0.1"
   }
 }
-  "name": "online-tailicon-backend",
-  "version": "1.0.0",
-  "type": "module",
-  "description": "Backend for Online Tuition platform",
-  "main": "server.js",
-  "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "dependencies": {
-    "express": "^4.18.2",
-    "mongoose": "^7.5.0",
-    "cors": "^2.8.5",
-    "bcryptjs": "^2.4.3",
-    "jsonwebtoken": "^9.0.2",
-    "stripe": "^13.3.0"
-  },
-  "keywords": ["education", "tuition", "online-learning"],
-  "author": "Your Name",
-  "license": "MIT"
-}
-'@ | Out-File -FilePath package.json -Encoding utf8
