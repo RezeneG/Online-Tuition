@@ -3,16 +3,11 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import connectDB from './config/database.js';
-import { initializeCounters } from './models/Counter.js';
 
 // Load environment variables
 dotenv.config();
 
-// Import routes
-import authRoutes from './routes/authRoutes.js';
-import courseRoutes from './routes/courseRoutes.js';
-import paymentRoutes from './routes/paymentRoutes.js'; // If you have payment routes
+console.log('🔧 Starting Online-Tailicon Backend Server...');
 
 const app = express();
 
@@ -25,23 +20,30 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Connect to Database
-connectDB();
-
-// Initialize counters after DB connection is established
-mongoose.connection.once('open', async () => {
-  console.log('📊 Initializing counters...');
+const connectDB = async () => {
   try {
-    await initializeCounters();
-    console.log('✅ Counters initialized successfully');
+    console.log('📡 Connecting to MongoDB...');
+    const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/learnx', {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
+    return conn;
   } catch (error) {
-    console.error('❌ Error initializing counters:', error);
+    console.error('❌ Database connection error:', error.message);
+    process.exit(1);
   }
-});
+};
 
-// Routes
+// Import routes
+import authRoutes from './routes/authRoutes.js';
+import courseRoutes from './routes/courseRoutes.js';
+import paymentRoutes from './routes/paymentRoutes.js';
+
+// Use routes
 app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
-app.use('/api/payments', paymentRoutes); // If you have payment routes
+app.use('/api/payments', paymentRoutes);
 
 // Health check route
 app.get('/api/health', (req, res) => {
@@ -64,7 +66,8 @@ app.get('/api', (req, res) => {
       courses: '/api/courses',
       payments: '/api/payments',
       health: '/api/health'
-    }
+    },
+    timestamp: new Date().toISOString()
   });
 });
 
@@ -72,7 +75,8 @@ app.get('/api', (req, res) => {
 app.get('/', (req, res) => {
   res.json({ 
     message: 'Welcome to Online-Tailicon API',
-    documentation: 'Visit /api for available endpoints'
+    documentation: 'Visit /api for available endpoints',
+    status: 'Server is running 🚀'
   });
 });
 
@@ -80,13 +84,22 @@ app.get('/', (req, res) => {
 app.use('*', (req, res) => {
   res.status(404).json({
     success: false,
-    message: `Route ${req.originalUrl} not found`
+    message: `Route ${req.originalUrl} not found`,
+    availableEndpoints: [
+      'GET /',
+      'GET /api',
+      'GET /api/health',
+      'GET /api/courses',
+      'POST /api/auth/register',
+      'POST /api/auth/login'
+    ]
   });
 });
 
 // Global error handler
 app.use((err, req, res, next) => {
-  console.error('🚨 Error:', err.stack);
+  console.error('🚨 Error:', err.message);
+  console.error(err.stack);
   
   // Mongoose validation error
   if (err.name === 'ValidationError') {
@@ -132,32 +145,86 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 
-const server = app.listen(PORT, () => {
-  console.log(`
-🚀 Server running in ${process.env.NODE_ENV || 'development'} mode
-🌐 Port: ${PORT}
-📅 Started: ${new Date().toLocaleString()}
-🔗 Health check: http://localhost:${PORT}/api/health
-🔗 API info: http://localhost:${PORT}/api
-  `);
-});
+// Initialize counters after DB connection
+const initializeCounters = async () => {
+  try {
+    const Counter = mongoose.model('Counter');
+    const counters = ['courseId', 'userId', 'enrollmentId'];
+    
+    for (const counter of counters) {
+      const exists = await Counter.findById(counter);
+      if (!exists) {
+        await Counter.create({ _id: counter, sequence_value: 0 });
+        console.log(`✅ Counter initialized: ${counter}`);
+      }
+    }
+    console.log('📊 All counters initialized successfully');
+  } catch (error) {
+    console.error('❌ Error initializing counters:', error.message);
+  }
+};
+
+// Start server
+const startServer = async () => {
+  try {
+    // Connect to database first
+    await connectDB();
+    
+    // Initialize counters
+    mongoose.connection.once('open', async () => {
+      await initializeCounters();
+    });
+
+    const server = app.listen(PORT, () => {
+      console.log('\n' + '='.repeat(60));
+      console.log('🚀 ONLINE-TAILICON BACKEND SERVER STARTED SUCCESSFULLY!');
+      console.log('='.repeat(60));
+      console.log(`📍 Port: ${PORT}`);
+      console.log(`🌐 Environment: ${process.env.NODE_ENV || 'development'}`);
+      console.log(`🗄️  Database: ${mongoose.connection.readyState === 1 ? 'Connected ✅' : 'Disconnected ❌'}`);
+      console.log(`🕐 Started: ${new Date().toLocaleString()}`);
+      console.log('');
+      console.log('🔗 Available Endpoints:');
+      console.log(`   http://localhost:${PORT}/`);
+      console.log(`   http://localhost:${PORT}/api`);
+      console.log(`   http://localhost:${PORT}/api/health`);
+      console.log(`   http://localhost:${PORT}/api/courses`);
+      console.log(`   http://localhost:${PORT}/api/auth/register`);
+      console.log(`   http://localhost:${PORT}/api/auth/login`);
+      console.log('='.repeat(60));
+      console.log('💡 Tip: Run POST /api/courses/seed to add sample courses');
+      console.log('='.repeat(60) + '\n');
+    });
+
+    return server;
+  } catch (error) {
+    console.error('💥 Failed to start server:', error);
+    process.exit(1);
+  }
+};
+
+const server = startServer();
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
   console.log('👋 SIGTERM received. Shutting down gracefully...');
-  server.close(() => {
-    console.log('💤 Process terminated.');
-    mongoose.connection.close();
-    process.exit(0);
+  server.then(s => {
+    s.close(() => {
+      console.log('💤 Process terminated.');
+      mongoose.connection.close();
+      process.exit(0);
+    });
   });
 });
 
 process.on('SIGINT', () => {
   console.log('👋 SIGINT received. Shutting down gracefully...');
-  server.close(() => {
-    console.log('💤 Process terminated.');
-    mongoose.connection.close();
-    process.exit(0);
+  server.then(s => {
+    s.close(() => {
+      console.log('💤 Process terminated.');
+      mongoose.connection.close();
+      process.exit(0);
+    });
   });
 });
 
