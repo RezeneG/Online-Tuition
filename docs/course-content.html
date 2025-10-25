@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Basics: HTML & CSS - LearnX</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8fafc;
+            color: #334155;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        nav {
+            background: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #6366f1;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #64748b;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #6366f1;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Course Content Layout */
+        .course-content-layout {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 0;
+            flex: 1;
+        }
+
+        /* Sidebar */
+        .course-sidebar {
+            background: white;
+            border-right: 1px solid #e2e8f0;
+            height: calc(100vh - 80px);
+            position: sticky;
+            top: 80px;
+            overflow-y: auto;
+        }
+
+        .course-info {
+            padding: 25px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .course-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 5px;
+        }
+
+        .course-progress {
+            margin-top: 15px;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            margin-bottom: 8px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 3px;
+            width: 65%;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        .modules-list {
+            padding: 0;
+        }
+
+        .module {
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .module-header {
+            padding: 18px 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s;
+        }
+
+        .module-header:hover {
+            background: #f8fafc;
+        }
+
+        .module-header.active {
+            background: #6366f1;
+            color: white;
+        }
+
+        .module-title {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .module-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+
+        .module-header.active .module-icon {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .lessons-list {
+            background: #f8fafc;
+            display: none;
+        }
+
+        .module-header.active + .lessons-list {
+            display: block;
+        }
+
+        .lesson {
+            padding: 15px 25px 15px 55px;
+            border-bottom: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .lesson:hover {
+            background: #f1f5f9;
+        }
+
+        .lesson.active {
+            background: #6366f1;
+            color: white;
+        }
+
+        .lesson.completed .lesson-title {
+            text-decoration: line-through;
+            color: #10b981;
+        }
+
+        .lesson.active .lesson-title {
+            color: white;
+        }
+
+        .lesson-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+        }
+
+        .lesson.completed .lesson-icon {
+            background: #10b981;
+            border-color: #10b981;
+            color: white;
+        }
+
+        .lesson.active .lesson-icon {
+            background: white;
+            border-color: white;
+            color: #6366f1;
+        }
+
+        .lesson-title {
+            flex: 1;
+            font-size: 0.9rem;
+        }
+
+        .lesson-duration {
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+
+        .lesson.active .lesson-duration {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Main Content */
+        .course-main {
+            background: white;
+            height: calc(100vh - 80px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content-header {
+            padding: 20px 30px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .lesson-info h1 {
+            font-size: 1.5rem;
+            color: #1e293b;
+            margin-bottom: 5px;
+        }
+
+        .lesson-meta {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-button {
+            padding: 10px 20px;
+            border: 2px solid #e2e8f0;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .nav-button:hover {
+            border-color: #6366f1;
+            color: #6366f1;
+        }
+
+        .nav-button.primary {
+            background: #6366f1;
+            color: white;
+            border-color: #6366f1;
+        }
+
+        .nav-button.primary:hover {
+            background: #4f46e5;
+        }
+
+        .content-area {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        /* Video Player */
+        .video-container {
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .video-placeholder {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .video-controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .play-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #6366f1;
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .progress-container {
+            flex: 1;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .progress-played {
+            height: 100%;
+            background: #6366f1;
+            border-radius: 2px;
+            width: 35%;
+        }
+
+        .time-display {
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        /* Lesson Content */
+        .lesson-content {
+            max-width: 800px;
+        }
+
+        .content-section {
+            margin-bottom: 30px;
+        }
+
+        .content-section h2 {
+            font-size: 1.3rem;
+            color: #1e293b;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .content-section p {
+            margin-bottom: 15px;
+            line-height: 1.7;
+        }
+
+        .code-editor {
+            background: #1e293b;
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .editor-header {
+            background: #0f172a;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .editor-title {
+            color: #cbd5e1;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .editor-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .editor-button {
+            background: #334155;
+            border: none;
+            color: #cbd5e1;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .editor-content {
+            padding: 20px;
+            color: #cbd5e1;
+            font-family: 'Courier New', monospace;
+            line-height: 1.5;
+        }
+
+        /* Resources */
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .resource-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .resource-card:hover {
+            border-color: #6366f1;
+            transform: translateY(-2px);
+        }
+
+        .resource-icon {
+            width: 40px;
+            height: 40px;
+            background: #6366f1;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .resource-info h4 {
+            margin-bottom: 5px;
+            color: #1e293b;
+        }
+
+        .resource-info p {
+            color: #64748b;
+            font-size: 0.8rem;
+        }
+
+        /* Completion Section */
+        .completion-section {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .completion-section h3 {
+            color: #166534;
+            margin-bottom: 10px;
+        }
+
+        .completion-section p {
+            color: #15803d;
+            margin-bottom: 20px;
+        }
+
+        .complete-button {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .complete-button:hover {
+            background: #059669;
+        }
+
+        /* Discussion Section */
+        .discussion-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .discussion-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .discussion-header h2 {
+            margin-bottom: 0;
+            border: none;
+            padding: 0;
+        }
+
+        .ask-button {
+            background: #6366f1;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .discussion-threads {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .thread {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .thread-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .thread-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #6366f1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .thread-author {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .thread-time {
+            color: #64748b;
+            font-size: 0.8rem;
+        }
+
+        .thread-content {
+            margin-bottom: 15px;
+        }
+
+        .thread-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .thread-action {
+            background: none;
+            border: none;
+            color: #64748b;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.8rem;
+        }
+
+        /* Footer */
+        footer {
+            background: #1e293b;
+            color: white;
+            padding: 40px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            color: #f59e0b;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-column a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-column a:hover {
+            color: #f59e0b;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #334155;
+            color: #94a3b8;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .course-content-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .course-sidebar {
+                display: none;
+            }
+            
+            .mobile-menu-button {
+                display: block;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .content-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .navigation-buttons {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .nav-button {
+                flex: 1;
+                text-align: center;
+            }
+            
+            .video-placeholder {
+                height: 250px;
+            }
+            
+            .resources-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        /* Mobile Menu Button */
+        .mobile-menu-button {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #64748b;
+        }
+
+        @media (max-width: 1024px) {
+            .mobile-menu-button {
+                display: block;
+            }
+            
+            .course-sidebar.mobile-open {
+                display: block;
+                position: fixed;
+                top: 80px;
+                left: 0;
+                width: 320px;
+                height: calc(100vh - 80px);
+                z-index: 1000;
+                box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">LearnX</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="courses.html">All Courses</a>
+                <a href="dashboard.html">Dashboard</a>
+                <div class="user-menu">
+                    <div class="user-avatar">JS</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Course Content Layout -->
+    <div class="course-content-layout">
+        <!-- Sidebar -->
+        <aside class="course-sidebar" id="courseSidebar">
+            <div class="course-info">
+                <div class="course-title">Web Basics: HTML & CSS</div>
+                <div class="course-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="progress-text">
+                        <span>Course Progress</span>
+                        <span>65%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modules-list">
+                <!-- Module 1 -->
+                <div class="module">
+                    <div class="module-header active">
+                        <div class="module-title">
+                            <span class="module-icon">1</span>
+                            HTML Fundamentals
+                        </div>
+                        <span>▼</span>
+                    </div>
+                    <div class="lessons-list">
+                        <div class="lesson completed">
+                            <span class="lesson-icon">✓</span>
+                            <span class="lesson-title">Introduction to HTML</span>
+                            <span class="lesson-duration">15 min</span>
+                        </div>
+                        <div class="lesson completed">
+                            <span class="lesson-icon">✓</span>
+                            <span class="lesson-title">HTML Document Structure</span>
+                            <span class="lesson-duration">20 min</span>
+                        </div>
+                        <div class="lesson active">
+                            <span class="lesson-icon">3</span>
+                            <span class="lesson-title">Working with Text & Links</span>
+                            <span class="lesson-duration">25 min</span>
+                        </div>
+                        <div class="lesson">
+                            <span class="lesson-icon">4</span>
+                            <span class="lesson-title">Images & Media</span>
+                            <span class="lesson-duration">18 min</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Module 2 -->
+                <div class="module">
+                    <div class="module-header">
+                        <div class="module-title">
+                            <span class="module-icon">2</span>
+                            CSS Styling
+                        </div>
+                        <span>▼</span>
+                    </div>
+                    <div class="lessons-list">
+                        <div class="lesson">
+                            <span class="lesson-icon">5</span>
+                            <span class="lesson-title">CSS Basics & Selectors</span>
+                            <span class="lesson-duration">22 min</span>
+                        </div>
+                        <div class="lesson">
+                            <span class="lesson-icon">6</span>
+                            <span class="lesson-title">Box Model & Layout</span>
+                            <span class="lesson-duration">30 min</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Module 3 -->
+                <div class="module">
+                    <div class="module-header">
+                        <div class="module-title">
+                            <span class="module-icon">3</span>
+                            Responsive Design
+                        </div>
+                        <span>▼</span>
+                    </div>
+                    <div class="lessons-list">
+                        <div class="lesson">
+                            <span class="lesson-icon">7</span>
+                            <span class="lesson-title">Flexbox</span>
+                            <span class="lesson-duration">28 min</span>
+                        </div>
+                        <div class="lesson">
+                            <span class="lesson-icon">8</span>
+                            <span class="lesson-title">CSS Grid</span>
+                            <span class="lesson-duration">35 min</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="course-main">
+            <div class="content-header">
+                <div class="lesson-info">
+                    <h1>Working with Text & Links</h1>
+                    <div class="lesson-meta">Lesson 3 • 25 minutes</div>
+                </div>
+                <div class="navigation-buttons">
+                    <button class="nav-button" onclick="previousLesson()">← Previous</button>
+                    <button class="nav-button primary" onclick="nextLesson()">Next Lesson →</button>
+                </div>
+            </div>
+
+            <div class="content-area">
+                <!-- Video Player -->
+                <div class="video-container">
+                    <div class="video-placeholder">
+                        🎥 Video: Working with Text & Links
+                    </div>
+                    <div class="video-controls">
+                        <button class="play-button">▶</button>
+                        <div class="progress-container">
+                            <div class="progress-played"></div>
+                        </div>
+                        <div class="time-display">12:34 / 25:00</div>
+                    </div>
+                </div>
+
+                <!-- Lesson Content -->
+                <div class="lesson-content">
+                    <div class="content-section">
+                        <h2>Understanding Text Elements</h2>
+                        <p>HTML provides several elements for working with text content. Let's explore the most commonly used ones:</p>
+                        
+                        <div class="code-editor">
+                            <div class="editor-header">
+                                <div class="editor-title">index.html</div>
+                                <div class="editor-actions">
+                                    <button class="editor-button">Copy</button>
+                                    <button class="editor-button">Run</button>
+                                </div>
+                            </div>
+                            <div class="editor-content">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Text Elements Example&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Main Heading&lt;/h1&gt;
+    &lt;h2&gt;Subheading&lt;/h2&gt;
+    &lt;p&gt;This is a paragraph of text.&lt;/p&gt;
+    &lt;strong&gt;This text is bold&lt;/strong&gt;
+    &lt;em&gt;This text is italic&lt;/em&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-section">
+                        <h2>Working with Links</h2>
+                        <p>Links are created using the &lt;a&gt; (anchor) element. They can link to other pages, files, or specific sections within a page.</p>
+                        
+                        <div class="code-editor">
+                            <div class="editor-header">
+                                <div class="editor-title">links.html</div>
+                                <div class="editor-actions">
+                                    <button class="editor-button">Copy</button>
+                                    <button class="editor-button">Run</button>
+                                </div>
+                            </div>
+                            <div class="editor-content">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Links Example&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- External link --&gt;
+    &lt;a href="https://www.example.com"&gt;Visit Example.com&lt;/a&gt;
+    
+    &lt;!-- Internal link --&gt;
+    &lt;a href="about.html"&gt;About Us&lt;/a&gt;
+    
+    &lt;!-- Link with target --&gt;
+    &lt;a href="https://www.example.com" target="_blank"&gt;
+        Open in new tab
+    &lt;/a&gt;
+    
+    &lt;!-- Email link --&gt;
+    &lt;a href="mailto:contact@example.com"&gt;Email Us&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resources -->
+                    <div class="content-section">
+                        <h2>Lesson Resources</h2>
+                        <div class="resources-grid">
+                            <div class="resource-card">
+                                <div class="resource-icon">📄</div>
+                                <div class="resource-info">
+                                    <h4>Lesson Slides</h4>
+                                    <p>PDF Presentation</p>
+                                </div>
+                            </div>
+                            <div class="resource-card">
+                                <div class="resource-icon">💻</div>
+                                <div class="resource-info">
+                                    <h4>Code Examples</h4>
+                                    <p>Downloadable Files</p>
+                                </div>
+                            </div>
+                            <div class="resource-card">
+                                <div class="resource-icon">📚</div>
+                                <div class="resource-info">
+                                    <h4>Reference Guide</h4>
+                                    <p>HTML Text Elements</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Completion Section -->
+                    <div class="completion-section">
+                        <h3>Ready to move forward?</h3>
+                        <p>Mark this lesson as complete to track your progress and unlock the next lesson.</p>
+                        <button class="complete-button" onclick="completeLesson()">Mark as Complete</button>
+                    </div>
+
+                    <!-- Discussion Section -->
+                    <div class="discussion-section">
+                        <div class="discussion-header">
+                            <h2>Lesson Discussion</h2>
+                            <button class="ask-button">Ask a Question</button>
+                        </div>
+                        
+                        <div class="discussion-threads">
+                            <div class="thread">
+                                <div class="thread-header">
+                                    <div class="thread-avatar">MJ</div>
+                                    <div class="thread-author">Maria Johnson</div>
+                                    <div class="thread-time">2 hours ago</div>
+                                </div>
+                                <div class="thread-content">
+                                    <p>What's the difference between &lt;strong&gt; and &lt;b&gt; tags? They both make text bold.</p>
+                                </div>
+                                <div class="thread-actions">
+                                    <button class="thread-action">👍 3</button>
+                                    <button class="thread-action">💬 Reply</button>
+                                </div>
+                            </div>
+                            
+                            <div class="thread">
+                                <div class="thread-header">
+                                    <div class="thread-avatar">AS</div>
+                                    <div class="thread-author">Alex Smith</div>
+                                    <div class="thread-time">1 day ago</div>
+                                </div>
+                                <div class="thread-content">
+                                    <p>Great lesson! The code examples were very helpful for understanding how links work.</p>
+                                </div>
+                                <div class="thread-actions">
+                                    <button class="thread-action">👍 8</button>
+                                    <button class="thread-action">💬 Reply</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>LearnX</h3>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Teach on LearnX</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Career Paths</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Policies</h3>
+                    <ul>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Refund Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 LearnX. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Module expansion
+        document.querySelectorAll('.module-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const isActive = this.classList.contains('active');
+                
+                // Close all modules
+                document.querySelectorAll('.module-header').forEach(h => {
+                    h.classList.remove('active');
+                });
+                
+                // Open clicked module if it wasn't active
+                if (!isActive) {
+                    this.classList.add('active');
+                }
+            });
+        });
+
+        // Lesson selection
+        document.querySelectorAll('.lesson').forEach(lesson => {
+            lesson.addEventListener('click', function() {
+                if (!this.classList.contains('active')) {
+                    document.querySelectorAll('.lesson').forEach(l => {
+                        l.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                    // Update lesson content (in real app, this would load new content)
+                    updateLessonContent(this.querySelector('.lesson-title').textContent);
+                }
+            });
+        });
+
+        function updateLessonContent(lessonTitle) {
+            document.querySelector('.lesson-info h1').textContent = lessonTitle;
+            // In a real app, you would fetch and display the actual lesson content
+        }
+
+        // Navigation functions
+        function previousLesson() {
+            const currentLesson = document.querySelector('.lesson.active');
+            const previousLesson = currentLesson.previousElementSibling;
+            
+            if (previousLesson && previousLesson.classList.contains('lesson')) {
+                currentLesson.classList.remove('active');
+                previousLesson.classList.add('active');
+                updateLessonContent(previousLesson.querySelector('.lesson-title').textContent);
+            }
+        }
+
+        function nextLesson() {
+            const currentLesson = document.querySelector('.lesson.active');
+            const nextLesson = currentLesson.nextElementSibling;
+            
+            if (nextLesson && nextLesson.classList.contains('lesson')) {
+                currentLesson.classList.remove('active');
+                nextLesson.classList.add('active');
+                updateLessonContent(nextLesson.querySelector('.lesson-title').textContent);
+            } else {
+                // Move to next module
+                const currentModule = currentLesson.closest('.module');
+                const nextModule = currentModule.nextElementSibling;
+                
+                if (nextModule) {
+                    currentModule.querySelector('.module-header').classList.remove('active');
+                    nextModule.querySelector('.module-header').classList.add('active');
+                    
+                    const firstLesson = nextModule.querySelector('.lesson');
+                    if (firstLesson) {
+                        currentLesson.classList.remove('active');
+                        firstLesson.classList.add('active');
+                        updateLessonContent(firstLesson.querySelector('.lesson-title').textContent);
+                    }
+                }
+            }
+        }
+
+        // Lesson completion
+        function completeLesson() {
+            const currentLesson = document.querySelector('.lesson.active');
+            currentLesson.classList.add('completed');
+            
+            // Update progress
+            const completedLessons = document.querySelectorAll('.lesson.completed').length;
+            const totalLessons = document.querySelectorAll('.lesson').length;
+            const progress = (completedLessons / totalLessons) * 100;
+            
+            document.querySelector('.progress-fill').style.width = `${progress}%`;
+            document.querySelector('.progress-text span:last-child').textContent = `${Math.round(progress)}%`;
+            
+            // Show completion message
+            alert('Lesson marked as complete! Progress updated.');
+            
+            // Auto-advance to next lesson after 2 seconds
+            setTimeout(() => {
+                nextLesson();
+            }, 2000);
+        }
+
+        // Mobile sidebar toggle
+        function toggleSidebar() {
+            const sidebar = document.getElementById('courseSidebar');
+            sidebar.classList.toggle('mobile-open');
+        }
+
+        // Video play functionality
+        document.querySelector('.play-button').addEventListener('click', function() {
+            const videoPlaceholder = document.querySelector('.video-placeholder');
+            videoPlaceholder.innerHTML = '🎬 Video Playing... (Simulation)';
+            this.textContent = '⏸️';
+        });
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set first module as active by default
+            document.querySelector('.module-header').classList.add('active');
+        });
+    </script>
+</body>
+</html>
