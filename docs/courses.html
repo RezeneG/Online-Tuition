@@ -219,6 +219,10 @@
             transition: background 0.3s;
         }
 
+        .reset-filters:hover {
+            background: #4f46e5;
+        }
+
         /* Search and Sort Bar */
         .search-sort-bar {
             display: flex;
@@ -396,15 +400,23 @@
             background: #4f46e5;
         }
 
-        .course-card-link {
-            text-decoration: none;
-            color: inherit;
-            display: block;
+        .course-price {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
         }
 
-        .course-card-link:hover .course-card {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 15px -5px rgba(0, 0, 0, 0.1);
+        .current-price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #1e293b;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: #64748b;
+            font-size: 0.9rem;
         }
 
         /* Testimonials Section */
@@ -837,9 +849,7 @@
                     <div class="courses-grid">
                         <!-- Course 1 -->
                         <div class="course-card">
-                            <a href="course-detail.html?course=web-basics-html-css" class="course-card-link">
-                                <div class="course-image">HTML/CSS</div>
-                            </a>
+                            <div class="course-image">HTML/CSS</div>
                             <div class="course-content">
                                 <div class="course-badge">Bestseller</div>
                                 <h3>Web Basics: HTML & CSS</h3>
@@ -852,6 +862,10 @@
                                     <span>1.8k students</span>
                                 </div>
                                 <div class="course-duration">Duration: 8 weeks | Level: Beginner</div>
+                                <div class="course-price">
+                                    <span class="original-price">£149</span>
+                                    <span class="current-price">£99</span>
+                                </div>
                                 <div class="course-actions">
                                     <a href="course-detail.html?course=web-basics-html-css" class="details-btn">View Details</a>
                                     <button class="enroll-button" onclick="enrollCourse('Web Basics: HTML & CSS', 99, 'HTML/CSS')">Enroll Now</button>
@@ -861,9 +875,7 @@
 
                         <!-- Course 2 -->
                         <div class="course-card">
-                            <a href="course-detail.html?course=programming-fundamentals" class="course-card-link">
-                                <div class="course-image">Python</div>
-                            </a>
+                            <div class="course-image">Python</div>
                             <div class="course-content">
                                 <div class="course-badge">Bestseller</div>
                                 <h3>Programming Fundamentals</h3>
@@ -876,6 +888,10 @@
                                     <span>2.4k students</span>
                                 </div>
                                 <div class="course-duration">Duration: 6 weeks | Level: Beginner</div>
+                                <div class="course-price">
+                                    <span class="original-price">£199</span>
+                                    <span class="current-price">£129</span>
+                                </div>
                                 <div class="course-actions">
                                     <a href="course-detail.html?course=programming-fundamentals" class="details-btn">View Details</a>
                                     <button class="enroll-button" onclick="enrollCourse('Programming Fundamentals', 129, 'Python')">Enroll Now</button>
@@ -885,9 +901,7 @@
 
                         <!-- Course 3 -->
                         <div class="course-card">
-                            <a href="course-detail.html?course=data-science-essentials" class="course-card-link">
-                                <div class="course-image">Data</div>
-                            </a>
+                            <div class="course-image">Data</div>
                             <div class="course-content">
                                 <h3>Data Science Essentials</h3>
                                 <div class="course-instructor">By Dr. Emily Roberts</div>
@@ -899,6 +913,9 @@
                                     <span>1.2k students</span>
                                 </div>
                                 <div class="course-duration">Duration: 10 weeks | Level: Intermediate</div>
+                                <div class="course-price">
+                                    <span class="current-price">£249</span>
+                                </div>
                                 <div class="course-actions">
                                     <a href="course-detail.html?course=data-science-essentials" class="details-btn">View Details</a>
                                     <button class="enroll-button" onclick="enrollCourse('Data Science Essentials', 249, 'Data')">Enroll Now</button>
@@ -908,9 +925,7 @@
 
                         <!-- Course 4 -->
                         <div class="course-card">
-                            <a href="course-detail.html?course=react-masterclass" class="course-card-link">
-                                <div class="course-image">React</div>
-                            </a>
+                            <div class="course-image">React</div>
                             <div class="course-content">
                                 <h3>React.js Masterclass</h3>
                                 <div class="course-instructor">By Alex Thompson</div>
@@ -922,6 +937,9 @@
                                     <span>980 students</span>
                                 </div>
                                 <div class="course-duration">Duration: 12 weeks | Level: Intermediate</div>
+                                <div class="course-price">
+                                    <span class="current-price">£299</span>
+                                </div>
                                 <div class="course-actions">
                                     <a href="course-detail.html?course=react-masterclass" class="details-btn">View Details</a>
                                     <button class="enroll-button" onclick="enrollCourse('React.js Masterclass', 299, 'React')">Enroll Now</button>
@@ -931,9 +949,7 @@
 
                         <!-- Course 5 -->
                         <div class="course-card">
-                            <a href="course-detail.html?course=digital-literacy" class="course-card-link">
-                                <div class="course-image">Tools</div>
-                            </a>
+                            <div class="course-image">Tools</div>
                             <div class="course-content">
                                 <h3>Digital Literacy & Tools</h3>
                                 <div class="course-instructor">By Lisa Wang</div>
@@ -945,6 +961,9 @@
                                     <span>1.1k students</span>
                                 </div>
                                 <div class="course-duration">Duration: 4 weeks | Level: Beginner</div>
+                                <div class="course-price">
+                                    <span class="current-price">£79</span>
+                                </div>
                                 <div class="course-actions">
                                     <a href="course-detail.html?course=digital-literacy" class="details-btn">View Details</a>
                                     <button class="enroll-button" onclick="enrollCourse('Digital Literacy & Tools', 79, 'Tools')">Enroll Now</button>
@@ -954,9 +973,7 @@
 
                         <!-- Course 6 -->
                         <div class="course-card">
-                            <a href="course-detail.html?course=mobile-development" class="course-card-link">
-                                <div class="course-image">Mobile</div>
-                            </a>
+                            <div class="course-image">Mobile</div>
                             <div class="course-content">
                                 <div class="course-badge">New</div>
                                 <h3>Mobile App Development</h3>
@@ -969,6 +986,9 @@
                                     <span>750 students</span>
                                 </div>
                                 <div class="course-duration">Duration: 14 weeks | Level: Advanced</div>
+                                <div class="course-price">
+                                    <span class="current-price">£349</span>
+                                </div>
                                 <div class="course-actions">
                                     <a href="course-detail.html?course=mobile-development" class="details-btn">View Details</a>
                                     <button class="enroll-button" onclick="enrollCourse('Mobile App Development', 349, 'Mobile')">Enroll Now</button>
@@ -978,9 +998,7 @@
 
                         <!-- Course 7 -->
                         <div class="course-card">
-                            <a href="course-detail.html?course=ai-machine-learning" class="course-card-link">
-                                <div class="course-image">AI</div>
-                            </a>
+                            <div class="course-image">AI</div>
                             <div class="course-content">
                                 <div class="course-badge">Trending</div>
                                 <h3>AI & Machine Learning</h3>
@@ -993,6 +1011,10 @@
                                     <span>1.5k students</span>
                                 </div>
                                 <div class="course-duration">Duration: 16 weeks | Level: Advanced</div>
+                                <div class="course-price">
+                                    <span class="original-price">£399</span>
+                                    <span class="current-price">£349</span>
+                                </div>
                                 <div class="course-actions">
                                     <a href="course-detail.html?course=ai-machine-learning" class="details-btn">View Details</a>
                                     <button class="enroll-button" onclick="enrollCourse('AI & Machine Learning', 349, 'AI')">Enroll Now</button>
@@ -1002,9 +1024,7 @@
 
                         <!-- Course 8 -->
                         <div class="course-card">
-                            <a href="course-detail.html?course=cloud-computing" class="course-card-link">
-                                <div class="course-image">Cloud</div>
-                            </a>
+                            <div class="course-image">Cloud</div>
                             <div class="course-content">
                                 <h3>Cloud Computing with AWS</h3>
                                 <div class="course-instructor">By Mark Richardson</div>
@@ -1016,6 +1036,9 @@
                                     <span>1.1k students</span>
                                 </div>
                                 <div class="course-duration">Duration: 10 weeks | Level: Intermediate</div>
+                                <div class="course-price">
+                                    <span class="current-price">£279</span>
+                                </div>
                                 <div class="course-actions">
                                     <a href="course-detail.html?course=cloud-computing" class="details-btn">View Details</a>
                                     <button class="enroll-button" onclick="enrollCourse('Cloud Computing with AWS', 279, 'Cloud')">Enroll Now</button>
@@ -1025,9 +1048,7 @@
 
                         <!-- Course 9 -->
                         <div class="course-card">
-                            <a href="course-detail.html?course=ux-ui-design" class="course-card-link">
-                                <div class="course-image">UX/UI</div>
-                            </a>
+                            <div class="course-image">UX/UI</div>
                             <div class="course-content">
                                 <h3>UX/UI Design Principles</h3>
                                 <div class="course-instructor">By Emma Davis</div>
@@ -1039,6 +1060,10 @@
                                     <span>950 students</span>
                                 </div>
                                 <div class="course-duration">Duration: 8 weeks | Level: Beginner</div>
+                                <div class="course-price">
+                                    <span class="original-price">£179</span>
+                                    <span class="current-price">£149</span>
+                                </div>
                                 <div class="course-actions">
                                     <a href="course-detail.html?course=ux-ui-design" class="details-btn">View Details</a>
                                     <button class="enroll-button" onclick="enrollCourse('UX/UI Design Principles', 149, 'UX/UI')">Enroll Now</button>
@@ -1048,9 +1073,7 @@
 
                         <!-- Course 10 -->
                         <div class="course-card">
-                            <a href="course-detail.html?course=database-sql" class="course-card-link">
-                                <div class="course-image">SQL</div>
-                            </a>
+                            <div class="course-image">SQL</div>
                             <div class="course-content">
                                 <div class="course-badge">Bestseller</div>
                                 <h3>Database Management with SQL</h3>
@@ -1063,6 +1086,10 @@
                                     <span>890 students</span>
                                 </div>
                                 <div class="course-duration">Duration: 6 weeks | Level: Beginner</div>
+                                <div class="course-price">
+                                    <span class="original-price">£159</span>
+                                    <span class="current-price">£129</span>
+                                </div>
                                 <div class="course-actions">
                                     <a href="course-detail.html?course=database-sql" class="details-btn">View Details</a>
                                     <button class="enroll-button" onclick="enrollCourse('Database Management with SQL', 129, 'SQL')">Enroll Now</button>
@@ -1182,18 +1209,8 @@
                     <ul>
                         <li><a href="#">Terms of Service</a></li>
                         <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Cookie Settings</a></li>
+                        <li><a href="#">Refund Policy</a></li>
                     </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Connect with Us</h3>
-                    <div class="social-links">
-                        <a href="#">📘</a>
-                        <a href="#">🐦</a>
-                        <a href="#">📷</a>
-                        <a href="#">💼</a>
-                    </div>
                 </div>
             </div>
             
