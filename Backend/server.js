@@ -84,7 +84,7 @@ const setupServer = async () => {
 // Basic test route (available before DB connection)
 app.get('/', (req, res) => {
   res.json({ 
-    message: '🚀 Online-Tailicon API Server is running!',
+    message: '🚀 Online-Tuition API Server is running!',
     status: 'OK',
     timestamp: new Date().toISOString(),
     database: mongoose.connection.readyState === 1 ? 'Connected' : 'Connecting...'
@@ -106,7 +106,7 @@ app.get('/api/health', (req, res) => {
 // API info route
 app.get('/api', (req, res) => {
   res.json({ 
-    message: 'Online-Tailicon Backend API',
+    message: 'Online-Tuition Backend API',
     version: '1.0.0',
     status: 'Operational',
     endpoints: {
