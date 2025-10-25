@@ -8,7 +8,7 @@ import connectDB from './config/database.js';
 // Load environment variables
 dotenv.config();
 
-console.log('🔧 Starting Online-Tailicon Backend Server...');
+console.log('🔧 Starting Online-Tuition Backend Server...');
 console.log('📁 Current directory:', process.cwd());
 
 const app = express();
