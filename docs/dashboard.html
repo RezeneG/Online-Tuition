@@ -631,7 +631,7 @@
                         <h1>Welcome back, John! 👋</h1>
                         <p>Continue your learning journey and track your progress</p>
                     </div>
-                    <button class="continue-learning">Continue Learning</button>
+                    <button class="continue-learning" onclick="continueLastCourse()">Continue Learning</button>
                 </section>
 
                 <!-- Progress Stats -->
@@ -658,7 +658,7 @@
                 <section class="courses-section">
                     <div class="section-header">
                         <h2>My Courses</h2>
-                        <a href="my-courses.html" class="view-all">View All</a>
+                        <a href="courses.html" class="view-all">View All</a>
                     </div>
                     
                     <div class="enrolled-courses">
@@ -682,8 +682,8 @@
                             </div>
                             
                             <div class="course-actions">
-                                <button class="btn-primary" onclick="continueCourse('web-basics')">Continue</button>
-                                <button class="btn-secondary" onclick="viewCourse('web-basics')">Review</button>
+                                <button class="btn-primary" onclick="continueCourse('web-basics')">Continue Learning</button>
+                                <button class="btn-secondary" onclick="viewCourse('web-basics')">Review Course</button>
                             </div>
                         </div>
 
@@ -707,8 +707,8 @@
                             </div>
                             
                             <div class="course-actions">
-                                <button class="btn-primary" onclick="continueCourse('programming')">Continue</button>
-                                <button class="btn-secondary" onclick="viewCourse('programming')">Review</button>
+                                <button class="btn-primary" onclick="continueCourse('programming-fundamentals')">Continue Learning</button>
+                                <button class="btn-secondary" onclick="viewCourse('programming-fundamentals')">Review Course</button>
                             </div>
                         </div>
 
@@ -732,8 +732,8 @@
                             </div>
                             
                             <div class="course-actions">
-                                <button class="btn-primary" onclick="continueCourse('data-science')">Continue</button>
-                                <button class="btn-secondary" onclick="viewCourse('data-science')">Review</button>
+                                <button class="btn-primary" onclick="continueCourse('data-science')">Continue Learning</button>
+                                <button class="btn-secondary" onclick="viewCourse('data-science')">Review Course</button>
                             </div>
                         </div>
                     </div>
@@ -868,6 +868,11 @@
         function viewCourse(courseId) {
             // Redirect to course overview page
             window.location.href = `course-detail.html?course=${courseId}`;
+        }
+
+        function continueLastCourse() {
+            // Continue with the most recent course (Web Basics in this case)
+            window.location.href = 'course-content.html?course=web-basics';
         }
 
         // Initialize progress bars animation
