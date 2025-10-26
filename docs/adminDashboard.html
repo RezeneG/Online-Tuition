@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Online Tuition Platform</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .header h1 {
+            color: #333;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header h1 i {
+            color: #667eea;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card h3 {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .stat-trend {
+            color: #4CAF50;
+            font-size: 14px;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .chart-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-container h3 {
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tables-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .table-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .table-container h3 {
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background: #e8f5e8;
+            color: #4CAF50;
+        }
+
+        .status-inactive {
+            background: #ffeaea;
+            color: #f44336;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+        }
+
+        .error {
+            background: #ffeaea;
+            color: #f44336;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .last-updated {
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="header">
+            <h1>📊 Admin Dashboard - Online Tuition Platform</h1>
+            <p>Real-time analytics and platform management</p>
+        </div>
+
+        <div id="loading" class="loading">
+            <p>Loading dashboard data...</p>
+        </div>
+
+        <div id="dashboard-content" style="display: none;">
+            <!-- Stats Overview -->
+            <div class="stats-grid" id="stats-overview"></div>
+
+            <!-- Charts -->
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <h3>📈 Teaching Mode Distribution</h3>
+                    <canvas id="teachingModeChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>🏙️ Location Distribution</h3>
+                    <canvas id="locationChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Tables -->
+            <div class="tables-grid">
+                <div class="table-container">
+                    <h3>👥 Recent Enrollments</h3>
+                    <div id="recent-enrollments"></div>
+                </div>
+                <div class="table-container">
+                    <h3>📊 Performance Metrics</h3>
+                    <div id="performance-metrics"></div>
+                </div>
+            </div>
+
+            <div class="last-updated" id="last-updated"></div>
+        </div>
+    </div>
+
+    <script>
+        let dashboardData = null;
+
+        // Fetch dashboard data
+        async function fetchDashboardData() {
+            try {
+                const response = await fetch('/api/admin/dashboard');
+                const result = await response.json();
+                
+                if (result.success) {
+                    dashboardData = result.data;
+                    renderDashboard();
+                } else {
+                    showError('Failed to load dashboard data');
+                }
+            } catch (error) {
+                showError('Error connecting to server: ' + error.message);
+            }
+        }
+
+        // Render dashboard components
+        function renderDashboard() {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('dashboard-content').style.display = 'block';
+
+            renderStatsOverview();
+            renderTeachingModeChart();
+            renderLocationChart();
+            renderRecentEnrollments();
+            renderPerformanceMetrics();
+            updateLastUpdated();
+        }
+
+        // Render stats overview cards
+        function renderStatsOverview() {
+            const stats = dashboardData.overview;
+            const container = document.getElementById('stats-overview');
+            
+            container.innerHTML = `
+                <div class="stat-card">
+                    <h3>Total Users</h3>
+                    <div class="stat-number">${stats.totalUsers}</div>
+                    <div class="stat-trend">↑ 12% this month</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Courses</h3>
+                    <div class="stat-number">${stats.totalCourses}</div>
+                    <div class="stat-trend">↑ 8% this month</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Revenue</h3>
+                    <div class="stat-number">${stats.totalRevenue}</div>
+                    <div class="stat-trend">↑ 23% this month</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Active Instructors</h3>
+                    <div class="stat-number">${stats.activeInstructors}</div>
+                    <div class="stat-trend">↑ 5% this month</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Enrollments</h3>
+                    <div class="stat-number">${stats.totalEnrollments}</div>
+                    <div class="stat-trend">↑ 15% this month</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Avg Revenue/Course</h3>
+                    <div class="stat-number">${stats.averageRevenuePerCourse}</div>
+                    <div class="stat-trend">↑ 18% this month</div>
+                </div>
+            `;
+        }
+
+        // Render teaching mode chart
+        function renderTeachingModeChart() {
+            const ctx = document.getElementById('teachingModeChart').getContext('2d');
+            const data = dashboardData.teachingModeDistribution;
+            
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Online', 'Face-to-Face', 'Hybrid'],
+                    datasets: [{
+                        data: [data.counts.online, data.counts['face-to-face'], data.counts.hybrid],
+                        backgroundColor: ['#4CAF50', '#2196F3', '#FF9800'],
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: ${value} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Render location chart
+        function renderLocationChart() {
+            const ctx = document.getElementById('locationChart').getContext('2d');
+            const data = dashboardData.locationDistribution;
+            
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(data),
+                    datasets: [{
+                        label: 'Courses by Location',
+                        data: Object.values(data),
+                        backgroundColor: '#667eea',
+                        borderColor: '#764ba2',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Render recent enrollments table
+        function renderRecentEnrollments() {
+            const container = document.getElementById('recent-enrollments');
+            const enrollments = dashboardData.recentEnrollments;
+            
+            if (enrollments.length === 0) {
+                container.innerHTML = '<p>No recent enrollments</p>';
+                return;
+            }
+            
+            let html = '<table>';
+            html += `
+                <thead>
+                    <tr>
+                        <th>Student</th>
+                        <th>Course</th>
+                        <th>Mode</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+            `;
+            
+            enrollments.forEach(enrollment => {
+                const date = new Date(enrollment.enrolledAt).toLocaleDateString();
+                html += `
+                    <tr>
+                        <td>${enrollment.studentName}</td>
+                        <td>${enrollment.courseTitle}</td>
+                        <td><span class="status-badge status-active">${enrollment.teachingMode}</span></td>
+                        <td>${date}</td>
+                    </tr>
+                `;
+            });
+            
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        // Render performance metrics
+        function renderPerformanceMetrics() {
+            const container = document.getElementById('performance-metrics');
+            const metrics = dashboardData.performanceMetrics;
+            
+            let html = '<table>';
+            html += `
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Value</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+            `;
+            
+            Object.entries(metrics).forEach(([metric, value]) => {
+                const metricName = metric.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+                const isGood = value.includes('%') ? parseFloat(value) > 70 : parseFloat(value) > 4.0;
+                
+                html += `
+                    <tr>
+                        <td>${metricName}</td>
+                        <td><strong>${value}</strong></td>
+                        <td><span class="status-badge ${isGood ? 'status-active' : 'status-inactive'}">${isGood ? 'Good' : 'Needs Attention'}</span></td>
+                    </tr>
+                `;
+            });
+            
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        // Update last updated time
+        function updateLastUpdated() {
+            const container = document.getElementById('last-updated');
+            const lastUpdated = new Date(dashboardData.lastUpdated).toLocaleString();
+            container.textContent = `Last updated: ${lastUpdated} | Database: ${dashboardData.database}`;
+        }
+
+        // Show error message
+        function showError(message) {
+            document.getElementById('loading').innerHTML = `
+                <div class="error">
+                    <strong>Error:</strong> ${message}
+                    <br><br>
+                    <button onclick="fetchDashboardData()" style="padding: 8px 16px; background: #667eea; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                        Retry
+                    </button>
+                </div>
+            `;
+        }
+
+        // Auto-refresh every 30 seconds
+        setInterval(fetchDashboardData, 30000);
+
+        // Initial load
+        fetchDashboardData();
+    </script>
+</body>
+</html>
