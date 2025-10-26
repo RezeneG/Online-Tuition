@@ -4,7 +4,6 @@ import dotenv from "dotenv";
 import connectDB from "./config/database.js";
 import User from "./models/User.js";
 import Course from "./models/Course.js";
-import Enrollment from "./models/Enrollment.js";
 
 dotenv.config();
 
@@ -16,8 +15,10 @@ const dbConnected = await connectDB();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Middleware - ORDER IS IMPORTANT!
 app.use(cors());
 app.use(express.json());
+app.use(express.static('public')); // Serve static files from public folder
 
 // Request logging middleware
 app.use((req, res, next) => {
@@ -76,55 +77,50 @@ app.get("/api/admin/dashboard", async (req, res) => {
         });
       }
       
-      // Recent enrollments (last 7 days)
-      const sevenDaysAgo = new Date();
-      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-      
-      recentEnrollments = await Enrollment.find({
-        createdAt: { $gte: sevenDaysAgo }
-      })
-      .populate('userId', 'name email')
-      .populate('courseId', 'title price')
-      .sort({ createdAt: -1 })
-      .limit(10);
-      
     } else {
       // Use in-memory data
       const { inMemoryData } = await import('./config/database.js');
-      totalUsers = inMemoryData.users.filter(u => u.isActive).length;
-      totalCourses = inMemoryData.courses.filter(c => c.isPublished).length;
-      totalRevenue = inMemoryData.courses.reduce((sum, course) => 
+      const publishedCourses = inMemoryData.courses.filter(c => c.isPublished);
+      const activeUsers = inMemoryData.users.filter(u => u.isActive);
+      
+      totalUsers = activeUsers.length;
+      totalCourses = publishedCourses.length;
+      totalRevenue = publishedCourses.reduce((sum, course) => 
         sum + (course.price * course.studentsEnrolled), 0
       );
-      activeInstructors = inMemoryData.users.filter(u => u.role === 'instructor' && u.isActive).length;
-      totalEnrollments = inMemoryData.courses.reduce((sum, course) => 
+      activeInstructors = activeUsers.filter(u => u.role === 'instructor').length;
+      totalEnrollments = publishedCourses.reduce((sum, course) => 
         sum + course.studentsEnrolled, 0
       );
       
       // Teaching mode, location, and category stats
-      inMemoryData.courses.forEach(course => {
-        if (course.isPublished) {
-          teachingModeStats[course.teachingMode]++;
-          categoryStats[course.category] = (categoryStats[course.category] || 0) + 1;
-          if (course.location?.city) {
-            locationStats[course.location.city] = (locationStats[course.location.city] || 0) + 1;
-          }
+      publishedCourses.forEach(course => {
+        teachingModeStats[course.teachingMode]++;
+        categoryStats[course.category] = (categoryStats[course.category] || 0) + 1;
+        if (course.location?.city) {
+          locationStats[course.location.city] = (locationStats[course.location.city] || 0) + 1;
         }
       });
       
       // Mock recent enrollments
       recentEnrollments = [
         {
-          userId: { name: 'Emma Wilson', email: 'emma@student.com' },
-          courseId: { title: 'Web Development Bootcamp', price: 299 },
+          studentName: 'Emma Wilson',
+          courseTitle: 'Web Development Bootcamp',
           teachingMode: 'hybrid',
-          createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000) // 2 hours ago
+          enrolledAt: new Date(Date.now() - 2 * 60 * 60 * 1000)
         },
         {
-          userId: { name: 'James Brown', email: 'james@student.com' },
-          courseId: { title: 'Advanced Python Programming', price: 199 },
+          studentName: 'James Brown',
+          courseTitle: 'Advanced Python Programming',
           teachingMode: 'online',
-          createdAt: new Date(Date.now() - 5 * 60 * 60 * 1000) // 5 hours ago
+          enrolledAt: new Date(Date.now() - 5 * 60 * 60 * 1000)
+        },
+        {
+          studentName: 'Sarah Johnson',
+          courseTitle: 'Face-to-Face Mathematics Tutoring',
+          teachingMode: 'face-to-face',
+          enrolledAt: new Date(Date.now() - 24 * 60 * 60 * 1000)
         }
       ];
     }
@@ -155,14 +151,7 @@ app.get("/api/admin/dashboard", async (req, res) => {
         },
         locationDistribution: locationStats,
         categoryDistribution: categoryStats,
-        recentEnrollments: recentEnrollments.map(enrollment => ({
-          studentName: enrollment.userId?.name || 'Unknown Student',
-          studentEmail: enrollment.userId?.email || 'unknown@email.com',
-          courseTitle: enrollment.courseId?.title || 'Unknown Course',
-          coursePrice: enrollment.courseId?.price || 0,
-          teachingMode: enrollment.teachingMode,
-          enrolledAt: enrollment.createdAt
-        })),
+        recentEnrollments: recentEnrollments,
         performanceMetrics: {
           enrollmentRate: '15%',
           completionRate: '78%',
@@ -299,7 +288,7 @@ app.get("/api/admin/stats", async (req, res) => {
         paymentProcessing: true,
         reporting: true
       },
-      version: "2.0.0"
+      version: "3.0.0"
     });
   } catch (error) {
     console.error("Admin stats error:", error);
@@ -465,6 +454,46 @@ app.get("/api/courses/filters/options", async (req, res) => {
   }
 });
 
+// Create new course (Admin/Instructor only)
+app.post("/api/courses", async (req, res) => {
+  try {
+    console.log("✅ COURSE CREATION ACCESSED");
+    const courseData = req.body;
+    
+    if (dbConnected) {
+      const course = await Course.create(courseData);
+      res.status(201).json({
+        success: true,
+        message: "Course created successfully",
+        course
+      });
+    } else {
+      // In-memory course creation
+      const newCourse = {
+        ...courseData,
+        courseId: Date.now(),
+        createdAt: new Date(),
+        isPublished: true
+      };
+      
+      const { inMemoryData } = await import('./config/database.js');
+      inMemoryData.courses.push(newCourse);
+      
+      res.status(201).json({
+        success: true,
+        message: "Course created successfully (in-memory)",
+        course: newCourse
+      });
+    }
+  } catch (error) {
+    console.error("Course creation error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error creating course"
+    });
+  }
+});
+
 // ==================== AUTH ROUTES ====================
 app.post("/api/auth/register", async (req, res) => {
   try {
@@ -601,14 +630,81 @@ app.get("/", (req, res) => {
       courses: [
         "GET /api/courses",
         "GET /api/courses/:id",
-        "GET /api/courses/filters/options"
+        "GET /api/courses/filters/options",
+        "POST /api/courses"
       ],
       auth: [
         "POST /api/auth/register",
         "POST /api/auth/login"
+      ],
+      public: [
+        "GET /",
+        "GET /api/health",
+        "GET /admin",
+        "GET /adminDashboard.html"
       ]
     }
   });
+});
+
+app.get("/admin", (req, res) => {
+  res.send(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Admin Portal - Online Tuition</title>
+        <style>
+            body { 
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                margin: 0; 
+                padding: 0; 
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .container { 
+                background: white;
+                padding: 40px;
+                border-radius: 15px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+                text-align: center;
+                max-width: 600px;
+            }
+            h1 { color: #333; margin-bottom: 10px; }
+            p { color: #666; margin-bottom: 30px; }
+            .btn { 
+                display: inline-block; 
+                padding: 15px 30px; 
+                margin: 10px; 
+                background: #667eea; 
+                color: white; 
+                text-decoration: none; 
+                border-radius: 8px;
+                font-weight: 600;
+                transition: transform 0.2s;
+            }
+            .btn:hover { 
+                transform: translateY(-2px);
+                background: #5a6fd8;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>🎯 Online Tuition Admin Portal</h1>
+            <p>Access platform analytics and management tools</p>
+            <div>
+                <a href="/adminDashboard.html" class="btn">📊 Analytics Dashboard</a>
+                <a href="/api/admin/dashboard" class="btn">📈 API Data</a>
+                <a href="/api/admin/users" class="btn">👥 Users</a>
+                <a href="/api/admin/courses" class="btn">📚 Courses</a>
+            </div>
+        </div>
+    </body>
+    </html>
+  `);
 });
 
 app.get("/api/health", async (req, res) => {
@@ -646,10 +742,13 @@ app.use("*", (req, res) => {
     error: `Cannot ${req.method} ${req.originalUrl}`,
     availableRoutes: [
       "GET /",
+      "GET /admin",
+      "GET /adminDashboard.html",
       "GET /api/health",
       "GET /api/courses",
       "GET /api/courses/:id",
       "GET /api/courses/filters/options",
+      "POST /api/courses",
       "POST /api/auth/register",
       "POST /api/auth/login",
       "GET /api/admin/dashboard",
@@ -670,7 +769,11 @@ app.listen(PORT, () => {
   console.log("Time: " + new Date().toLocaleString());
   console.log("URL: http://localhost:" + PORT);
   console.log("");
-  console.log("📊 ADMIN ENDPOINTS:");
+  console.log("📊 ADMIN DASHBOARD:");
+  console.log("   🌐 http://localhost:" + PORT + "/adminDashboard.html");
+  console.log("   🎯 http://localhost:" + PORT + "/admin");
+  console.log("");
+  console.log("📊 ADMIN API ENDPOINTS:");
   console.log("   📈 http://localhost:" + PORT + "/api/admin/dashboard");
   console.log("   👥 http://localhost:" + PORT + "/api/admin/users");
   console.log("   📚 http://localhost:" + PORT + "/api/admin/courses");
