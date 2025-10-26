@@ -1,99 +1,107 @@
-import express from "express";
-import cors from "cors";
-import dotenv from "dotenv";
-
-dotenv.config();
-
-console.log("🟢 STARTING SERVER WITH WORKING ADMIN ROUTES...");
-
+const express = require('express');
+const cors = require('cors');
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = 5000;
+
+console.log('🟢 STARTING FRESH SERVER WITH ADMIN ROUTES...');
 
 app.use(cors());
 app.use(express.json());
 
-// ==================== ADD REQUEST LOGGING ====================
+// Log ALL requests
 app.use((req, res, next) => {
-  console.log(`📨 ${new Date().toLocaleTimeString()} ${req.method} ${req.url}`);
+  console.log(`➡️ [${new Date().toLocaleTimeString()}] ${req.method} ${req.originalUrl}`);
   next();
 });
 
-// ==================== SIMPLE ADMIN ROUTES ====================
-app.get("/api/admin/dashboard", (req, res) => {
-  console.log("✅ ADMIN DASHBOARD EXECUTED");
+// ==================== ADMIN ROUTES ====================
+app.get('/api/admin/dashboard', (req, res) => {
+  console.log('✅ ADMIN DASHBOARD ROUTE EXECUTED');
   res.json({
     success: true,
-    message: "Admin Dashboard is Working!",
-    data: { users: 1250, courses: 45 }
+    message: 'ADMIN DASHBOARD IS WORKING!',
+    data: {
+      totalUsers: 1250,
+      totalCourses: 45,
+      totalRevenue: 75420
+    }
   });
 });
 
-app.get("/api/admin/users", (req, res) => {
-  console.log("✅ ADMIN USERS EXECUTED");
+app.get('/api/admin/users', (req, res) => {
+  console.log('✅ ADMIN USERS ROUTE EXECUTED');
   res.json({
     success: true,
-    message: "Admin Users is Working!",
+    message: 'ADMIN USERS IS WORKING!',
     users: [
-      { id: 1, name: "Test User 1" },
-      { id: 2, name: "Test User 2" }
+      { id: 1, name: 'John Student', email: 'john@example.com' },
+      { id: 2, name: 'Admin User', email: 'admin@example.com' }
     ]
   });
 });
 
-app.get("/api/admin/stats", (req, res) => {
-  console.log("✅ ADMIN STATS EXECUTED");
+app.get('/api/admin/stats', (req, res) => {
+  console.log('✅ ADMIN STATS ROUTE EXECUTED');
   res.json({
     success: true,
-    message: "Admin Stats is Working!",
-    stats: { status: "online" }
+    message: 'ADMIN STATS IS WORKING!',
+    stats: {
+      serverStatus: 'online',
+      uptime: '2 days',
+      memoryUsage: '45%'
+    }
   });
 });
 
-// ==================== SIMPLE PUBLIC ROUTES ====================
-app.get("/", (req, res) => {
-  console.log("✅ ROOT ROUTE EXECUTED");
+// ==================== PUBLIC ROUTES ====================
+app.get('/', (req, res) => {
+  console.log('✅ ROOT ROUTE EXECUTED');
   res.json({
-    message: "Server is running with admin routes!",
-    adminEndpoints: [
-      "/api/admin/dashboard",
-      "/api/admin/users", 
-      "/api/admin/stats"
+    message: '✅ SERVER IS RUNNING WITH ADMIN ROUTES!',
+    timestamp: new Date().toISOString(),
+    endpoints: [
+      'GET /api/admin/dashboard',
+      'GET /api/admin/users',
+      'GET /api/admin/stats',
+      'GET /api/health'
     ]
   });
 });
 
-app.get("/api/health", (req, res) => {
-  console.log("✅ HEALTH ROUTE EXECUTED");
-  res.json({ status: "OK", message: "Health check working" });
+app.get('/api/health', (req, res) => {
+  console.log('✅ HEALTH ROUTE EXECUTED');
+  res.json({
+    status: 'OK',
+    message: 'Server is healthy',
+    timestamp: new Date().toISOString()
+  });
 });
 
 // ==================== 404 HANDLER ====================
-app.use("*", (req, res) => {
-  console.log(`❌ 404: ${req.method} ${req.originalUrl}`);
+app.use('*', (req, res) => {
+  console.log(`❌ 404 - NO ROUTE FOUND: ${req.method} ${req.originalUrl}`);
   res.status(404).json({
-    error: "Route not found",
-    requested: req.originalUrl,
+    success: false,
+    error: `Cannot ${req.method} ${req.originalUrl}`,
     availableRoutes: [
-      "GET /",
-      "GET /api/health", 
-      "GET /api/admin/dashboard",
-      "GET /api/admin/users",
-      "GET /api/admin/stats"
+      'GET /',
+      'GET /api/health',
+      'GET /api/admin/dashboard',
+      'GET /api/admin/users', 
+      'GET /api/admin/stats'
     ]
   });
 });
 
 app.listen(PORT, () => {
-  console.log("================================================");
-  console.log("🟢 SERVER RUNNING ON http://localhost:" + PORT);
-  console.log("================================================");
-  console.log("ADMIN ENDPOINTS (TEST THESE):");
-  console.log("• http://localhost:" + PORT + "/api/admin/dashboard");
-  console.log("• http://localhost:" + PORT + "/api/admin/users");
-  console.log("• http://localhost:" + PORT + "/api/admin/stats");
-  console.log("");
-  console.log("PUBLIC ENDPOINTS:");
-  console.log("• http://localhost:" + PORT + "/");
-  console.log("• http://localhost:" + PORT + "/api/health");
-  console.log("================================================");
+  console.log('==============================================');
+  console.log('🟢 FRESH SERVER RUNNING ON PORT', PORT);
+  console.log('==============================================');
+  console.log('TEST THESE ADMIN ENDPOINTS IN YOUR BROWSER:');
+  console.log('1. http://localhost:5000/');
+  console.log('2. http://localhost:5000/api/admin/dashboard');
+  console.log('3. http://localhost:5000/api/admin/users');
+  console.log('4. http://localhost:5000/api/admin/stats');
+  console.log('5. http://localhost:5000/api/health');
+  console.log('==============================================');
 });
