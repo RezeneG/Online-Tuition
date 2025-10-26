@@ -38,8 +38,13 @@ const courses = [
   }
 ];
 
-// Basic admin routes (directly in server.js for now)
+// =======================
+// ADMIN ROUTES - ADD THESE
+// =======================
+
+// Admin Dashboard
 app.get('/api/admin/dashboard', (req, res) => {
+  console.log('Admin dashboard accessed');
   res.json({
     success: true,
     message: 'Admin dashboard working!',
@@ -47,42 +52,90 @@ app.get('/api/admin/dashboard', (req, res) => {
       totalUsers: 1250,
       totalCourses: courses.length,
       totalRevenue: 75420,
-      activeEnrollments: 3890
+      activeEnrollments: 3890,
+      recentActivities: [
+        { action: 'New user registered', time: '2 hours ago' },
+        { action: 'Course created', time: '4 hours ago' },
+        { action: 'Payment received', time: '5 hours ago' }
+      ]
     }
   });
 });
 
+// Admin Users
 app.get('/api/admin/users', (req, res) => {
+  console.log('Admin users accessed');
   res.json({
     success: true,
     users: [
-      { id: 1, name: 'John Student', email: 'john@example.com', role: 'student' },
-      { id: 2, name: 'Admin User', email: 'admin@example.com', role: 'admin' },
-      { id: 3, name: 'Sarah Learner', email: 'sarah@example.com', role: 'student' }
+      { 
+        id: 1, 
+        name: 'John Student', 
+        email: 'john@example.com', 
+        role: 'student', 
+        status: 'active',
+        joined: '2024-01-15'
+      },
+      { 
+        id: 2, 
+        name: 'Admin User', 
+        email: 'admin@example.com', 
+        role: 'admin', 
+        status: 'active',
+        joined: '2024-01-10'
+      },
+      { 
+        id: 3, 
+        name: 'Sarah Learner', 
+        email: 'sarah@example.com', 
+        role: 'student', 
+        status: 'active',
+        joined: '2024-01-20'
+      }
     ],
     total: 3
   });
 });
 
+// Admin Stats
 app.get('/api/admin/stats', (req, res) => {
+  console.log('Admin stats accessed');
   res.json({
     success: true,
     stats: {
       serverStatus: 'online',
       uptime: '2 days, 5 hours',
       memoryUsage: '45%',
+      cpuUsage: '12%',
+      databaseConnections: 28,
       responseTime: '125ms'
     }
   });
 });
 
-// Your existing routes
+// =======================
+// EXISTING ROUTES
+// =======================
+
 app.get('/', (req, res) => {
   res.json({ 
     message: 'Online Tuition Backend API',
     version: '1.0.0',
     status: 'Running',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    endpoints: {
+      admin: [
+        '/api/admin/dashboard',
+        '/api/admin/users', 
+        '/api/admin/stats'
+      ],
+      public: [
+        '/api/health',
+        '/api/courses',
+        '/api/auth/login',
+        '/api/auth/register'
+      ]
+    }
   });
 });
 
@@ -95,10 +148,29 @@ app.get('/api/health', (req, res) => {
 });
 
 app.get('/api/courses', (req, res) => {
+  const { category, level, search } = req.query;
+  
+  let filteredCourses = courses;
+  
+  if (category) {
+    filteredCourses = filteredCourses.filter(course => course.category === category);
+  }
+  
+  if (level) {
+    filteredCourses = filteredCourses.filter(course => course.level === level);
+  }
+  
+  if (search) {
+    filteredCourses = filteredCourses.filter(course =>
+      course.title.toLowerCase().includes(search.toLowerCase()) ||
+      course.instructor.toLowerCase().includes(search.toLowerCase())
+    );
+  }
+  
   res.json({
     success: true,
-    courses: courses,
-    total: courses.length
+    courses: filteredCourses,
+    total: filteredCourses.length
   });
 });
 
@@ -161,6 +233,54 @@ app.post('/api/auth/login', (req, res) => {
       role: 'student'
     },
     token: 'mock-jwt-token-' + Date.now()
+  });
+});
+
+app.post('/api/courses/:id/enroll', (req, res) => {
+  const courseId = parseInt(req.params.id);
+  const { userId, userEmail } = req.body;
+  
+  const course = courses.find(c => c.id === courseId);
+  
+  if (!course) {
+    return res.status(404).json({
+      success: false,
+      message: 'Course not found'
+    });
+  }
+  
+  res.json({
+    success: true,
+    message: 'Successfully enrolled in course',
+    enrollment: {
+      id: Date.now(),
+      courseId: courseId,
+      userId: userId,
+      userEmail: userEmail,
+      enrolledAt: new Date().toISOString()
+    }
+  });
+});
+
+// 404 handler for undefined routes
+app.use('*', (req, res) => {
+  res.status(404).json({
+    success: false,
+    message: `Route not found: ${req.originalUrl}`,
+    availableEndpoints: {
+      admin: [
+        'GET /api/admin/dashboard',
+        'GET /api/admin/users',
+        'GET /api/admin/stats'
+      ],
+      public: [
+        'GET /',
+        'GET /api/health',
+        'GET /api/courses',
+        'POST /api/auth/login',
+        'POST /api/auth/register'
+      ]
+    }
   });
 });
 
