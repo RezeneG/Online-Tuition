@@ -10,6 +10,15 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(cors());
+app.use(express.json());
+
+// ADD THIS DEBUGGING MIDDLEWARE
+app.use((req, res, next) => {
+  console.log(`➡️ [${new Date().toLocaleTimeString()}] ${req.method} ${req.originalUrl}`);
+  console.log(`   Headers:`, req.headers);
+  next();
+});
 
 const courses = [
   {
