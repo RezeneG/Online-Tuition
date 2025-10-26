@@ -18,18 +18,92 @@ const courseSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    required: true
+    required: true,
+    enum: ['web-dev', 'programming', 'data-science', 'mobile-dev', 'cybersecurity', 'digital-literacy', 'math', 'science', 'languages', 'business', 'creative-arts']
   },
   level: {
     type: String,
     enum: ['Beginner', 'Intermediate', 'Advanced'],
     default: 'Beginner'
   },
+  
+  // Teaching Mode - NEW FIELD
+  teachingMode: {
+    type: String,
+    required: true,
+    enum: ['online', 'face-to-face', 'hybrid'],
+    default: 'online'
+  },
+  
+  // Location for Face-to-Face - NEW FIELDS
+  location: {
+    address: {
+      type: String,
+      default: ''
+    },
+    city: {
+      type: String,
+      default: ''
+    },
+    postcode: {
+      type: String,
+      default: ''
+    },
+    coordinates: {
+      lat: { type: Number, default: null },
+      lng: { type: Number, default: null }
+    }
+  },
+  
+  // Schedule for Face-to-Face - NEW FIELD
+  schedule: [{
+    day: {
+      type: String,
+      enum: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
+    },
+    startTime: String,
+    endTime: String,
+    frequency: {
+      type: String,
+      enum: ['weekly', 'bi-weekly', 'monthly'],
+      default: 'weekly'
+    }
+  }],
+  
+  // Online Platform - NEW FIELD
+  onlinePlatform: {
+    type: String,
+    enum: ['zoom', 'teams', 'google-meet', 'skype', 'custom', ''],
+    default: ''
+  },
+  meetingLink: {
+    type: String,
+    default: ''
+  },
+  
+  // Pricing can vary by mode - NEW FIELD
+  pricing: {
+    online: { type: Number, default: null },
+    inPerson: { type: Number, default: null },
+    hybrid: { type: Number, default: null }
+  },
+  
   price: {
     type: Number,
     required: true,
     min: 0
   },
+  
+  // Class capacity for face-to-face - NEW FIELD
+  maxStudents: {
+    type: Number,
+    default: 20
+  },
+  currentEnrollment: {
+    type: Number,
+    default: 0
+  },
+  
   image: {
     type: String,
     default: ''
@@ -40,7 +114,11 @@ const courseSchema = new mongoose.Schema({
   },
   instructor: {
     type: String,
-    default: 'LearnX Team'
+    default: 'Online Tuition Team'
+  },
+  instructorId: {
+    type: Number,
+    default: 1
   },
   rating: {
     type: Number,
@@ -48,11 +126,47 @@ const courseSchema = new mongoose.Schema({
     max: 5,
     default: 0
   },
+  reviews: {
+    type: Number,
+    default: 0
+  },
   studentsEnrolled: {
     type: Number,
     default: 0
   },
+  
+  // Additional fields for enhanced functionality
+  learningObjectives: [{
+    type: String,
+    default: []
+  }],
+  requirements: [{
+    type: String,
+    default: []
+  }],
+  curriculum: [{
+    week: Number,
+    title: String,
+    topics: [String],
+    duration: String,
+    mode: {
+      type: String,
+      enum: ['online', 'in-person', 'both'],
+      default: 'online'
+    }
+  }],
+  
+  badge: {
+    type: String,
+    enum: ['Bestseller', 'New', 'Trending', 'Popular', ''],
+    default: ''
+  },
+  
   isActive: {
+    type: Boolean,
+    default: true
+  },
+  isPublished: {
     type: Boolean,
     default: true
   }
@@ -71,5 +185,34 @@ courseSchema.pre('save', async function(next) {
   }
   next();
 });
+
+// Virtual for available spots
+courseSchema.virtual('availableSpots').get(function() {
+  if (this.teachingMode === 'online') {
+    return 'Unlimited';
+  }
+  return this.maxStudents - this.currentEnrollment;
+});
+
+// Method to check if class is full
+courseSchema.methods.isFull = function() {
+  if (this.teachingMode === 'online') {
+    return false;
+  }
+  return this.currentEnrollment >= this.maxStudents;
+};
+
+// Method to get appropriate price based on mode
+courseSchema.methods.getPriceForMode = function(mode) {
+  if (this.pricing[mode] !== null && this.pricing[mode] !== undefined) {
+    return this.pricing[mode];
+  }
+  return this.price;
+};
+
+// Index for location-based searches
+courseSchema.index({ 'location.city': 1 });
+courseSchema.index({ teachingMode: 1 });
+courseSchema.index({ category: 1, teachingMode: 1 });
 
 export default mongoose.model('Course', courseSchema);
