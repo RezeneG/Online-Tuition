@@ -1,20 +1,16 @@
-// server.js
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
-// Load environment variables
 dotenv.config();
 
 console.log('Starting Online Tuition Backend Server...');
 
 const app = express();
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Sample data
 const courses = [
   {
     id: 1,
@@ -23,29 +19,34 @@ const courses = [
     price: 99,
     duration: "8 weeks",
     category: "web-dev",
-    level: "beginner"
+    level: "beginner",
+    rating: 4.7,
+    students: 1500
   },
   {
     id: 2,
-    title: "Python Programming", 
-    instructor: "Sarah Johnson",
+    title: "Python Programming",
+    instructor: "Sarah Johnson", 
     price: 129,
     duration: "6 weeks",
     category: "programming",
-    level: "beginner"
+    level: "beginner",
+    rating: 4.8,
+    students: 2000
   },
   {
     id: 3,
     title: "Data Science Fundamentals",
     instructor: "Dr. Emily Chen",
     price: 199,
-    duration: "10 weeks", 
-    category: "data-science",
-    level: "intermediate"
+    duration: "10 weeks",
+    category: "data-science", 
+    level: "intermediate",
+    rating: 4.5,
+    students: 800
   }
 ];
 
-// Routes
 app.get('/', (req, res) => {
   res.json({ 
     message: 'Online Tuition Backend API',
@@ -64,25 +65,20 @@ app.get('/api/health', (req, res) => {
 });
 
 app.get('/api/courses', (req, res) => {
-  const { category, level, search } = req.query;
+  const category = req.query.category;
+  const level = req.query.level;
+  const search = req.query.search;
   
-  let filteredCourses = [...courses];
+  let filteredCourses = courses;
   
-  // Filter by category
   if (category) {
-    filteredCourses = filteredCourses.filter(course => 
-      course.category === category
-    );
+    filteredCourses = filteredCourses.filter(course => course.category === category);
   }
   
-  // Filter by level
   if (level) {
-    filteredCourses = filteredCourses.filter(course => 
-      course.level === level
-    );
+    filteredCourses = filteredCourses.filter(course => course.level === level);
   }
   
-  // Search
   if (search) {
     filteredCourses = filteredCourses.filter(course =>
       course.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -114,9 +110,10 @@ app.get('/api/courses/:id', (req, res) => {
   });
 });
 
-// User registration
 app.post('/api/auth/register', (req, res) => {
-  const { name, email, password } = req.body;
+  const name = req.body.name;
+  const email = req.body.email;
+  const password = req.body.password;
   
   if (!name || !email || !password) {
     return res.status(400).json({
@@ -130,16 +127,16 @@ app.post('/api/auth/register', (req, res) => {
     message: 'User registered successfully',
     user: {
       id: Date.now(),
-      name,
-      email,
+      name: name,
+      email: email,
       role: 'student'
     }
   });
 });
 
-// User login
 app.post('/api/auth/login', (req, res) => {
-  const { email, password } = req.body;
+  const email = req.body.email;
+  const password = req.body.password;
   
   if (!email || !password) {
     return res.status(400).json({
@@ -161,10 +158,10 @@ app.post('/api/auth/login', (req, res) => {
   });
 });
 
-// Course enrollment
 app.post('/api/courses/:id/enroll', (req, res) => {
   const courseId = parseInt(req.params.id);
-  const { userId, userEmail } = req.body;
+  const userId = req.body.userId;
+  const userEmail = req.body.userEmail;
   
   const course = courses.find(c => c.id === courseId);
   
@@ -180,9 +177,9 @@ app.post('/api/courses/:id/enroll', (req, res) => {
     message: 'Successfully enrolled in course',
     enrollment: {
       id: Date.now(),
-      courseId,
-      userId,
-      userEmail,
+      courseId: courseId,
+      userId: userId,
+      userEmail: userEmail,
       enrolledAt: new Date().toISOString()
     }
   });
@@ -191,21 +188,12 @@ app.post('/api/courses/:id/enroll', (req, res) => {
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log('='.repeat(50));
+  console.log('==================================================');
   console.log('ONLINE TUITION BACKEND SERVER STARTED');
-  console.log('='.repeat(50));
+  console.log('==================================================');
   console.log('Port: ' + PORT);
   console.log('Environment: ' + (process.env.NODE_ENV || 'development'));
   console.log('Time: ' + new Date().toLocaleString());
   console.log('URL: http://localhost:' + PORT);
-  console.log('='.repeat(50));
-  console.log('Available Endpoints:');
-  console.log('  GET  /');
-  console.log('  GET  /api/health');
-  console.log('  GET  /api/courses');
-  console.log('  GET  /api/courses/:id');
-  console.log('  POST /api/auth/register');
-  console.log('  POST /api/auth/login');
-  console.log('  POST /api/courses/:id/enroll');
-  console.log('='.repeat(50));
+  console.log('==================================================');
 });
