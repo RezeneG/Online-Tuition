@@ -48,10 +48,6 @@ const courseSchema = new mongoose.Schema({
     postcode: {
       type: String,
       default: ''
-    },
-    coordinates: {
-      lat: { type: Number, default: null },
-      lng: { type: Number, default: null }
     }
   },
   
@@ -76,23 +72,6 @@ const courseSchema = new mongoose.Schema({
     enum: ['zoom', 'teams', 'google-meet', 'skype', 'custom', ''],
     default: ''
   },
-  meetingLink: {
-    type: String,
-    default: ''
-  },
-  
-  // Pricing can vary by mode - NEW FIELD
-  pricing: {
-    online: { type: Number, default: null },
-    inPerson: { type: Number, default: null },
-    hybrid: { type: Number, default: null }
-  },
-  
-  price: {
-    type: Number,
-    required: true,
-    min: 0
-  },
   
   // Class capacity for face-to-face - NEW FIELD
   maxStudents: {
@@ -104,6 +83,11 @@ const courseSchema = new mongoose.Schema({
     default: 0
   },
   
+  price: {
+    type: Number,
+    required: true,
+    min: 0
+  },
   image: {
     type: String,
     default: ''
@@ -137,23 +121,10 @@ const courseSchema = new mongoose.Schema({
   
   // Additional fields for enhanced functionality
   learningObjectives: [{
-    type: String,
-    default: []
+    type: String
   }],
   requirements: [{
-    type: String,
-    default: []
-  }],
-  curriculum: [{
-    week: Number,
-    title: String,
-    topics: [String],
-    duration: String,
-    mode: {
-      type: String,
-      enum: ['online', 'in-person', 'both'],
-      default: 'online'
-    }
+    type: String
   }],
   
   badge: {
@@ -191,7 +162,7 @@ courseSchema.virtual('availableSpots').get(function() {
   if (this.teachingMode === 'online') {
     return 'Unlimited';
   }
-  return this.maxStudents - this.currentEnrollment;
+  return Math.max(0, this.maxStudents - this.currentEnrollment);
 });
 
 // Method to check if class is full
@@ -200,14 +171,6 @@ courseSchema.methods.isFull = function() {
     return false;
   }
   return this.currentEnrollment >= this.maxStudents;
-};
-
-// Method to get appropriate price based on mode
-courseSchema.methods.getPriceForMode = function(mode) {
-  if (this.pricing[mode] !== null && this.pricing[mode] !== undefined) {
-    return this.pricing[mode];
-  }
-  return this.price;
 };
 
 // Index for location-based searches
