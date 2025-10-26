@@ -38,13 +38,13 @@ const courses = [
   }
 ];
 
-// =======================
-// ADMIN ROUTES - ADD THESE
-// =======================
+// ==========================================
+// ADMIN ROUTES - ADDED DIRECTLY TO SERVER.JS
+// ==========================================
 
 // Admin Dashboard
 app.get('/api/admin/dashboard', (req, res) => {
-  console.log('Admin dashboard accessed');
+  console.log('✅ Admin dashboard accessed');
   res.json({
     success: true,
     message: 'Admin dashboard working!',
@@ -64,7 +64,7 @@ app.get('/api/admin/dashboard', (req, res) => {
 
 // Admin Users
 app.get('/api/admin/users', (req, res) => {
-  console.log('Admin users accessed');
+  console.log('✅ Admin users accessed');
   res.json({
     success: true,
     users: [
@@ -99,7 +99,7 @@ app.get('/api/admin/users', (req, res) => {
 
 // Admin Stats
 app.get('/api/admin/stats', (req, res) => {
-  console.log('Admin stats accessed');
+  console.log('✅ Admin stats accessed');
   res.json({
     success: true,
     stats: {
@@ -113,10 +113,11 @@ app.get('/api/admin/stats', (req, res) => {
   });
 });
 
-// =======================
-// EXISTING ROUTES
-// =======================
+// ==========================================
+// EXISTING PUBLIC ROUTES
+// ==========================================
 
+// Root endpoint
 app.get('/', (req, res) => {
   res.json({ 
     message: 'Online Tuition Backend API',
@@ -139,6 +140,7 @@ app.get('/', (req, res) => {
   });
 });
 
+// Health check
 app.get('/api/health', (req, res) => {
   res.json({ 
     status: 'OK', 
@@ -147,6 +149,7 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// Get all courses
 app.get('/api/courses', (req, res) => {
   const { category, level, search } = req.query;
   
@@ -174,6 +177,7 @@ app.get('/api/courses', (req, res) => {
   });
 });
 
+// Get single course
 app.get('/api/courses/:id', (req, res) => {
   const courseId = parseInt(req.params.id);
   const course = courses.find(c => c.id === courseId);
@@ -191,6 +195,7 @@ app.get('/api/courses/:id', (req, res) => {
   });
 });
 
+// User registration
 app.post('/api/auth/register', (req, res) => {
   const { name, email, password } = req.body;
   
@@ -213,6 +218,7 @@ app.post('/api/auth/register', (req, res) => {
   });
 });
 
+// User login
 app.post('/api/auth/login', (req, res) => {
   const { email, password } = req.body;
   
@@ -236,6 +242,7 @@ app.post('/api/auth/login', (req, res) => {
   });
 });
 
+// Course enrollment
 app.post('/api/courses/:id/enroll', (req, res) => {
   const courseId = parseInt(req.params.id);
   const { userId, userEmail } = req.body;
@@ -262,8 +269,13 @@ app.post('/api/courses/:id/enroll', (req, res) => {
   });
 });
 
+// ==========================================
+// ERROR HANDLING
+// ==========================================
+
 // 404 handler for undefined routes
 app.use('*', (req, res) => {
+  console.log('❌ Route not found:', req.originalUrl);
   res.status(404).json({
     success: false,
     message: `Route not found: ${req.originalUrl}`,
@@ -277,8 +289,10 @@ app.use('*', (req, res) => {
         'GET /',
         'GET /api/health',
         'GET /api/courses',
+        'GET /api/courses/:id',
         'POST /api/auth/login',
-        'POST /api/auth/register'
+        'POST /api/auth/register',
+        'POST /api/courses/:id/enroll'
       ]
     }
   });
@@ -288,12 +302,21 @@ const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log('==================================================');
-  console.log('ONLINE TUITION BACKEND SERVER STARTED');
+  console.log('✅ ONLINE TUITION BACKEND SERVER STARTED');
   console.log('==================================================');
   console.log('Port: ' + PORT);
   console.log('Environment: ' + (process.env.NODE_ENV || 'development'));
   console.log('Time: ' + new Date().toLocaleString());
   console.log('URL: http://localhost:' + PORT);
-  console.log('Admin Dashboard: http://localhost:' + PORT + '/api/admin/dashboard');
+  console.log('');
+  console.log('📊 ADMIN ENDPOINTS:');
+  console.log('   http://localhost:' + PORT + '/api/admin/dashboard');
+  console.log('   http://localhost:' + PORT + '/api/admin/users');
+  console.log('   http://localhost:' + PORT + '/api/admin/stats');
+  console.log('');
+  console.log('🌐 PUBLIC ENDPOINTS:');
+  console.log('   http://localhost:' + PORT + '/');
+  console.log('   http://localhost:' + PORT + '/api/health');
+  console.log('   http://localhost:' + PORT + '/api/courses');
   console.log('==================================================');
 });
