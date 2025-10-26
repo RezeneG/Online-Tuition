@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Courses - LearnX</title>
+    <title>All Courses - Online Tuition</title>
     <style>
         /* Reset and Base Styles */
         * {
@@ -637,6 +637,36 @@
             font-size: 0.9rem;
         }
 
+        /* Loading and Error States */
+        .loading-state, .error-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 10px;
+            border: 2px dashed #e2e8f0;
+        }
+
+        .backend-status {
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .backend-status.connected {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .backend-status.disconnected {
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fde68a;
+        }
+
         /* Responsive Design */
         @media (max-width: 1024px) {
             .courses-layout {
@@ -703,7 +733,7 @@
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
-            <a href="index.html" class="logo">LearnX</a>
+            <a href="index.html" class="logo">Online Tuition</a>
             <div class="nav-links">
                 <a href="index.html">Home</a>
                 <a href="courses.html" class="active">All Courses</a>
@@ -716,7 +746,7 @@
     <section class="hero">
         <div class="container">
             <div class="hero-content">
-                <h1>Launch Your Tech Career with LearnX</h1>
+                <h1>Launch Your Tech Career with Online Tuition</h1>
                 <p>Master in-demand skills with industry-expert instructors and hands-on projects</p>
                 
                 <div class="stats">
@@ -743,6 +773,10 @@
     <section class="courses-main">
         <div class="container">
             <h2 class="section-title">Browse Our Course Catalog</h2>
+            
+            <div id="backend-status" class="backend-status connected" style="display: none;">
+                ✅ Connected to Backend API
+            </div>
             
             <div class="courses-layout">
                 <!-- Filters Sidebar -->
@@ -836,7 +870,7 @@
                             <span class="search-icon">🔍</span>
                             <input type="text" placeholder="Search courses...">
                         </div>
-                        <div class="results-count">Showing 10 of 45 courses</div>
+                        <div class="results-count">Loading courses...</div>
                         <select class="sort-select">
                             <option>Sort by: Most Popular</option>
                             <option>Sort by: Highest Rated</option>
@@ -847,255 +881,7 @@
                     </div>
 
                     <div class="courses-grid">
-                        <!-- Course 1 -->
-                        <div class="course-card">
-                            <div class="course-image">HTML/CSS</div>
-                            <div class="course-content">
-                                <div class="course-badge">Bestseller</div>
-                                <h3>Web Basics: HTML & CSS</h3>
-                                <div class="course-instructor">By Sarah Johnson</div>
-                                <div class="course-meta">
-                                    <div class="course-rating">
-                                        <span class="stars">★★★★★</span>
-                                        <span>4.7 (890)</span>
-                                    </div>
-                                    <span>1.8k students</span>
-                                </div>
-                                <div class="course-duration">Duration: 8 weeks | Level: Beginner</div>
-                                <div class="course-price">
-                                    <span class="original-price">£149</span>
-                                    <span class="current-price">£99</span>
-                                </div>
-                                <div class="course-actions">
-                                    <a href="course-detail.html?course=web-basics-html-css" class="details-btn">View Details</a>
-                                    <button class="enroll-button" onclick="enrollCourse('Web Basics: HTML & CSS', 99, 'HTML/CSS')">Enroll Now</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Course 2 -->
-                        <div class="course-card">
-                            <div class="course-image">Python</div>
-                            <div class="course-content">
-                                <div class="course-badge">Bestseller</div>
-                                <h3>Programming Fundamentals</h3>
-                                <div class="course-instructor">By Mike Chen</div>
-                                <div class="course-meta">
-                                    <div class="course-rating">
-                                        <span class="stars">★★★★★</span>
-                                        <span>4.8 (1.2k)</span>
-                                    </div>
-                                    <span>2.4k students</span>
-                                </div>
-                                <div class="course-duration">Duration: 6 weeks | Level: Beginner</div>
-                                <div class="course-price">
-                                    <span class="original-price">£199</span>
-                                    <span class="current-price">£129</span>
-                                </div>
-                                <div class="course-actions">
-                                    <a href="course-detail.html?course=programming-fundamentals" class="details-btn">View Details</a>
-                                    <button class="enroll-button" onclick="enrollCourse('Programming Fundamentals', 129, 'Python')">Enroll Now</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Course 3 -->
-                        <div class="course-card">
-                            <div class="course-image">Data</div>
-                            <div class="course-content">
-                                <h3>Data Science Essentials</h3>
-                                <div class="course-instructor">By Dr. Emily Roberts</div>
-                                <div class="course-meta">
-                                    <div class="course-rating">
-                                        <span class="stars">★★★★☆</span>
-                                        <span>4.5 (650)</span>
-                                    </div>
-                                    <span>1.2k students</span>
-                                </div>
-                                <div class="course-duration">Duration: 10 weeks | Level: Intermediate</div>
-                                <div class="course-price">
-                                    <span class="current-price">£249</span>
-                                </div>
-                                <div class="course-actions">
-                                    <a href="course-detail.html?course=data-science-essentials" class="details-btn">View Details</a>
-                                    <button class="enroll-button" onclick="enrollCourse('Data Science Essentials', 249, 'Data')">Enroll Now</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Course 4 -->
-                        <div class="course-card">
-                            <div class="course-image">React</div>
-                            <div class="course-content">
-                                <h3>React.js Masterclass</h3>
-                                <div class="course-instructor">By Alex Thompson</div>
-                                <div class="course-meta">
-                                    <div class="course-rating">
-                                        <span class="stars">★★★★★</span>
-                                        <span>4.9 (420)</span>
-                                    </div>
-                                    <span>980 students</span>
-                                </div>
-                                <div class="course-duration">Duration: 12 weeks | Level: Intermediate</div>
-                                <div class="course-price">
-                                    <span class="current-price">£299</span>
-                                </div>
-                                <div class="course-actions">
-                                    <a href="course-detail.html?course=react-masterclass" class="details-btn">View Details</a>
-                                    <button class="enroll-button" onclick="enrollCourse('React.js Masterclass', 299, 'React')">Enroll Now</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Course 5 -->
-                        <div class="course-card">
-                            <div class="course-image">Tools</div>
-                            <div class="course-content">
-                                <h3>Digital Literacy & Tools</h3>
-                                <div class="course-instructor">By Lisa Wang</div>
-                                <div class="course-meta">
-                                    <div class="course-rating">
-                                        <span class="stars">★★★★☆</span>
-                                        <span>4.6 (550)</span>
-                                    </div>
-                                    <span>1.1k students</span>
-                                </div>
-                                <div class="course-duration">Duration: 4 weeks | Level: Beginner</div>
-                                <div class="course-price">
-                                    <span class="current-price">£79</span>
-                                </div>
-                                <div class="course-actions">
-                                    <a href="course-detail.html?course=digital-literacy" class="details-btn">View Details</a>
-                                    <button class="enroll-button" onclick="enrollCourse('Digital Literacy & Tools', 79, 'Tools')">Enroll Now</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Course 6 -->
-                        <div class="course-card">
-                            <div class="course-image">Mobile</div>
-                            <div class="course-content">
-                                <div class="course-badge">New</div>
-                                <h3>Mobile App Development</h3>
-                                <div class="course-instructor">By James Wilson</div>
-                                <div class="course-meta">
-                                    <div class="course-rating">
-                                        <span class="stars">★★★★☆</span>
-                                        <span>4.4 (320)</span>
-                                    </div>
-                                    <span>750 students</span>
-                                </div>
-                                <div class="course-duration">Duration: 14 weeks | Level: Advanced</div>
-                                <div class="course-price">
-                                    <span class="current-price">£349</span>
-                                </div>
-                                <div class="course-actions">
-                                    <a href="course-detail.html?course=mobile-development" class="details-btn">View Details</a>
-                                    <button class="enroll-button" onclick="enrollCourse('Mobile App Development', 349, 'Mobile')">Enroll Now</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Course 7 -->
-                        <div class="course-card">
-                            <div class="course-image">AI</div>
-                            <div class="course-content">
-                                <div class="course-badge">Trending</div>
-                                <h3>AI & Machine Learning</h3>
-                                <div class="course-instructor">By Dr. Sarah Chen</div>
-                                <div class="course-meta">
-                                    <div class="course-rating">
-                                        <span class="stars">★★★★★</span>
-                                        <span>4.8 (780)</span>
-                                    </div>
-                                    <span>1.5k students</span>
-                                </div>
-                                <div class="course-duration">Duration: 16 weeks | Level: Advanced</div>
-                                <div class="course-price">
-                                    <span class="original-price">£399</span>
-                                    <span class="current-price">£349</span>
-                                </div>
-                                <div class="course-actions">
-                                    <a href="course-detail.html?course=ai-machine-learning" class="details-btn">View Details</a>
-                                    <button class="enroll-button" onclick="enrollCourse('AI & Machine Learning', 349, 'AI')">Enroll Now</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Course 8 -->
-                        <div class="course-card">
-                            <div class="course-image">Cloud</div>
-                            <div class="course-content">
-                                <h3>Cloud Computing with AWS</h3>
-                                <div class="course-instructor">By Mark Richardson</div>
-                                <div class="course-meta">
-                                    <div class="course-rating">
-                                        <span class="stars">★★★★☆</span>
-                                        <span>4.6 (520)</span>
-                                    </div>
-                                    <span>1.1k students</span>
-                                </div>
-                                <div class="course-duration">Duration: 10 weeks | Level: Intermediate</div>
-                                <div class="course-price">
-                                    <span class="current-price">£279</span>
-                                </div>
-                                <div class="course-actions">
-                                    <a href="course-detail.html?course=cloud-computing" class="details-btn">View Details</a>
-                                    <button class="enroll-button" onclick="enrollCourse('Cloud Computing with AWS', 279, 'Cloud')">Enroll Now</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Course 9 -->
-                        <div class="course-card">
-                            <div class="course-image">UX/UI</div>
-                            <div class="course-content">
-                                <h3>UX/UI Design Principles</h3>
-                                <div class="course-instructor">By Emma Davis</div>
-                                <div class="course-meta">
-                                    <div class="course-rating">
-                                        <span class="stars">★★★★★</span>
-                                        <span>4.7 (610)</span>
-                                    </div>
-                                    <span>950 students</span>
-                                </div>
-                                <div class="course-duration">Duration: 8 weeks | Level: Beginner</div>
-                                <div class="course-price">
-                                    <span class="original-price">£179</span>
-                                    <span class="current-price">£149</span>
-                                </div>
-                                <div class="course-actions">
-                                    <a href="course-detail.html?course=ux-ui-design" class="details-btn">View Details</a>
-                                    <button class="enroll-button" onclick="enrollCourse('UX/UI Design Principles', 149, 'UX/UI')">Enroll Now</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Course 10 -->
-                        <div class="course-card">
-                            <div class="course-image">SQL</div>
-                            <div class="course-content">
-                                <div class="course-badge">Bestseller</div>
-                                <h3>Database Management with SQL</h3>
-                                <div class="course-instructor">By Robert Kim</div>
-                                <div class="course-meta">
-                                    <div class="course-rating">
-                                        <span class="stars">★★★★☆</span>
-                                        <span>4.5 (480)</span>
-                                    </div>
-                                    <span>890 students</span>
-                                </div>
-                                <div class="course-duration">Duration: 6 weeks | Level: Beginner</div>
-                                <div class="course-price">
-                                    <span class="original-price">£159</span>
-                                    <span class="current-price">£129</span>
-                                </div>
-                                <div class="course-actions">
-                                    <a href="course-detail.html?course=database-sql" class="details-btn">View Details</a>
-                                    <button class="enroll-button" onclick="enrollCourse('Database Management with SQL', 129, 'SQL')">Enroll Now</button>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Courses will be loaded dynamically by JavaScript -->
                     </div>
 
                     <!-- Pagination -->
@@ -1119,7 +905,7 @@
     <section class="testimonials-section">
         <div class="container">
             <div class="testimonials-header">
-                <h2>Transformations Powered by LearnX</h2>
+                <h2>Transformations Powered by Online Tuition</h2>
                 <p>See how our students have transformed their careers and lives</p>
             </div>
             
@@ -1142,7 +928,7 @@
                 <!-- Testimonial 2 -->
                 <div class="testimonial-card">
                     <div class="testimonial-text">
-                        "The structured path and expert feedback in Programming Fundamentals' gave me the confidence to tackle complex problems. LearnX didn't just teach me syntax; it taught me how to think like a programmer."
+                        "The structured path and expert feedback in Programming Fundamentals gave me the confidence to tackle complex problems. Online Tuition didn't just teach me syntax; it taught me how to think like a programmer."
                     </div>
                     <div class="testimonial-author">
                         <div class="author-avatar">DM</div>
@@ -1173,7 +959,7 @@
             <!-- Final CTA -->
             <div class="final-cta">
                 <h2>Ready to Start Your Journey?</h2>
-                <p>Don't Just Dream About a Tech Career, Launch It. Join over 2,000 students who have transformed their skills and careers with LearnX.</p>
+                <p>Don't Just Dream About a Tech Career, Launch It. Join over 2,000 students who have transformed their skills and careers with Online Tuition.</p>
                 <div class="button-group">
                     <a href="courses.html" class="btn-primary">Browse All Courses</a>
                     <a href="login.html" class="btn-secondary">Sign Up For Free</a>
@@ -1187,10 +973,10 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-column">
-                    <h3>LearnX</h3>
+                    <h3>Online Tuition</h3>
                     <ul>
                         <li><a href="#">About Us</a></li>
-                        <li><a href="#">Teach on LearnX</a></li>
+                        <li><a href="#">Teach on Online Tuition</a></li>
                         <li><a href="#">Contact Us</a></li>
                     </ul>
                 </div>
@@ -1215,84 +1001,467 @@
             </div>
             
             <div class="footer-bottom">
-                <p>&copy; 2024 LearnX. All rights reserved.</p>
+                <p>&copy; 2024 Online Tuition. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // Enrollment function - stores course data and redirects to checkout
-        function enrollCourse(courseName, price, courseCode) {
-            console.log('Enrolling in:', courseName, price, courseCode);
-            
-            // Store course information in localStorage
-            localStorage.setItem('selectedCourse', courseName);
-            localStorage.setItem('coursePrice', price);
-            localStorage.setItem('courseCode', courseCode);
-            localStorage.setItem('courseDuration', getCourseDuration(courseName));
-            localStorage.setItem('courseLevel', getCourseLevel(courseName));
-            
-            // Show loading state on the clicked button
-            const button = event.target;
-            const originalText = button.textContent;
-            button.innerHTML = '🔄 Redirecting...';
-            button.disabled = true;
-            
-            // Redirect to checkout page after a brief delay
-            setTimeout(() => {
-                window.location.href = 'checkout.html';
-            }, 500);
+        // API Configuration
+        const API_BASE_URL = 'http://localhost:5000/api';
+
+        class LearnXAPI {
+            static async fetchCourses(filters = {}) {
+                const queryParams = new URLSearchParams();
+                
+                Object.entries(filters).forEach(([key, value]) => {
+                    if (value) queryParams.append(key, value);
+                });
+
+                try {
+                    const response = await fetch(`${API_BASE_URL}/courses?${queryParams}`);
+                    if (!response.ok) throw new Error('Failed to fetch courses');
+                    const data = await response.json();
+                    return data;
+                } catch (error) {
+                    console.error('Error fetching courses:', error);
+                    // Fallback to sample data if backend is unavailable
+                    return {
+                        success: true,
+                        courses: getSampleCourses(),
+                        total: 10
+                    };
+                }
+            }
+
+            static async enrollCourse(courseId, userId, userEmail) {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/courses/${courseId}/enroll`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            userId,
+                            userEmail
+                        })
+                    });
+
+                    if (!response.ok) throw new Error('Enrollment failed');
+                    return await response.json();
+                } catch (error) {
+                    console.error('Error enrolling:', error);
+                    // Fallback to mock enrollment
+                    return {
+                        success: true,
+                        message: 'Enrolled successfully (demo)',
+                        enrollment: {
+                            id: Date.now(),
+                            courseId,
+                            userId,
+                            userEmail,
+                            enrolledAt: new Date().toISOString()
+                        }
+                    };
+                }
+            }
+
+            static async registerUser(userData) {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/auth/register`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(userData)
+                    });
+
+                    if (!response.ok) throw new Error('Registration failed');
+                    return await response.json();
+                } catch (error) {
+                    console.error('Error registering:', error);
+                    throw error;
+                }
+            }
+
+            static async loginUser(credentials) {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(credentials)
+                    });
+
+                    if (!response.ok) throw new Error('Login failed');
+                    return await response.json();
+                } catch (error) {
+                    console.error('Error logging in:', error);
+                    throw error;
+                }
+            }
         }
 
-        // Helper function to get course duration
-        function getCourseDuration(courseName) {
-            const durations = {
-                'Web Basics: HTML & CSS': '8 weeks',
-                'Programming Fundamentals': '6 weeks', 
-                'Data Science Essentials': '10 weeks',
-                'React.js Masterclass': '12 weeks',
-                'Digital Literacy & Tools': '4 weeks',
-                'Mobile App Development': '14 weeks',
-                'AI & Machine Learning': '16 weeks',
-                'Cloud Computing with AWS': '10 weeks',
-                'UX/UI Design Principles': '8 weeks',
-                'Database Management with SQL': '6 weeks'
-            };
-            return durations[courseName] || '8 weeks';
+        // Sample data fallback
+        function getSampleCourses() {
+            return [
+                {
+                    id: 1,
+                    title: "Web Basics: HTML & CSS",
+                    instructor: "Sarah Johnson",
+                    category: "web-dev",
+                    level: "beginner",
+                    duration: "8 weeks",
+                    price: 99,
+                    originalPrice: 149,
+                    rating: 4.7,
+                    reviews: 890,
+                    students: 1800,
+                    image: "HTML/CSS",
+                    badge: "Bestseller",
+                    description: "Learn the fundamentals of web development with HTML and CSS"
+                },
+                {
+                    id: 2,
+                    title: "Programming Fundamentals",
+                    instructor: "Mike Chen",
+                    category: "programming",
+                    level: "beginner",
+                    duration: "6 weeks",
+                    price: 129,
+                    originalPrice: 199,
+                    rating: 4.8,
+                    reviews: 1200,
+                    students: 2400,
+                    image: "Python",
+                    badge: "Bestseller",
+                    description: "Master programming basics with Python"
+                },
+                {
+                    id: 3,
+                    title: "Data Science Essentials",
+                    instructor: "Dr. Emily Roberts",
+                    category: "data-science",
+                    level: "intermediate",
+                    duration: "10 weeks",
+                    price: 249,
+                    rating: 4.5,
+                    reviews: 650,
+                    students: 1200,
+                    image: "Data",
+                    badge: "",
+                    description: "Dive into data analysis, visualization, and machine learning"
+                }
+            ];
         }
 
-        // Helper function to get course level
-        function getCourseLevel(courseName) {
-            const levels = {
-                'Web Basics: HTML & CSS': 'Beginner',
-                'Programming Fundamentals': 'Beginner',
-                'Data Science Essentials': 'Intermediate', 
-                'React.js Masterclass': 'Intermediate',
-                'Digital Literacy & Tools': 'Beginner',
-                'Mobile App Development': 'Advanced',
-                'AI & Machine Learning': 'Advanced',
-                'Cloud Computing with AWS': 'Intermediate',
-                'UX/UI Design Principles': 'Beginner',
-                'Database Management with SQL': 'Beginner'
-            };
-            return levels[courseName] || 'Beginner';
-        }
+        // Course Management
+        class CourseManager {
+            constructor() {
+                this.filters = {
+                    category: 'web-dev',
+                    level: 'beginner',
+                    search: '',
+                    sort: 'popularity',
+                    maxPrice: 500
+                };
+                this.backendConnected = false;
+                this.init();
+            }
 
-        // Initialize course card interactions
-        document.addEventListener('DOMContentLoaded', function() {
-            // Add hover effects to course cards
-            const courseCards = document.querySelectorAll('.course-card');
-            courseCards.forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-5px)';
-                    this.style.boxShadow = '0 10px 25px -5px rgba(0, 0, 0, 0.15)';
+            async init() {
+                await this.checkBackendConnection();
+                await this.loadCourses();
+                this.setupEventListeners();
+            }
+
+            async checkBackendConnection() {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/health`);
+                    if (response.ok) {
+                        this.backendConnected = true;
+                        document.getElementById('backend-status').style.display = 'block';
+                        console.log('✅ Backend connected successfully');
+                    }
+                } catch (error) {
+                    this.backendConnected = false;
+                    document.getElementById('backend-status').className = 'backend-status disconnected';
+                    document.getElementById('backend-status').textContent = '⚠️ Using demo data (backend not connected)';
+                    document.getElementById('backend-status').style.display = 'block';
+                    console.log('⚠️ Backend not reachable, using fallback data');
+                }
+            }
+
+            async loadCourses() {
+                try {
+                    this.showLoading();
+                    const data = await LearnXAPI.fetchCourses(this.filters);
+                    this.renderCourses(data.courses);
+                    this.updateResultsCount(data.total);
+                } catch (error) {
+                    this.showError('Failed to load courses. Using sample data.');
+                    const sampleData = {
+                        courses: getSampleCourses(),
+                        total: 10
+                    };
+                    this.renderCourses(sampleData.courses);
+                    this.updateResultsCount(sampleData.total);
+                } finally {
+                    this.hideLoading();
+                }
+            }
+
+            renderCourses(courses) {
+                const grid = document.querySelector('.courses-grid');
+                if (!grid) return;
+
+                if (courses.length === 0) {
+                    grid.innerHTML = `
+                        <div class="no-courses" style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+                            <h3>No courses found</h3>
+                            <p>Try adjusting your filters or search terms</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                grid.innerHTML = courses.map(course => this.createCourseCard(course)).join('');
+            }
+
+            createCourseCard(course) {
+                const hasDiscount = course.originalPrice && course.originalPrice > course.price;
+                const imageText = course.image || course.title.substring(0, 2);
+                
+                return `
+                    <div class="course-card" data-course-id="${course.id}">
+                        <div class="course-image">${imageText}</div>
+                        <div class="course-content">
+                            ${course.badge ? `<div class="course-badge">${course.badge}</div>` : ''}
+                            <h3>${course.title}</h3>
+                            <div class="course-instructor">By ${course.instructor}</div>
+                            <div class="course-meta">
+                                <div class="course-rating">
+                                    <span class="stars">${this.generateStars(course.rating)}</span>
+                                    <span>${course.rating} (${course.reviews})</span>
+                                </div>
+                                <span>${course.students} students</span>
+                            </div>
+                            <div class="course-duration">Duration: ${course.duration} | Level: ${this.capitalize(course.level)}</div>
+                            <div class="course-price">
+                                ${hasDiscount ? `<span class="original-price">£${course.originalPrice}</span>` : ''}
+                                <span class="current-price">£${course.price}</span>
+                            </div>
+                            <div class="course-actions">
+                                <a href="course-detail.html?course=${course.id}" class="details-btn">View Details</a>
+                                <button class="enroll-button" onclick="courseManager.enrollCourse(${course.id})">
+                                    Enroll Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            generateStars(rating) {
+                const fullStars = Math.floor(rating);
+                const halfStar = rating % 1 >= 0.5;
+                const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+                
+                return '★'.repeat(fullStars) + (halfStar ? '½' : '') + '☆'.repeat(emptyStars);
+            }
+
+            capitalize(str) {
+                return str.charAt(0).toUpperCase() + str.slice(1);
+            }
+
+            setupEventListeners() {
+                // Search
+                const searchInput = document.querySelector('.search-box input');
+                if (searchInput) {
+                    let searchTimeout;
+                    searchInput.addEventListener('input', (e) => {
+                        clearTimeout(searchTimeout);
+                        searchTimeout = setTimeout(() => {
+                            this.filters.search = e.target.value;
+                            this.loadCourses();
+                        }, 300);
+                    });
+                }
+
+                // Sort
+                const sortSelect = document.querySelector('.sort-select');
+                if (sortSelect) {
+                    sortSelect.addEventListener('change', (e) => {
+                        const sortValue = e.target.value.toLowerCase().replace('sort by: ', '');
+                        this.filters.sort = sortValue;
+                        this.loadCourses();
+                    });
+                }
+
+                // Category filters
+                document.querySelectorAll('.filter-option input[type="checkbox"]').forEach(checkbox => {
+                    checkbox.addEventListener('change', () => {
+                        this.updateCategoryFilters();
+                    });
+                });
+
+                // Level filters
+                document.querySelectorAll('input[name="level"]').forEach(radio => {
+                    radio.addEventListener('change', () => {
+                        this.filters.level = document.querySelector('input[name="level"]:checked')?.id || '';
+                        this.loadCourses();
+                    });
+                });
+
+                // Price filter
+                const priceRange = document.querySelector('.price-range');
+                if (priceRange) {
+                    priceRange.addEventListener('input', (e) => {
+                        this.filters.maxPrice = e.target.value;
+                        document.querySelector('.price-labels span:last-child').textContent = `£${e.target.value}`;
+                        this.loadCourses();
+                    });
+                }
+
+                // Reset filters
+                const resetBtn = document.querySelector('.reset-filters');
+                if (resetBtn) {
+                    resetBtn.addEventListener('click', () => {
+                        this.resetFilters();
+                    });
+                }
+            }
+
+            updateCategoryFilters() {
+                const selectedCategories = Array.from(document.querySelectorAll('.filter-option input[type="checkbox"]:checked'))
+                    .map(cb => cb.id);
+                this.filters.category = selectedCategories.join(',');
+                this.loadCourses();
+            }
+
+            resetFilters() {
+                // Reset checkboxes
+                document.querySelectorAll('.filter-option input[type="checkbox"]').forEach(cb => {
+                    cb.checked = cb.id === 'web-dev';
                 });
                 
-                card.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0)';
-                    this.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
-                });
-            });
+                // Reset radio buttons
+                document.querySelector('input#beginner').checked = true;
+                
+                // Reset price range
+                document.querySelector('.price-range').value = 500;
+                document.querySelector('.price-labels span:last-child').textContent = '£500';
+                
+                // Reset search
+                document.querySelector('.search-box input').value = '';
+                
+                // Reset sort
+                document.querySelector('.sort-select').value = 'Sort by: Most Popular';
+                
+                // Reset filters object
+                this.filters = {
+                    category: 'web-dev',
+                    level: 'beginner',
+                    search: '',
+                    sort: 'popularity',
+                    maxPrice: 500
+                };
+                
+                this.loadCourses();
+            }
+
+            async enrollCourse(courseId) {
+                // For demo purposes, use a mock user
+                const userEmail = localStorage.getItem('userEmail') || 'demo@example.com';
+                const userId = localStorage.getItem('userId') || Math.floor(Math.random() * 1000);
+
+                try {
+                    const button = event.target;
+                    const originalText = button.innerHTML;
+                    button.innerHTML = '🔄 Enrolling...';
+                    button.disabled = true;
+
+                    const result = await LearnXAPI.enrollCourse(courseId, userId, userEmail);
+                    
+                    // Store course info for checkout
+                    const courses = await this.getCourses();
+                    const course = courses.find(c => c.id === courseId);
+                    
+                    if (course) {
+                        localStorage.setItem('selectedCourse', course.title);
+                        localStorage.setItem('coursePrice', course.price);
+                        localStorage.setItem('courseCode', course.image || course.title.substring(0, 2));
+                        localStorage.setItem('courseDuration', course.duration);
+                        localStorage.setItem('courseLevel', this.capitalize(course.level));
+                    }
+
+                    // Show success message
+                    alert('Successfully enrolled in course!');
+                    
+                    // Reset button
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+
+                } catch (error) {
+                    alert('Enrollment completed (demo mode)');
+                    console.error('Enrollment error:', error);
+                    event.target.innerHTML = 'Enroll Now';
+                    event.target.disabled = false;
+                }
+            }
+
+            async getCourses() {
+                try {
+                    const data = await LearnXAPI.fetchCourses();
+                    return data.courses;
+                } catch (error) {
+                    return getSampleCourses();
+                }
+            }
+
+            updateResultsCount(total) {
+                const countElement = document.querySelector('.results-count');
+                if (countElement) {
+                    const source = this.backendConnected ? 'backend' : 'demo data';
+                    countElement.textContent = `Showing ${total} courses (${source})`;
+                }
+            }
+
+            showLoading() {
+                const grid = document.querySelector('.courses-grid');
+                if (grid) {
+                    grid.innerHTML = `
+                        <div class="loading-state">
+                            <div style="font-size: 2rem; margin-bottom: 1rem;">⏳</div>
+                            <p>Loading courses from ${this.backendConnected ? 'backend' : 'demo data'}...</p>
+                        </div>
+                    `;
+                }
+            }
+
+            hideLoading() {
+                // Loading state will be replaced when courses render
+            }
+
+            showError(message) {
+                const grid = document.querySelector('.courses-grid');
+                if (grid) {
+                    grid.innerHTML = `
+                        <div class="error-state">
+                            <div style="font-size: 2rem; margin-bottom: 1rem;">⚠️</div>
+                            <h3>Backend Connection Issue</h3>
+                            <p>${message}</p>
+                            <p style="font-size: 0.9rem; color: #666;">Using sample data for demonstration</p>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            window.courseManager = new CourseManager();
         });
     </script>
 </body>
