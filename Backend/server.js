@@ -7,7 +7,7 @@ dotenv.config();
 console.log("🟢 Starting Online Tuition Backend Server with Admin Routes...");
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;  // Changed to 5001
 
 app.use(cors());
 app.use(express.json());
