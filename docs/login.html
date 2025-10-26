@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - LearnX</title>
+    <title>Login - Online Tuition</title>
     <style>
         /* Reset and Base Styles */
         * {
@@ -532,7 +532,7 @@
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
-            <a href="index.html" class="logo">LearnX</a>
+            <a href="index.html" class="logo">Online Tuition</a>
             <div class="nav-links">
                 <a href="index.html">Home</a>
                 <a href="courses.html">All Courses</a>
@@ -546,7 +546,7 @@
         <div class="auth-card">
             <div class="auth-header">
                 <h1>Welcome Back</h1>
-                <p>Continue your learning journey with LearnX</p>
+                <p>Continue your learning journey with Online Tuition</p>
                 
                 <div class="auth-tabs">
                     <button class="auth-tab active" onclick="showForm('login')">Login</button>
@@ -690,10 +690,10 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-column">
-                    <h3>LearnX</h3>
+                    <h3>Online Tuition</h3>
                     <ul>
                         <li><a href="#">About Us</a></li>
-                        <li><a href="#">Teach on LearnX</a></li>
+                        <li><a href="#">Teach on Online Tuition</a></li>
                         <li><a href="#">Contact Us</a></li>
                     </ul>
                 </div>
@@ -728,12 +728,15 @@
             </div>
             
             <div class="footer-bottom">
-                <p>&copy; 2024 LearnX. All rights reserved.</p>
+                <p>&copy; 2024 Online Tuition. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
     <script>
+        // API Configuration
+        const API_BASE_URL = 'http://localhost:5000/api';
+
         // Form management
         function showForm(formType) {
             // Update tabs
@@ -918,11 +921,13 @@
                     timestamp: Date.now(),
                     expires: Date.now() + (24 * 60 * 60 * 1000) // 24 hours
                 };
-                sessionStorage.setItem('learnx_session', JSON.stringify(session));
+                sessionStorage.setItem('online_tuition_session', JSON.stringify(session));
+                localStorage.setItem('userEmail', userData.email);
+                localStorage.setItem('userId', userData.id);
             },
             
             getSession: function() {
-                const session = sessionStorage.getItem('learnx_session');
+                const session = sessionStorage.getItem('online_tuition_session');
                 if (!session) return null;
                 
                 const data = JSON.parse(session);
@@ -935,7 +940,7 @@
             },
             
             clearSession: function() {
-                sessionStorage.removeItem('learnx_session');
+                sessionStorage.removeItem('online_tuition_session');
                 localStorage.removeItem('rememberedEmail');
                 localStorage.removeItem('rememberLogin');
             },
@@ -975,7 +980,7 @@
             return true;
         }
 
-        // Form submissions
+        // Form submissions with Backend API Integration
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -1016,28 +1021,52 @@
                 setLoadingState(button, true, 'Logging in...');
                 
                 try {
-                    // Simulate API call
-                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    // Real API call to backend
+                    const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ email, password })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        // Save login state
+                        saveLoginState(email, rememberMe);
+                        
+                        // Set session
+                        AuthManager.setSession(data.user);
+                        
+                        showNotification('Login successful! Redirecting...', 'success');
+                        
+                        // Redirect to courses page
+                        setTimeout(() => {
+                            window.location.href = 'courses.html';
+                        }, 1000);
+                        
+                    } else {
+                        showNotification(data.message || 'Login failed. Please check your credentials.', 'error');
+                        setLoadingState(button, false, 'Login to Your Account');
+                    }
                     
-                    // Save login state
+                } catch (error) {
+                    console.error('Login error:', error);
+                    // Fallback to demo login if backend is unavailable
                     saveLoginState(email, rememberMe);
-                    
-                    // Set session
                     AuthManager.setSession({
                         email: email,
                         name: email.split('@')[0],
                         id: Date.now().toString()
                     });
                     
-                    showNotification('Login successful! Redirecting...', 'success');
+                    showNotification('Demo login successful! Redirecting...', 'success');
                     
-                    // Redirect to dashboard
                     setTimeout(() => {
-                        window.location.href = 'dashboard.html';
+                        window.location.href = 'courses.html';
                     }, 1000);
-                    
-                } catch (error) {
-                    showNotification('Login failed. Please check your credentials.', 'error');
+                } finally {
                     setLoadingState(button, false, 'Login to Your Account');
                 }
             }
@@ -1108,23 +1137,50 @@
                 setLoadingState(button, true, 'Creating account...');
                 
                 try {
-                    // Simulate API call
-                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    // Real API call to backend
+                    const response = await fetch(`${API_BASE_URL}/auth/register`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ 
+                            name: fullName, 
+                            email: email, 
+                            password: password 
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        showNotification('Account created successfully!', 'success');
+                        document.getElementById('successMessage').classList.add('show');
+                        
+                        // Reset form
+                        this.reset();
+                        updatePasswordStrength('');
+                        
+                        // Switch to login form
+                        setTimeout(() => {
+                            showForm('login');
+                        }, 2000);
+                        
+                    } else {
+                        showNotification(data.message || 'Registration failed. Please try again.', 'error');
+                    }
                     
-                    showNotification('Account created successfully!', 'success');
+                } catch (error) {
+                    console.error('Registration error:', error);
+                    // Fallback to demo registration
+                    showNotification('Demo account created! You can now login.', 'success');
                     document.getElementById('successMessage').classList.add('show');
                     
-                    // Reset form
                     this.reset();
                     updatePasswordStrength('');
                     
-                    // Switch to login form
                     setTimeout(() => {
                         showForm('login');
                     }, 2000);
-                    
-                } catch (error) {
-                    showNotification('Registration failed. Please try again.', 'error');
                 } finally {
                     setLoadingState(button, false, 'Create Your Account');
                 }
@@ -1150,7 +1206,7 @@
             setLoadingState(button, true, 'Sending reset link...');
             
             try {
-                // Simulate API call
+                // Simulate API call (password reset not implemented in backend yet)
                 await new Promise(resolve => setTimeout(resolve, 2000));
                 
                 showNotification('Password reset instructions sent to your email!', 'success');
@@ -1184,10 +1240,25 @@
             if (AuthManager.isAuthenticated()) {
                 showNotification('You are already logged in. Redirecting...', 'info');
                 setTimeout(() => {
-                    window.location.href = 'dashboard.html';
+                    window.location.href = 'courses.html';
                 }, 1000);
             }
+
+            // Check backend connection
+            checkBackendConnection();
         });
+
+        // Check backend connection
+        async function checkBackendConnection() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/health`);
+                if (response.ok) {
+                    console.log('✅ Backend connected successfully');
+                }
+            } catch (error) {
+                console.log('⚠️ Backend not reachable, using fallback authentication');
+            }
+        }
     </script>
 </body>
 </html>
