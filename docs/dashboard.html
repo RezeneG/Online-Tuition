@@ -319,6 +319,14 @@
             font-size: 0.9rem;
         }
 
+        .course-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-top: 5px;
+        }
+
         .progress-bar {
             height: 8px;
             background: #e2e8f0;
@@ -331,7 +339,25 @@
             height: 100%;
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             border-radius: 4px;
-            transition: width 0.3s ease;
+            transition: width 1s ease-in-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
         }
 
         .progress-text {
@@ -519,6 +545,72 @@
             font-size: 0.9rem;
         }
 
+        /* Notification toasts */
+        .notification-toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 10000;
+            max-width: 350px;
+        }
+
+        .notification-toast.show {
+            transform: translateX(0);
+        }
+
+        .notification-close {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #64748b;
+        }
+
+        .notification-achievement {
+            border-left: 4px solid #f59e0b;
+        }
+
+        .notification-reminder {
+            border-left: 4px solid #6366f1;
+        }
+
+        .notification-progress {
+            border-left: 4px solid #10b981;
+        }
+
+        /* Loading animation */
+        .loading-skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .skeleton-text {
+            height: 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 4px;
+        }
+
+        .skeleton-progress {
+            height: 8px;
+            border-radius: 4px;
+            margin: 1rem 0;
+        }
+
         /* Responsive Design */
         @media (max-width: 1024px) {
             .dashboard-layout {
@@ -663,12 +755,16 @@
                     
                     <div class="enrolled-courses">
                         <!-- Course 1 -->
-                        <div class="enrolled-course">
+                        <div class="enrolled-course" data-course="web-basics">
                             <div class="course-header">
                                 <div class="course-icon">HTML/CSS</div>
                                 <div class="course-info">
                                     <h3>Web Basics: HTML & CSS</h3>
                                     <p>Sarah Johnson</p>
+                                    <div class="course-meta">
+                                        <span class="lessons-completed">8/12 lessons</span>
+                                        <span class="time-remaining">~4 hours left</span>
+                                    </div>
                                 </div>
                             </div>
                             
@@ -688,12 +784,16 @@
                         </div>
 
                         <!-- Course 2 -->
-                        <div class="enrolled-course">
+                        <div class="enrolled-course" data-course="programming-fundamentals">
                             <div class="course-header">
                                 <div class="course-icon">Python</div>
                                 <div class="course-info">
                                     <h3>Programming Fundamentals</h3>
                                     <p>Mike Chen</p>
+                                    <div class="course-meta">
+                                        <span class="lessons-completed">3/10 lessons</span>
+                                        <span class="time-remaining">~7 hours left</span>
+                                    </div>
                                 </div>
                             </div>
                             
@@ -713,12 +813,16 @@
                         </div>
 
                         <!-- Course 3 -->
-                        <div class="enrolled-course">
+                        <div class="enrolled-course" data-course="data-science">
                             <div class="course-header">
                                 <div class="course-icon">Data</div>
                                 <div class="course-info">
                                     <h3>Data Science Essentials</h3>
                                     <p>Dr. Emily Roberts</p>
+                                    <div class="course-meta">
+                                        <span class="lessons-completed">1/8 lessons</span>
+                                        <span class="time-remaining">~9 hours left</span>
+                                    </div>
                                 </div>
                             </div>
                             
@@ -859,10 +963,151 @@
     </footer>
 
     <script>
+        // Enhanced Progress Manager
+        class ProgressManager {
+            constructor() {
+                this.courses = {
+                    'web-basics': { 
+                        progress: 65, 
+                        lastActivity: 'CSS Flexbox and Grid',
+                        lessonsCompleted: 8,
+                        totalLessons: 12
+                    },
+                    'programming-fundamentals': { 
+                        progress: 30, 
+                        lastActivity: 'Variables and Data Types',
+                        lessonsCompleted: 3,
+                        totalLessons: 10
+                    },
+                    'data-science': { 
+                        progress: 15, 
+                        lastActivity: 'Course Introduction',
+                        lessonsCompleted: 1,
+                        totalLessons: 8
+                    }
+                };
+            }
+
+            updateProgress(courseId, progress) {
+                this.courses[courseId].progress = progress;
+                this.saveToLocalStorage();
+                this.updateUI();
+                this.calculateRealTimeStats();
+            }
+
+            updateUI() {
+                Object.keys(this.courses).forEach(courseId => {
+                    const progressBar = document.querySelector(`[data-course="${courseId}"] .progress-fill`);
+                    const progressText = document.querySelector(`[data-course="${courseId}"] .progress-text span:last-child`);
+                    const lessonsCompleted = document.querySelector(`[data-course="${courseId}"] .lessons-completed`);
+                    
+                    if (progressBar && progressText) {
+                        progressBar.style.width = `${this.courses[courseId].progress}%`;
+                        progressText.textContent = `${this.courses[courseId].progress}%`;
+                    }
+                    
+                    if (lessonsCompleted) {
+                        lessonsCompleted.textContent = `${this.courses[courseId].lessonsCompleted}/${this.courses[courseId].totalLessons} lessons`;
+                    }
+                });
+            }
+
+            saveToLocalStorage() {
+                localStorage.setItem('learnXProgress', JSON.stringify(this.courses));
+            }
+
+            loadFromLocalStorage() {
+                const saved = localStorage.getItem('learnXProgress');
+                if (saved) {
+                    this.courses = JSON.parse(saved);
+                    this.updateUI();
+                }
+            }
+        }
+
+        // Notification System
+        class NotificationSystem {
+            constructor() {
+                this.notifications = [];
+                this.setupNotifications();
+            }
+
+            addNotification(type, message, courseId = null) {
+                const notification = {
+                    id: Date.now(),
+                    type, // 'achievement', 'reminder', 'progress'
+                    message,
+                    courseId,
+                    timestamp: new Date(),
+                    read: false
+                };
+
+                this.notifications.unshift(notification);
+                this.saveNotifications();
+                this.showNotificationToast(notification);
+            }
+
+            showNotificationToast(notification) {
+                const toast = document.createElement('div');
+                toast.className = `notification-toast notification-${notification.type}`;
+                toast.innerHTML = `
+                    <div class="notification-icon">${this.getNotificationIcon(notification.type)}</div>
+                    <div class="notification-content">
+                        <p>${notification.message}</p>
+                    </div>
+                    <button class="notification-close">&times;</button>
+                `;
+
+                document.body.appendChild(toast);
+
+                // Add close event
+                toast.querySelector('.notification-close').addEventListener('click', () => {
+                    this.removeToast(toast);
+                });
+
+                setTimeout(() => toast.classList.add('show'), 100);
+                setTimeout(() => this.removeToast(toast), 5000);
+            }
+
+            getNotificationIcon(type) {
+                const icons = {
+                    achievement: '🏆',
+                    reminder: '⏰',
+                    progress: '📈'
+                };
+                return icons[type] || '💡';
+            }
+
+            removeToast(toast) {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            }
+
+            saveNotifications() {
+                localStorage.setItem('learnXNotifications', JSON.stringify(this.notifications));
+            }
+        }
+
+        // Initialize managers
+        const progressManager = new ProgressManager();
+        const notifications = new NotificationSystem();
+
         // Navigation functions
         function continueCourse(courseId) {
-            // Redirect to course content page
-            window.location.href = `course-content.html?course=${courseId}`;
+            // Simulate progress update
+            const currentProgress = progressManager.courses[courseId].progress;
+            const newProgress = Math.min(currentProgress + 10, 100);
+            progressManager.updateProgress(courseId, newProgress);
+            
+            // Show progress notification
+            notifications.addNotification('progress', `Great job! You've made progress in ${getCourseName(courseId)}`);
+            
+            // In a real app, this would redirect to course content
+            // window.location.href = `course-content.html?course=${courseId}`;
         }
 
         function viewCourse(courseId) {
@@ -872,11 +1117,47 @@
 
         function continueLastCourse() {
             // Continue with the most recent course (Web Basics in this case)
-            window.location.href = 'course-content.html?course=web-basics';
+            continueCourse('web-basics');
         }
 
-        // Initialize progress bars animation
+        function getCourseName(courseId) {
+            const courseNames = {
+                'web-basics': 'Web Basics: HTML & CSS',
+                'programming-fundamentals': 'Programming Fundamentals',
+                'data-science': 'Data Science Essentials'
+            };
+            return courseNames[courseId] || 'Course';
+        }
+
+        // Real-time stats calculator
+        function calculateRealTimeStats() {
+            const courses = progressManager.courses;
+            const totalCourses = Object.keys(courses).length;
+            const totalProgress = Object.values(courses).reduce((sum, course) => sum + course.progress, 0);
+            const averageProgress = Math.round(totalProgress / totalCourses);
+            
+            // Update stats cards
+            document.querySelector('.stat-card:nth-child(2) .stat-number').textContent = `${averageProgress}%`;
+            
+            // Calculate streak (simulated)
+            const streak = calculateLearningStreak();
+            document.querySelector('.stat-card:nth-child(3) .stat-number').textContent = streak;
+        }
+
+        function calculateLearningStreak() {
+            // This would normally check login/activity dates
+            return Math.floor(Math.random() * 10) + 5; // Simulated streak
+        }
+
+        // Initialize enhanced features
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize progress manager
+            progressManager.loadFromLocalStorage();
+            
+            // Calculate real-time stats
+            calculateRealTimeStats();
+            
+            // Animate progress bars
             const progressBars = document.querySelectorAll('.progress-fill');
             progressBars.forEach(bar => {
                 const width = bar.style.width;
@@ -885,6 +1166,18 @@
                     bar.style.width = width;
                 }, 500);
             });
+
+            // Simulate some notifications after page load
+            setTimeout(() => {
+                notifications.addNotification('achievement', 'You unlocked the "Fast Learner" badge!');
+            }, 2000);
+            
+            setTimeout(() => {
+                notifications.addNotification('reminder', 'Don\'t forget to complete your Web Basics course!', 'web-basics');
+            }, 5000);
+
+            // Simulate loading user data
+            loadUserData();
         });
 
         // Simulate loading user data
@@ -910,9 +1203,6 @@
             document.querySelector('.stat-card:nth-child(3) .stat-number').textContent = userData.completedLessons;
             document.querySelector('.stat-card:nth-child(4) .stat-number').textContent = userData.certificates;
         }
-
-        // Load user data when page loads
-        loadUserData();
     </script>
 </body>
 </html>
