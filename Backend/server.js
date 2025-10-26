@@ -2,143 +2,210 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import mongoose from 'mongoose';
 
 // Load environment variables
 dotenv.config();
 
-console.log('🎯 Starting Online Tuition Backend Server...');
+console.log('Starting Online Tuition Backend Server...');
 
 const app = express();
 
 // Middleware
-app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:3000',
-  credentials: true
-}));
+app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
-// Immediate test route (before DB connection)
-app.get('/test', (req, res) => {
-  res.json({ 
-    message: '✅ Online Tuition Backend is responding!',
-    timestamp: new Date().toISOString(),
-    database: mongoose.connection.readyState === 1 ? 'Connected' : 'Not connected'
-  });
-});
-
-// Connect to Database
-const connectDB = async () => {
-  try {
-    console.log('📡 Attempting to connect to MongoDB...');
-    const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/online-tuition', {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
-    return conn;
-  } catch (error) {
-    console.error('❌ MongoDB connection error:', error.message);
-    throw error;
+// Sample data
+const courses = [
+  {
+    id: 1,
+    title: "Web Development Basics",
+    instructor: "John Smith",
+    price: 99,
+    duration: "8 weeks",
+    category: "web-dev",
+    level: "beginner"
+  },
+  {
+    id: 2,
+    title: "Python Programming", 
+    instructor: "Sarah Johnson",
+    price: 129,
+    duration: "6 weeks",
+    category: "programming",
+    level: "beginner"
+  },
+  {
+    id: 3,
+    title: "Data Science Fundamentals",
+    instructor: "Dr. Emily Chen",
+    price: 199,
+    duration: "10 weeks", 
+    category: "data-science",
+    level: "intermediate"
   }
-};
-
-// Import routes
-import authRoutes from './routes/authRoutes.js';
-import courseRoutes from './routes/courseRoutes.js';
-import paymentRoutes from './routes/paymentRoutes.js';
+];
 
 // Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/courses', courseRoutes);
-app.use('/api/payments', paymentRoutes);
-
-// Health check
-app.get('/api/health', (req, res) => {
-  res.json({ 
-    status: 'OK', 
-    message: 'Online Tuition Server is running',
-    timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || 'development',
-    database: mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected'
-  });
-});
-
-// API info
-app.get('/api', (req, res) => {
+app.get('/', (req, res) => {
   res.json({ 
     message: 'Online Tuition Backend API',
     version: '1.0.0',
-    endpoints: {
-      auth: '/api/auth',
-      courses: '/api/courses',
-      payments: '/api/payments',
-      health: '/api/health',
-      test: '/test'
+    status: 'Running',
+    timestamp: new Date().toISOString()
+  });
+});
+
+app.get('/api/health', (req, res) => {
+  res.json({ 
+    status: 'OK', 
+    message: 'Server is healthy',
+    timestamp: new Date().toISOString()
+  });
+});
+
+app.get('/api/courses', (req, res) => {
+  const { category, level, search } = req.query;
+  
+  let filteredCourses = [...courses];
+  
+  // Filter by category
+  if (category) {
+    filteredCourses = filteredCourses.filter(course => 
+      course.category === category
+    );
+  }
+  
+  // Filter by level
+  if (level) {
+    filteredCourses = filteredCourses.filter(course => 
+      course.level === level
+    );
+  }
+  
+  // Search
+  if (search) {
+    filteredCourses = filteredCourses.filter(course =>
+      course.title.toLowerCase().includes(search.toLowerCase()) ||
+      course.instructor.toLowerCase().includes(search.toLowerCase())
+    );
+  }
+  
+  res.json({
+    success: true,
+    courses: filteredCourses,
+    total: filteredCourses.length
+  });
+});
+
+app.get('/api/courses/:id', (req, res) => {
+  const courseId = parseInt(req.params.id);
+  const course = courses.find(c => c.id === courseId);
+  
+  if (!course) {
+    return res.status(404).json({
+      success: false,
+      message: 'Course not found'
+    });
+  }
+  
+  res.json({
+    success: true,
+    course
+  });
+});
+
+// User registration
+app.post('/api/auth/register', (req, res) => {
+  const { name, email, password } = req.body;
+  
+  if (!name || !email || !password) {
+    return res.status(400).json({
+      success: false,
+      message: 'Please provide name, email and password'
+    });
+  }
+  
+  res.status(201).json({
+    success: true,
+    message: 'User registered successfully',
+    user: {
+      id: Date.now(),
+      name,
+      email,
+      role: 'student'
     }
   });
 });
 
-// Default route
-app.get('/', (req, res) => {
-  res.json({ 
-    message: 'Welcome to Online Tuition API',
-    documentation: 'Visit /api for available endpoints'
+// User login
+app.post('/api/auth/login', (req, res) => {
+  const { email, password } = req.body;
+  
+  if (!email || !password) {
+    return res.status(400).json({
+      success: false,
+      message: 'Please provide email and password'
+    });
+  }
+  
+  res.json({
+    success: true,
+    message: 'Login successful',
+    user: {
+      id: 1,
+      name: 'Test User',
+      email: email,
+      role: 'student'
+    },
+    token: 'mock-jwt-token-' + Date.now()
   });
 });
 
-// 404 handler
-app.use('*', (req, res) => {
-  res.status(404).json({
-    success: false,
-    message: `Route ${req.originalUrl} not found`
-  });
-});
-
-// Global error handler
-app.use((err, req, res, next) => {
-  console.error('🚨 Error:', err.message);
-  res.status(500).json({
-    success: false,
-    message: err.message || 'Internal Server Error'
+// Course enrollment
+app.post('/api/courses/:id/enroll', (req, res) => {
+  const courseId = parseInt(req.params.id);
+  const { userId, userEmail } = req.body;
+  
+  const course = courses.find(c => c.id === courseId);
+  
+  if (!course) {
+    return res.status(404).json({
+      success: false,
+      message: 'Course not found'
+    });
+  }
+  
+  res.json({
+    success: true,
+    message: 'Successfully enrolled in course',
+    enrollment: {
+      id: Date.now(),
+      courseId,
+      userId,
+      userEmail,
+      enrolledAt: new Date().toISOString()
+    }
   });
 });
 
 const PORT = process.env.PORT || 5000;
 
-// Start server
-const startServer = async () => {
-  try {
-    console.log('🔄 Initializing server...');
-    
-    // Connect to database (but don't block server start)
-    connectDB().then(() => {
-      console.log('✅ Database connection established');
-    }).catch(err => {
-      console.log('⚠️ Database connection failed, but server will continue');
-    });
-
-    const server = app.listen(PORT, () => {
-      console.log('\n' + '='.repeat(60));
-      console.log('🚀 ONLINE TUITION BACKEND SERVER STARTED!');
-      console.log('='.repeat(60));
-      console.log(`📍 Port: ${PORT}`);
-      console.log(`🌐 Environment: ${process.env.NODE_ENV || 'development'}`);
-      console.log(`🕐 Started: ${new Date().toLocaleString()}`);
-      console.log('');
-      console.log('🔗 Test URLs:');
-      console.log(`   http://localhost:${PORT}/`);
-      console.log(`   http://localhost:${PORT}/test`);
-      console.log(`   http://localhost:${PORT}/api/health`);
-      console.log('='.repeat(60) + '\n');
-    });
-
-    return server;
-  } catch (error) {
-    console.error('💥 Failed to start server:', error);
-    process.exit(1);
-  }
-};
-
-startServer();
+app.listen(PORT, () => {
+  console.log('='.repeat(50));
+  console.log('ONLINE TUITION BACKEND SERVER STARTED');
+  console.log('='.repeat(50));
+  console.log('Port: ' + PORT);
+  console.log('Environment: ' + (process.env.NODE_ENV || 'development'));
+  console.log('Time: ' + new Date().toLocaleString());
+  console.log('URL: http://localhost:' + PORT);
+  console.log('='.repeat(50));
+  console.log('Available Endpoints:');
+  console.log('  GET  /');
+  console.log('  GET  /api/health');
+  console.log('  GET  /api/courses');
+  console.log('  GET  /api/courses/:id');
+  console.log('  POST /api/auth/register');
+  console.log('  POST /api/auth/login');
+  console.log('  POST /api/courses/:id/enroll');
+  console.log('='.repeat(50));
+});
