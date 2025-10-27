@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import connectDB from "./config/database.js";
 import User from "./models/User.js";
 import Course from "./models/Course.js";
+import Service from "./models/Service.js"; // Added Service import
 
 dotenv.config();
 
@@ -26,13 +27,178 @@ app.use((req, res, next) => {
   next();
 });
 
+// ==================== SERVICES API ROUTES ====================
+// Get all services with optional filtering
+app.get("/api/services", async (req, res) => {
+  try {
+    console.log("✅ SERVICES LIST ACCESSED");
+    const { category, serviceType, limit = 10, page = 1 } = req.query;
+    
+    let services;
+    if (dbConnected) {
+      let filter = {};
+      if (category) filter.category = category;
+      if (serviceType) filter.serviceType = serviceType;
+      
+      services = await Service.find(filter)
+        .limit(parseInt(limit))
+        .skip((parseInt(page) - 1) * parseInt(limit))
+        .sort({ rating: -1, createdAt: -1 });
+      
+      const total = await Service.countDocuments(filter);
+      
+      res.json({
+        success: true,
+        services,
+        pagination: {
+          page: parseInt(page),
+          limit: parseInt(limit),
+          total,
+          pages: Math.ceil(total / parseInt(limit))
+        }
+      });
+    } else {
+      // In-memory services fallback
+      const sampleServices = [
+        {
+          id: 101,
+          title: 'Website Development Service',
+          description: 'Professional website development for businesses.',
+          provider: 'Tech Solutions Ltd',
+          category: 'web-development',
+          serviceType: 'fixed-price',
+          pricing: { model: 'fixed', amount: 999 },
+          deliveryTime: '2-3 weeks',
+          rating: 4.8,
+          features: ['Custom design', 'SEO optimization', '1 month support']
+        },
+        {
+          id: 102,
+          title: 'IT Support & Maintenance',
+          description: 'Ongoing IT support and troubleshooting.',
+          provider: 'Tech Solutions Ltd',
+          category: 'it-support',
+          serviceType: 'hourly',
+          pricing: { model: 'hourly', rate: 45, minHours: 2 },
+          deliveryTime: 'Same day',
+          rating: 4.6,
+          features: ['Hardware support', 'Software installation', 'Remote assistance']
+        }
+      ];
+      
+      // Apply filtering to in-memory data
+      let filteredServices = sampleServices;
+      if (category) {
+        filteredServices = filteredServices.filter(service => service.category === category);
+      }
+      if (serviceType) {
+        filteredServices = filteredServices.filter(service => service.serviceType === serviceType);
+      }
+      
+      res.json({
+        success: true,
+        services: filteredServices,
+        pagination: {
+          page: 1,
+          limit: filteredServices.length,
+          total: filteredServices.length,
+          pages: 1
+        }
+      });
+    }
+  } catch (error) {
+    console.error("Services error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error fetching services",
+      error: error.message
+    });
+  }
+});
+
+// Get single service by ID
+app.get("/api/services/:id", async (req, res) => {
+  try {
+    console.log("✅ SINGLE SERVICE ACCESSED");
+    
+    let service;
+    if (dbConnected) {
+      service = await Service.findById(req.params.id);
+    } else {
+      // In-memory fallback
+      const sampleServices = [
+        {
+          id: 101,
+          title: 'Website Development Service',
+          description: 'Professional website development for businesses.',
+          provider: 'Tech Solutions Ltd',
+          category: 'web-development',
+          serviceType: 'fixed-price',
+          pricing: { model: 'fixed', amount: 999, currency: 'GBP' },
+          deliveryTime: '2-3 weeks',
+          rating: 4.8,
+          completedProjects: 47,
+          features: ['Custom design', 'SEO optimization', '1 month support']
+        }
+      ];
+      service = sampleServices.find(s => s.id === parseInt(req.params.id));
+    }
+    
+    if (!service) {
+      return res.status(404).json({
+        success: false,
+        message: "Service not found"
+      });
+    }
+    
+    res.json({
+      success: true,
+      service
+    });
+  } catch (error) {
+    console.error("Single service error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error fetching service",
+      error: error.message
+    });
+  }
+});
+
+// Get service categories
+app.get("/api/services/categories/all", async (req, res) => {
+  try {
+    console.log("✅ SERVICE CATEGORIES ACCESSED");
+    
+    let categories;
+    if (dbConnected) {
+      categories = await Service.distinct('category');
+    } else {
+      categories = ['web-development', 'it-support', 'software-testing', 'game-development'];
+    }
+    
+    res.json({
+      success: true,
+      categories
+    });
+  } catch (error) {
+    console.error("Service categories error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error fetching service categories",
+      error: error.message
+    });
+  }
+});
+
 // ==================== ENHANCED ADMIN ROUTES ====================
 app.get("/api/admin/dashboard", async (req, res) => {
   try {
     console.log("✅ ADMIN DASHBOARD ACCESSED");
     
-    let totalUsers, totalCourses, totalRevenue, activeInstructors, totalEnrollments;
+    let totalUsers, totalCourses, totalServices, totalRevenue, activeInstructors, totalEnrollments;
     let teachingModeStats = { online: 0, 'face-to-face': 0, hybrid: 0 };
+    let serviceCategoryStats = {};
     let locationStats = {};
     let categoryStats = {};
     let recentEnrollments = [];
@@ -41,12 +207,25 @@ app.get("/api/admin/dashboard", async (req, res) => {
       // Use real database with enhanced metrics
       totalUsers = await User.countDocuments({ isActive: true });
       totalCourses = await Course.countDocuments({ isPublished: true });
+      totalServices = await Service.countDocuments({ status: 'available' });
       
       // Calculate revenue from course prices and enrollments
       const courses = await Course.find({ isPublished: true });
       totalRevenue = courses.reduce((sum, course) => 
         sum + (course.price * course.studentsEnrolled), 0
       );
+      
+      // Add service revenue
+      const services = await Service.find({ status: 'available' });
+      const serviceRevenue = services.reduce((sum, service) => {
+        if (service.pricing.model === 'fixed' && service.pricing.amount) {
+          return sum + (service.pricing.amount * service.completedProjects);
+        } else if (service.pricing.model === 'hourly' && service.pricing.rate) {
+          return sum + (service.pricing.rate * 10 * service.completedProjects); // Estimate 10 hours per project
+        }
+        return sum;
+      }, 0);
+      totalRevenue += serviceRevenue;
       
       activeInstructors = await User.countDocuments({ role: 'instructor', isActive: true });
       totalEnrollments = courses.reduce((sum, course) => sum + course.studentsEnrolled, 0);
@@ -55,6 +234,15 @@ app.get("/api/admin/dashboard", async (req, res) => {
       teachingModeStats.online = await Course.countDocuments({ teachingMode: 'online', isPublished: true });
       teachingModeStats['face-to-face'] = await Course.countDocuments({ teachingMode: 'face-to-face', isPublished: true });
       teachingModeStats.hybrid = await Course.countDocuments({ teachingMode: 'hybrid', isPublished: true });
+      
+      // Service category statistics
+      const serviceCategories = await Service.distinct('category', { status: 'available' });
+      for (const category of serviceCategories) {
+        serviceCategoryStats[category] = await Service.countDocuments({ 
+          category: category, 
+          status: 'available' 
+        });
+      }
       
       // Location statistics
       const cities = await Course.distinct('location.city', { 
@@ -68,7 +256,7 @@ app.get("/api/admin/dashboard", async (req, res) => {
         });
       }
       
-      // Category statistics
+      // Course category statistics
       const categories = await Course.distinct('category', { isPublished: true });
       for (const category of categories) {
         categoryStats[category] = await Course.countDocuments({ 
@@ -85,9 +273,11 @@ app.get("/api/admin/dashboard", async (req, res) => {
       
       totalUsers = activeUsers.length;
       totalCourses = publishedCourses.length;
+      totalServices = 4; // Mock services count
       totalRevenue = publishedCourses.reduce((sum, course) => 
         sum + (course.price * course.studentsEnrolled), 0
-      );
+      ) + 25000; // Add mock service revenue
+      
       activeInstructors = activeUsers.filter(u => u.role === 'instructor').length;
       totalEnrollments = publishedCourses.reduce((sum, course) => 
         sum + course.studentsEnrolled, 0
@@ -101,6 +291,14 @@ app.get("/api/admin/dashboard", async (req, res) => {
           locationStats[course.location.city] = (locationStats[course.location.city] || 0) + 1;
         }
       });
+      
+      // Service category stats (mock)
+      serviceCategoryStats = {
+        'web-development': 1,
+        'it-support': 1,
+        'software-testing': 1,
+        'game-development': 1
+      };
       
       // Mock recent enrollments
       recentEnrollments = [
@@ -140,6 +338,7 @@ app.get("/api/admin/dashboard", async (req, res) => {
         overview: {
           totalUsers,
           totalCourses,
+          totalServices,
           totalRevenue: `£${totalRevenue.toLocaleString()}`,
           activeInstructors,
           totalEnrollments,
@@ -149,6 +348,7 @@ app.get("/api/admin/dashboard", async (req, res) => {
           counts: teachingModeStats,
           percentages: teachingModePercentages
         },
+        serviceDistribution: serviceCategoryStats,
         locationDistribution: locationStats,
         categoryDistribution: categoryStats,
         recentEnrollments: recentEnrollments,
@@ -156,7 +356,8 @@ app.get("/api/admin/dashboard", async (req, res) => {
           enrollmentRate: '15%',
           completionRate: '78%',
           studentSatisfaction: '4.8/5.0',
-          revenueGrowth: '23%'
+          revenueGrowth: '23%',
+          serviceBookings: '45'
         },
         database: dbConnected ? 'MongoDB' : 'In-Memory',
         lastUpdated: new Date().toISOString()
@@ -203,6 +404,7 @@ app.get("/api/admin/users", async (req, res) => {
         activeUsers: enhancedUsers.filter(u => u.isActive).length,
         students: enhancedUsers.filter(u => u.role === 'student').length,
         instructors: enhancedUsers.filter(u => u.role === 'instructor').length,
+        providers: enhancedUsers.filter(u => u.role === 'provider').length,
         admins: enhancedUsers.filter(u => u.role === 'admin').length
       }
     });
@@ -261,6 +463,64 @@ app.get("/api/admin/courses", async (req, res) => {
   }
 });
 
+app.get("/api/admin/services", async (req, res) => {
+  try {
+    console.log("✅ ADMIN SERVICES ACCESSED");
+    
+    let services;
+    if (dbConnected) {
+      services = await Service.find().sort({ createdAt: -1 });
+    } else {
+      // Mock services data
+      services = [
+        {
+          id: 101,
+          title: 'Website Development Service',
+          provider: 'Tech Solutions Ltd',
+          category: 'web-development',
+          serviceType: 'fixed-price',
+          pricing: { model: 'fixed', amount: 999 },
+          status: 'available',
+          rating: 4.8,
+          completedProjects: 47
+        },
+        {
+          id: 102,
+          title: 'IT Support & Maintenance',
+          provider: 'Tech Solutions Ltd',
+          category: 'it-support',
+          serviceType: 'hourly',
+          pricing: { model: 'hourly', rate: 45 },
+          status: 'available',
+          rating: 4.6,
+          completedProjects: 89
+        }
+      ];
+    }
+    
+    res.json({
+      success: true,
+      message: `Services loaded from ${dbConnected ? 'MongoDB' : 'In-Memory'} database`,
+      services,
+      total: services.length,
+      stats: {
+        available: services.filter(s => s.status === 'available').length,
+        unavailable: services.filter(s => s.status === 'unavailable').length,
+        webDevelopment: services.filter(s => s.category === 'web-development').length,
+        itSupport: services.filter(s => s.category === 'it-support').length,
+        softwareTesting: services.filter(s => s.category === 'software-testing').length,
+        gameDevelopment: services.filter(s => s.category === 'game-development').length
+      }
+    });
+  } catch (error) {
+    console.error("Admin services error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error fetching services"
+    });
+  }
+});
+
 app.get("/api/admin/stats", async (req, res) => {
   try {
     console.log("✅ ADMIN STATS ACCESSED");
@@ -282,13 +542,15 @@ app.get("/api/admin/stats", async (req, res) => {
       stats: systemStats,
       features: {
         hybridTeaching: true,
+        serviceMarketplace: true,
         realTimeAnalytics: true,
         userManagement: true,
         courseManagement: true,
+        serviceManagement: true,
         paymentProcessing: true,
         reporting: true
       },
-      version: "3.0.0"
+      version: "4.0.0"
     });
   } catch (error) {
     console.error("Admin stats error:", error);
@@ -615,16 +877,22 @@ app.post("/api/auth/login", async (req, res) => {
 // ==================== PUBLIC ROUTES ====================
 app.get("/", (req, res) => {
   res.json({
-    message: "Online Tuition Backend API with Enhanced Database",
-    version: "3.0.0",
+    message: "Online Tuition Backend API with Training & Services Marketplace",
+    version: "4.0.0",
     status: "Running",
     database: dbConnected ? "MongoDB Connected" : "In-Memory Data",
     timestamp: new Date().toISOString(),
     endpoints: {
+      services: [
+        "GET /api/services",
+        "GET /api/services/:id",
+        "GET /api/services/categories/all"
+      ],
       admin: [
         "GET /api/admin/dashboard",
         "GET /api/admin/users",
-        "GET /api/admin/courses", 
+        "GET /api/admin/courses",
+        "GET /api/admin/services",
         "GET /api/admin/stats"
       ],
       courses: [
@@ -693,13 +961,14 @@ app.get("/admin", (req, res) => {
     </head>
     <body>
         <div class="container">
-            <h1>🎯 Online Tuition Admin Portal</h1>
-            <p>Access platform analytics and management tools</p>
+            <h1>🎯 Online Tuition & Services Admin Portal</h1>
+            <p>Access platform analytics and management tools for Training & Services</p>
             <div>
                 <a href="/adminDashboard.html" class="btn">📊 Analytics Dashboard</a>
                 <a href="/api/admin/dashboard" class="btn">📈 API Data</a>
                 <a href="/api/admin/users" class="btn">👥 Users</a>
                 <a href="/api/admin/courses" class="btn">📚 Courses</a>
+                <a href="/api/admin/services" class="btn">🛠️ Services</a>
             </div>
         </div>
     </body>
@@ -745,6 +1014,9 @@ app.use("*", (req, res) => {
       "GET /admin",
       "GET /adminDashboard.html",
       "GET /api/health",
+      "GET /api/services",
+      "GET /api/services/:id",
+      "GET /api/services/categories/all",
       "GET /api/courses",
       "GET /api/courses/:id",
       "GET /api/courses/filters/options",
@@ -754,6 +1026,7 @@ app.use("*", (req, res) => {
       "GET /api/admin/dashboard",
       "GET /api/admin/users",
       "GET /api/admin/courses",
+      "GET /api/admin/services",
       "GET /api/admin/stats"
     ]
   });
@@ -761,13 +1034,17 @@ app.use("*", (req, res) => {
 
 app.listen(PORT, () => {
   console.log("==================================================");
-  console.log("🟢 ONLINE TUITION BACKEND WITH ENHANCED DATABASE");
+  console.log("🟢 ONLINE TUITION & SERVICES MARKETPLACE BACKEND");
   console.log("==================================================");
   console.log("Port: " + PORT);
   console.log("Environment: " + (process.env.NODE_ENV || "development"));
   console.log("Database: " + (dbConnected ? "MongoDB Connected" : "In-Memory Data"));
   console.log("Time: " + new Date().toLocaleString());
   console.log("URL: http://localhost:" + PORT);
+  console.log("");
+  console.log("🛠️  NEW SERVICES MARKETPLACE:");
+  console.log("   📋 http://localhost:" + PORT + "/api/services");
+  console.log("   🗂️  http://localhost:" + PORT + "/api/services/categories/all");
   console.log("");
   console.log("📊 ADMIN DASHBOARD:");
   console.log("   🌐 http://localhost:" + PORT + "/adminDashboard.html");
@@ -777,6 +1054,7 @@ app.listen(PORT, () => {
   console.log("   📈 http://localhost:" + PORT + "/api/admin/dashboard");
   console.log("   👥 http://localhost:" + PORT + "/api/admin/users");
   console.log("   📚 http://localhost:" + PORT + "/api/admin/courses");
+  console.log("   🛠️  http://localhost:" + PORT + "/api/admin/services");
   console.log("   ⚙️  http://localhost:" + PORT + "/api/admin/stats");
   console.log("");
   console.log("🌐 PUBLIC ENDPOINTS:");
