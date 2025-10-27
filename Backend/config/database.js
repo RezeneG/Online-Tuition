@@ -2,7 +2,7 @@
 import mongoose from 'mongoose';
 import User from '../models/User.js';
 import Course from '../models/Course.js';
-import Service from '../models/Service.js'; // New model
+import Service from '../models/Service.js';
 import Counter from '../models/Counter.js';
 
 const connectDB = async () => {
@@ -34,11 +34,11 @@ const initializeData = async () => {
       await Counter.create([
         { _id: 'userId', sequence_value: 1000 },
         { _id: 'courseId', sequence_value: 100 },
-        { _id: 'serviceId', sequence_value: 200 }, // New service counter
+        { _id: 'serviceId', sequence_value: 200 },
         { _id: 'enrollmentId', sequence_value: 500 }
       ]);
 
-      // Create sample users (including service providers)
+      // Create sample users
       const sampleUsers = [
         {
           name: 'Admin User',
@@ -66,7 +66,7 @@ const initializeData = async () => {
           name: 'Tech Solutions Ltd',
           email: 'tech@services.com',
           password: 'provider123',
-          role: 'provider', // New role
+          role: 'provider',
           profile: {
             bio: 'Professional IT services company',
             phone: '+1234567893',
@@ -91,7 +91,7 @@ const initializeData = async () => {
       await User.create(sampleUsers);
       console.log('✅ Sample users created');
 
-      // Create sample courses (your existing 3 courses + more)
+      // Create sample courses
       const sampleCourses = [
         {
           title: 'Complete Web Development Bootcamp',
